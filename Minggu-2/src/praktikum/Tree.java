@@ -89,23 +89,6 @@ public class Tree {                                         // deklarasi kelas
     }
 
     /**
-     * Breadth First Search / Level Order Traversal. Melakukan traversal dari atas ke bawah berurutan secara parallel.
-     * */
-    public void traverseLevelOrder() {
-        Queue<Node> queue = new LinkedList<>();             // membuat LinkedList dengan tipe Queue
-        queue.add(this.root);                               // memasukkan root ke queue
-
-        while (!queue.isEmpty()) {                          // SAAT queue tidak kosong
-            Node curr = queue.poll();                       // masukan penarikan dari queue ke curr
-            System.out.print(curr.data() + " ");            // cetak isi curr
-            if (curr.left() != null)                        // JIKA node kiri curr tidak kosong
-                queue.add(curr.left());                     // tambahkan node kiri curr ke queue
-            if (curr.right() != null)                       // JIKA node kanan curr tidak kosong
-                queue.add(curr.right());                    // tambahkan node kanan curr ke queue
-        }
-    }
-
-    /**
      * (rekursif) Pre Order | Melakukan traversal dari ujung kiri ke ujung kanan, mencetak setiap isi {@link Node}.
      * @param curr awal mulai
      * */
@@ -140,6 +123,23 @@ public class Tree {                                         // deklarasi kelas
             traversePostOrder(curr.left());                 // rekursif dengan argumen child kiri curr
             traversePostOrder(curr.right());                // rekursif dengan argumen child kanan curr
             System.out.print((curr.data()) + " ");          // CETAK data dan spasi
+        }
+    }
+
+    /**
+     * Breadth First Search / Level Order Traversal. Melakukan traversal dari atas ke bawah berurutan secara parallel.
+     * */
+    public void traverseLevelOrder() {
+        Queue<Node> queue = new LinkedList<>();             // membuat LinkedList dengan tipe Queue
+        queue.add(this.root);                               // memasukkan root ke queue
+
+        while (!queue.isEmpty()) {                          // SAAT queue tidak kosong
+            Node curr = queue.poll();                       // masukan penarikan dari queue ke curr
+            System.out.print(curr.data() + " ");            // cetak isi curr
+            if (curr.left() != null)                        // JIKA node kiri curr tidak kosong
+                queue.add(curr.left());                     // tambahkan node kiri curr ke queue
+            if (curr.right() != null)                       // JIKA node kanan curr tidak kosong
+                queue.add(curr.right());                    // tambahkan node kanan curr ke queue
         }
     }
 }
