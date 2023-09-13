@@ -1,5 +1,8 @@
 package praktikum;                                          // lokasi file
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Tree {                                         // deklarasi kelas
 
     private Node root;                                      // atribut kelas sebagai awal/akar tree
@@ -60,45 +63,83 @@ public class Tree {                                         // deklarasi kelas
         this.root = root;                                   // atur root kelas dengan root di argumen
     }
 
+    /**
+     * Mencari sebuah nilai dari {@link Tree} yang dipanggil.
+     * @param key nilai yang dicari.
+     * */
     public Node search(int key) {
-        Node curr = this.root;
-        return search(curr, key);
+        Node curr = this.root;                              // mengatur node yang akan digunakan sebagai iterator
+        return search(curr, key);                           // pencarian rekursif dengan curr dan key
     }
 
-    public Node search(Node root, int key) {
-        if (root == null || root.data() == key) {
-            return root;
-        } else if (key < root.data()) {
-            return search(root.left(), key);
-        } else {
-            return search(root.right(), key);
+    /**
+     * (rekursif) Melakukan pencarian secara rekursif hingga {@code root} bernilai null atau {@code root} bernilai {@code key}.
+     * @param root {@link Node} untuk mencari
+     * @param key nilai yang dicari
+     * @return {@link Node} yang dicari atau nilai null bila tidak ditemukan
+     * */
+    public static Node search(Node root, int key) {
+        if (root == null || root.data() == key) {           // JIKA root kosong ATAU root.data() sama dengan kunci
+            return root;                                    // kembalikan root
+        } else if (key < root.data()) {                     // NAMUN JIKA key kurang dari root.data()
+            return search(root.left(), key);                // rekursif dengan arg: node kiri root DAN key
+        } else {                                            // SELAIN ITU
+            return search(root.right(), key);               // rekursif dengan arg: node kanan DAN key
         }
     }
 
     /**
-     * (rekursif) Melakukan traversal dari ujung kiri ke ujung kanan, mencetak setiap isi {@link Node}.
-     * @param curr awal mulai.
+     * Breadth First Search / Level Order Traversal. Melakukan traversal dari atas ke bawah berurutan secara parallel.
      * */
-    public void traverseLeftToRight(Node curr) {
+    public void traverseLevelOrder() {
+        Queue<Node> queue = new LinkedList<>();             // membuat LinkedList dengan tipe Queue
+        queue.add(this.root);                               // memasukkan root ke queue
+
+        while (!queue.isEmpty()) {                          // SAAT queue tidak kosong
+            Node curr = queue.poll();                       // masukan penarikan dari queue ke curr
+            System.out.print(curr.data() + " ");            // cetak isi curr
+            if (curr.left() != null)                        // JIKA node kiri curr tidak kosong
+                queue.add(curr.left());                     // tambahkan node kiri curr ke queue
+            if (curr.right() != null)                       // JIKA node kanan curr tidak kosong
+                queue.add(curr.right());                    // tambahkan node kanan curr ke queue
+        }
+    }
+
+    /**
+     * (rekursif) Pre Order | Melakukan traversal dari ujung kiri ke ujung kanan, mencetak setiap isi {@link Node}.
+     * @param curr awal mulai
+     * */
+    public void traversePreOrder(Node curr) {
         System.out.print(curr.data() + " ");                // CETAK data dan spasi
         if (curr.left() != null) {                          // JIKA child kiri curr tidak kosong
-            traverseLeftToRight(curr.left());               // rekursif dengan argumen child kiri curr
+            traversePreOrder(curr.left());                  // rekursif dengan argumen child kiri curr
         }
         if (curr.right() != null) {                         // JIKA child kanan curr tidak kosong
-            traverseLeftToRight(curr.right());              // rekursif dengan argumen child kanan curr
+            traversePreOrder(curr.right());                 // rekursif dengan argumen child kanan curr
         }
     }
 
     /**
-     * (rekursif) Melakukan traversal dari nilai terkecil hingga terbesar, mencetak setiap isi {@link Node}.
-     * @param curr awal mulai.
+     * (rekursif) In Order | Melakukan traversal dari nilai terkecil hingga terbesar, mencetak setiap isi {@link Node}.
+     * @param curr awal mulai
      * */
     public void traverseInOrder(Node curr) {
-        if (curr == null) {                                 // JIKA curr kosong
-            return;                                         // METODE SELESAI.
+        if (curr != null) {                                 // JIKA curr kosong
+            traverseInOrder(curr.left());                   // rekursif dengan argumen child kiri curr
+            System.out.print((curr.data()) + " ");          // CETAK data dan spasi
+            traverseInOrder(curr.right());                  // rekursif dengan argumen child kanan curr
         }
-        traverseInOrder(curr.left());                       // rekursif dengan argumen child kiri curr
-        System.out.print((curr.data()) + " ");              // CETAK data dan spasi
-        traverseInOrder(curr.right());                      // rekursif dengan argumen child kanan curr
+    }
+
+    /**
+     * (rekursif) Post Order | Melakukan traversal dari leaf kiri-kanan-parent, mencetak setiap isi {@link Node}.
+     * @param curr awal mulai
+     * */
+    public void traversePostOrder(Node curr) {
+        if (curr != null) {                                 // JIKA curr kosong
+            traversePostOrder(curr.left());                 // rekursif dengan argumen child kiri curr
+            traversePostOrder(curr.right());                // rekursif dengan argumen child kanan curr
+            System.out.print((curr.data()) + " ");          // CETAK data dan spasi
+        }
     }
 }
