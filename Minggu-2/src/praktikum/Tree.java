@@ -23,7 +23,7 @@ public class Tree {                                         // deklarasi kelas
         var newNode = new Node(data);                       // membuat node baru berisi data, simpan ke "newNode"
         if (this.root == null) {                            // JIKA root kelas kosong:
             this.root = newNode;                            // ISI root kelas dengan newNode yang baru dibuat
-                    return;                                 // METODE SELESAI.
+            return;                                         // METODE SELESAI.
         }
 
         Node curr = root;                                   // isi iterator curr dengan root Tree
@@ -45,6 +45,90 @@ public class Tree {                                         // deklarasi kelas
             } else {                                            // SELAIN ITU
             return;                                         // METODE SELESAI.
             }
+        }
+    }
+
+    /**
+     * Pencarian rekursif sebuah node yang bernilai {@code data} yang ingin dihapus pada tree ini.
+     * @param key nilai yang akan dihapus
+     * @return {@link Node} yang berisi data
+     * */
+    public Node remove(int key) {
+        Node parent = this.root;
+        Node curr = this.root;
+
+        while (curr != null) {
+            if (key < curr.data()) {
+                parent = curr;
+                curr = curr.left();
+            } else if (key > curr.data()) {
+                parent = curr;
+                curr = curr.right();
+            } else {
+                return performRemoval(parent, curr, key);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Melakukan proses penghapusan dan mengatur posisi {@link Node}.
+     * @param parent orang tua dari curr
+     * @param curr anak dari orang tua
+     * @param key nilai yang ingin dihapus
+     * @return {@link Node}
+     * */
+    private Node performRemoval(Node parent, Node curr, int key) {
+        /* Jika current tidak punya anak */
+        if (curr.left() == null && curr.right() == null) {
+            if (curr == this.root) {
+                this.root = null;
+            } else if (parent.left().data() == key) {
+                parent.setLeft(null);
+            } else {
+                parent.setRight(null);
+            }
+            return curr;
+        }
+        /* Jika current punya anak kiri */
+        else if (curr.left() != null && curr.right() == null) {
+            if (curr == this.root) {
+                this.root = null;
+            } else if (parent.left().data() == key) {
+                parent.setLeft(curr.left());
+            } else {
+                parent.setRight(curr.left());
+            }
+            return curr;
+        }
+        /* Jika current punya anak kanan */
+        else if (curr.left() == null && curr.right() != null) {
+            if (curr == this.root) {
+                this.root = null;
+            } else if (parent.left().data() == key) {
+                parent.setLeft(curr.right());
+            } else {
+                parent.setRight(curr.right());
+            }
+            return curr;
+        }
+        /* Jika current memiliki anak kanan dan anak kiri */
+        else {
+            Node temp = curr.right();
+            Node leftmostParent = curr;
+
+            while (curr.left() != null) {
+                leftmostParent = curr;
+                curr = curr.left();
+            }
+
+            temp.setData(curr.data());
+            if (leftmostParent == curr) {
+                temp.setRight(curr.right());
+            } else {
+                leftmostParent.setLeft(curr.right());
+            }
+            return temp;
         }
     }
 
