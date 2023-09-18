@@ -36,6 +36,10 @@ public class Node {
         this.data = data;                                   // ATUR data kelas dgn. data parameter
     }
 
+    public boolean isLeaf() {
+        return (leftLink == null && rightLink == null);     // mengecek apakah punya anak atau tidak
+    }
+
     @Override
     public String toString() {                              // metode toString
         return "{" + data + '}';                            // KEMBALIKAN data dengan format
