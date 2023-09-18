@@ -7,7 +7,8 @@ public class Main {
 //        int[] data = {42, 21, 38, 27, 71, 82, 55, 63, 6, 2, 40, 12};
 //        int[] data = {27, 13, 42, 6, 17, 33, 48};
 //        int[] data = {60, 41, 74, 16, 53, 65, 25, 46, 55, 63, 70, 42, 62, 64};
-        int[] data = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+//        int[] data = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+        int[] data = {56, 30, 11, 40, 70, 95};
 
         for (int e : data) {                                    // Iterasi untuk setiap elemen di data
             tree.insert(e);                                     // memasukkan elemen ke tree

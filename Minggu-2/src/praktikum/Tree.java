@@ -127,7 +127,7 @@ public class Tree {                                         // deklarasi kelas
     }
 
     /**
-     * Breadth First Search / Level Order Traversal. Melakukan traversal dari atas ke bawah berurutan secara parallel.
+     * Breadth First Search / Level Order Traversal. Melakukan traversal dari atas ke bawah berurutan secara melebar.
      * */
     public void traverseLevelOrder() {
         Queue<Node> queue = new LinkedList<>();             // membuat LinkedList dengan tipe Queue
