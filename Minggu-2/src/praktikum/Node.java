@@ -2,16 +2,16 @@ package praktikum;
 
 public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     /* Inisialisasi atribut kelas: Node, Node, int */
-    private Node<T> getLeftLink;
-    private Node<T>  getRightLink;
+    private Node<T> leftLink;
+    private Node<T>  rightLink;
     private T data;
 
     /**
      * Constructor kelas dengan nilai awal data.
      * */
     public Node(T data) {
-        this.getLeftLink = null;
-        this.getRightLink = null;
+        this.leftLink = null;
+        this.rightLink = null;
         this.data = data;
     }
 
@@ -19,28 +19,28 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
      * Mendapatkan node anak kiri.
      * */
     public Node<T> getLeft() {
-        return getLeftLink;
+        return leftLink;
     }
 
     /**
      * Mengganti anak kiri node.
      * */
-    public void setgetLeft(Node<T> getLeftLink) {
-        this.getLeftLink = getLeftLink;
+    public void setgetLeft(Node<T> leftLink) {
+        this.leftLink = leftLink;
     }
 
     /**
      * Mendapatkan node anak kanan.
      * */
     public Node<T> getRight() {
-        return getRightLink;
+        return rightLink;
     }
 
     /**
      * Mengatur anak kanan node.
      * */
-    public void setgetRight(Node<T> getRightLink) {
-        this.getRightLink = getRightLink;
+    public void setgetRight(Node<T> rightLink) {
+        this.rightLink = rightLink;
     }
 
     /**
@@ -61,7 +61,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
      * Mengecek apakah node ini memiliki anak.
      * */
     public boolean isLeaf() {
-        return (getLeftLink == null && getRightLink == null);     // mengecek apakah punya anak atau tidak
+        return (leftLink == null && rightLink == null);     // mengecek apakah punya anak atau tidak
     }
 
     @Override
