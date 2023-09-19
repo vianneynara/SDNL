@@ -79,8 +79,8 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     /**
      * Mengembalikan penggambaran struktur {@link Node} ini.
      * */
-    public String getDrawnStructure() {
-        return this.drawStructure(new StringBuilder(), true, new StringBuilder()).toString();
+    public void printDrawnStructure() {
+        System.out.println(this.drawStructure(new StringBuilder(), true, new StringBuilder()).toString());
     }
 
     /* Penggambaran struktur secara rekursif */
