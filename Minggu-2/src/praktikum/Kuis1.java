@@ -18,16 +18,16 @@ public class Kuis1 {
             int diff = key.compareTo(curr.getData());
             if (diff < 0) {
                 parent = curr;
-                curr = curr.left();
+                curr = curr.getLeft();
             } else if (diff > 0) {
                 parent = curr;
-                curr = curr.right();
+                curr = curr.getRight();
             } else {
                 if (curr.getData() == key) {
-                    if (parent.left() == curr) {
-                        return parent.right();
+                    if (parent.getLeft() == curr) {
+                        return parent.getRight();
                     } else {
-                        return parent.left();
+                        return parent.getLeft();
                     }
                 }
             }

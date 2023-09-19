@@ -1,9 +1,9 @@
 package praktikum;
 
-public class Main {
+public class Main<T extends Comparable<T>> {
 
     public static void main(String[] args) {
-        var tree = new Tree();                                  // membuat objek Tree ke var. tree
+        var tree = new Tree<Integer>();                                  // membuat objek Tree ke var. tree
 //        int[] getData = {42, 21, 38, 27, 71, 82, 55, 63, 6, 2, 40, 12};
 //        int[] getData = {27, 13, 42, 6, 17, 33, 48};
 //        int[] getData = {60, 41, 74, 16, 53, 65, 25, 46, 55, 63, 70, 42, 62, 64};
@@ -34,17 +34,18 @@ public class Main {
         cari(tree, 16);                                         // mencari nilai 16 pada tree dengan method cari
         cari(tree, 63);                                         // mencari nilai 63 pada tree dengan method cari
 
-        System.out.println(Kuis1.soalKuis(tree.getRoot(), 43));
+        tree.traverseStructure();
     }
 
     /**
      * Sebuah wrapper untuk mencari {@code key} pada sebuah {@link Tree} menggunakan metode {@link Tree#search}.
+     *
      * @param tree
      * Tree yang digunakan untuk mencari {@code key}
      * @param key
      * getData atau kunci yang ingin dicari di dalam {@code tree}.
      * */
-    public static void cari(Tree tree, int key) {
+    public static <T extends Comparable<T>> void cari(Tree<T> tree, T key) {
         System.out.println(                                     // mencetak:
           (tree.search(key) != null) ?                          // JIKA hasil pencarian tidak kosong
             "Ditemukan " + key :                                // cetak "Ditemukan " + key
