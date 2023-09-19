@@ -35,17 +35,17 @@ public class Tree<T extends Comparable<T>> {
         while (curr != null) {
             int diff = data.compareTo(curr.getData());
             if (diff < 0) {                                     // lebih kecil
-                if (curr.left() != null) {
-                    curr = curr.left();
+                if (curr.getLeft() != null) {
+                    curr = curr.getLeft();
                 } else {
-                    curr.setLeft(newNode);
+                    curr.setgetLeft(newNode);
                     return;
                 }
             } else {                                            // lebih besar atau sama dengan
-                if (curr.right() != null) {
-                    curr = curr.right();
+                if (curr.getRight() != null) {
+                    curr = curr.getRight();
                 } else {
-                    curr.setRight(newNode);
+                    curr.setgetRight(newNode);
                     return;
                 }
             }
@@ -66,10 +66,10 @@ public class Tree<T extends Comparable<T>> {
             int diff = key.compareTo(curr.getData());
             if (diff < 0) {
                 parent = curr;
-                curr = curr.left();
+                curr = curr.getLeft();
             } else if (diff > 0) {
                 parent = curr;
-                curr = curr.right();
+                curr = curr.getRight();
             } else {
                 return performRemoval(parent, curr, key);
             }
@@ -90,50 +90,50 @@ public class Tree<T extends Comparable<T>> {
         if (curr.isLeaf()) {
             if (curr == this.root) {
                 this.root = null;
-            } else if (parent.left().getData() == key) {
-                parent.setLeft(null);
+            } else if (parent.getLeft().getData() == key) {
+                parent.setgetLeft(null);
             } else {
-                parent.setRight(null);
+                parent.setgetRight(null);
             }
             return curr;
         }
         /* Jika current punya anak kiri */
-        else if (curr.left() != null && curr.right() == null) {
+        else if (curr.getLeft() != null && curr.getRight() == null) {
             if (curr == this.root) {
                 this.root = null;
-            } else if (parent.left().getData() == key) {
-                parent.setLeft(curr.left());
+            } else if (parent.getLeft().getData() == key) {
+                parent.setgetLeft(curr.getLeft());
             } else {
-                parent.setRight(curr.left());
+                parent.setgetRight(curr.getLeft());
             }
             return curr;
         }
         /* Jika current punya anak kanan */
-        else if (curr.left() == null && curr.right() != null) {
+        else if (curr.getLeft() == null && curr.getRight() != null) {
             if (curr == this.root) {
                 this.root = null;
-            } else if (parent.left().getData() == key) {
-                parent.setLeft(curr.right());
+            } else if (parent.getLeft().getData() == key) {
+                parent.setgetLeft(curr.getRight());
             } else {
-                parent.setRight(curr.right());
+                parent.setgetRight(curr.getRight());
             }
             return curr;
         }
         /* Jika current memiliki anak kanan dan anak kiri */
         else {
-            Node<T> temp = curr.right();
-            Node<T> leftmostParent = curr;
+            Node<T> temp = curr.getRight();
+            Node<T> getLeftmostParent = curr;
 
-            while (curr.left() != null) {
-                leftmostParent = curr;
-                curr = curr.left();
+            while (curr.getLeft() != null) {
+                getLeftmostParent = curr;
+                curr = curr.getLeft();
             }
 
             temp.setData(curr.getData());
-            if (leftmostParent == curr) {
-                temp.setRight(curr.right());
+            if (getLeftmostParent == curr) {
+                temp.setgetRight(curr.getRight());
             } else {
-                leftmostParent.setLeft(curr.right());
+                getLeftmostParent.setgetLeft(curr.getRight());
             }
             return temp;
         }
@@ -176,9 +176,9 @@ public class Tree<T extends Comparable<T>> {
         if (root == null || root.getData() == key) {
             return root;
         } else if (key.compareTo(root.getData()) < 0) {
-            return search(root.left(), key);
+            return search(root.getLeft(), key);
         } else {
-            return search(root.right(), key);
+            return search(root.getRight(), key);
         }
     }
 
@@ -189,11 +189,11 @@ public class Tree<T extends Comparable<T>> {
      * */
     public void traversePreOrder(Node<T> curr) {
         System.out.print(curr.getData() + " ");
-        if (curr.left() != null) {
-            traversePreOrder(curr.left());
+        if (curr.getLeft() != null) {
+            traversePreOrder(curr.getLeft());
         }
-        if (curr.right() != null) {
-            traversePreOrder(curr.right());
+        if (curr.getRight() != null) {
+            traversePreOrder(curr.getRight());
         }
     }
 
@@ -204,9 +204,9 @@ public class Tree<T extends Comparable<T>> {
      * */
     public void traverseInOrder(Node<T> curr) {
         if (curr != null) {
-            traverseInOrder(curr.left());
+            traverseInOrder(curr.getLeft());
             System.out.print((curr.getData()) + " ");
-            traverseInOrder(curr.right());
+            traverseInOrder(curr.getRight());
         }
     }
 
@@ -217,8 +217,8 @@ public class Tree<T extends Comparable<T>> {
      * */
     public void traversePostOrder(Node<T> curr) {
         if (curr != null) {
-            traversePostOrder(curr.left());
-            traversePostOrder(curr.right());
+            traversePostOrder(curr.getLeft());
+            traversePostOrder(curr.getRight());
             System.out.print((curr.getData()) + " ");
         }
     }
@@ -233,10 +233,45 @@ public class Tree<T extends Comparable<T>> {
         while (!queue.isEmpty()) {
             Node<T> curr = queue.poll();
             System.out.print(curr.getData() + " ");
-            if (curr.left() != null)
-                queue.add(curr.left());
-            if (curr.right() != null)
-                queue.add(curr.right());
+            if (curr.getLeft() != null)
+                queue.add(curr.getLeft());
+            if (curr.getRight() != null)
+                queue.add(curr.getRight());
+        }
+    }
+
+    /**
+     * Melakukan penggambaran traversal secara struktural menggunakan '\t'.
+     * */
+    public void traverseStructure() {
+//        traverseStructureV1(root, 0);
+        traverseStructureV2("", root, false);
+    }
+
+    /* Traverse rekursif versi 1 */
+    private void traverseStructureV1(Node<T> curr, int depth) {
+        if (curr == null) {
+            return;
+        }
+        for (int i = 0; i < depth; i++) {
+            System.out.print("\t");
+        }
+		if (depth != 0) {
+			System.out.print("\u2514\u2500");
+		}
+        System.out.println(curr);
+        traverseStructureV1(curr.getLeft(), depth + 1);
+        traverseStructureV1(curr.getRight(), depth + 1);
+    }
+
+    /* Traverse rekursif versi 2 */
+    // SRC  : https://stackoverflow.com/a/42449385/17299516
+    // NOTE : On the first recursion, some-why the previous prefix printed a '|' when n is a left leaf. Checked with this array: {50, 40, 70, 30, 45, 80, 32, 43, 42, 75, 85}. I've fixed the right skewed error.
+    public void traverseStructureV2(String prefix, Node<T> curr, boolean isLeft) {
+        if (curr != null) {
+            System.out.println(prefix + (isLeft ? "\u2514\u2500" : "\u2514\u2500 ") + curr.getData());
+            traverseStructureV2(prefix + ( (isLeft && curr.getRight() != null) ? "│   " : "    "), curr.getLeft(), true);
+            traverseStructureV2(prefix + (isLeft ? "│   " : "    "), curr.getRight(), false);
         }
     }
 }
