@@ -4,13 +4,14 @@ public class Main {
 
     public static void main(String[] args) {
         var tree = new Tree();                                  // membuat objek Tree ke var. tree
-//        int[] data = {42, 21, 38, 27, 71, 82, 55, 63, 6, 2, 40, 12};
-//        int[] data = {27, 13, 42, 6, 17, 33, 48};
-//        int[] data = {60, 41, 74, 16, 53, 65, 25, 46, 55, 63, 70, 42, 62, 64};
-//        int[] data = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
-        int[] data = {56, 30, 11, 40, 70, 95};
+//        int[] getData = {42, 21, 38, 27, 71, 82, 55, 63, 6, 2, 40, 12};
+//        int[] getData = {27, 13, 42, 6, 17, 33, 48};
+//        int[] getData = {60, 41, 74, 16, 53, 65, 25, 46, 55, 63, 70, 42, 62, 64};
+//        int[] getData = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+//        int[] getData = {56, 30, 11, 40, 70, 95};
+        int[] getData = {50, 40, 70, 30, 45, 80, 32, 43, 42, 75, 85};
 
-        for (int e : data) {                                    // Iterasi untuk setiap elemen di data
+        for (int e : getData) {                                    // Iterasi untuk setiap elemen di getData
             tree.insert(e);                                     // memasukkan elemen ke tree
         }
 
@@ -32,6 +33,8 @@ public class Main {
 
         cari(tree, 16);                                         // mencari nilai 16 pada tree dengan method cari
         cari(tree, 63);                                         // mencari nilai 63 pada tree dengan method cari
+
+        System.out.println(Kuis1.soalKuis(tree.getRoot(), 43));
     }
 
     /**
@@ -39,7 +42,7 @@ public class Main {
      * @param tree
      * Tree yang digunakan untuk mencari {@code key}
      * @param key
-     * Data atau kunci yang ingin dicari di dalam {@code tree}.
+     * getData atau kunci yang ingin dicari di dalam {@code tree}.
      * */
     public static void cari(Tree tree, int key) {
         System.out.println(                                     // mencetak:
