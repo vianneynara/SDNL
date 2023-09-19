@@ -60,7 +60,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     /**
      * Mengecek apakah node ini memiliki anak.
      * */
-    public boolean isLeaf() {
+    public boolean isTail() {
         return (leftLink == null && rightLink == null);     // mengecek apakah punya anak atau tidak
     }
 

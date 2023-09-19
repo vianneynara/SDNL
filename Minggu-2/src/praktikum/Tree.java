@@ -87,7 +87,7 @@ public class Tree<T extends Comparable<T>> {
      * */
     private Node<T> performRemoval(Node<T> parent, Node<T> curr, T key) {
         /* Jika current tidak punya anak */
-        if (curr.isLeaf()) {
+        if (curr.isTail()) {
             if (curr == this.root) {
                 this.root = null;
             } else if (parent.getLeft().getData() == key) {
