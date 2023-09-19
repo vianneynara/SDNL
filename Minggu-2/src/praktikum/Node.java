@@ -75,4 +75,23 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     public int compareTo(Node<T> node) {
         return this.data.compareTo(node.getData());
     }
+
+    /**
+     * Mengembalikan penggambaran struktur {@link Node} ini.
+     * */
+    public String getDrawnStructure() {
+        return this.drawStructure(new StringBuilder(), true, new StringBuilder()).toString();
+    }
+
+    /* Penggambaran struktur secara rekursif */
+    private StringBuilder drawStructure(StringBuilder prefix, boolean isTail, StringBuilder sb) {
+        if (rightLink != null) {
+            rightLink.drawStructure(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
+        }
+        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString()).append("\n");
+        if (leftLink != null) {
+            leftLink.drawStructure(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
+        }
+        return sb;
+    }
 }
