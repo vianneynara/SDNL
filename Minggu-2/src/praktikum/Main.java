@@ -34,7 +34,7 @@ public class Main<T extends Comparable<T>> {
         cari(tree, 16);                                         // mencari nilai 16 pada tree dengan method cari
         cari(tree, 63);                                         // mencari nilai 63 pada tree dengan method cari
 
-        tree.traverseStructure();
+        System.out.println(tree.getRoot().getDrawnStructure());
     }
 
     /**
