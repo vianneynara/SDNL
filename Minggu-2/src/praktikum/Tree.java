@@ -249,6 +249,7 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /* Traverse rekursif versi 1 */
+    // SRC  : https://github.com/hersa37/SDNL/blob/master/src/main/java/tree/BinaryTree.java
     private void traverseStructureV1(Node<T> curr, int depth) {
         if (curr == null) {
             return;
@@ -266,7 +267,8 @@ public class Tree<T extends Comparable<T>> {
 
     /* Traverse rekursif versi 2 */
     // SRC  : https://stackoverflow.com/a/42449385/17299516
-    // NOTE : On the first recursion, some-why the previous prefix printed a '|' when n is a left leaf. Checked with this array: {50, 40, 70, 30, 45, 80, 32, 43, 42, 75, 85}. I've fixed the right skewed error.
+    // NOTE : On the first recursion, some-why the previous prefix printed a '|' when n is a left leaf.
+    // Checked with this array: {50, 40, 70, 30, 45, 80, 32, 43, 42, 75, 85}. I have fixed the right skewed error.
     public void traverseStructureV2(String prefix, Node<T> curr, boolean isLeft) {
         if (curr != null) {
             System.out.println(prefix + (isLeft ? "\u2514\u2500" : "\u2514\u2500 ") + curr.getData());
