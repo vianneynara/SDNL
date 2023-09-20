@@ -2,10 +2,12 @@ package praktikum;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.TreeMap;
 
 public class Tree<T extends Comparable<T>> {
 
     private Node<T> root;
+    private TreeMap<Node<T>, T> map;
 
 
     public Tree() {
@@ -13,19 +15,27 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Konstruktor dengan sebuah {@link Node} sebagai root.
+     * Konstruktor dengan sebuah nilai bertipe {@link T} yang {@link Comparable<T>} sebagai root.
+     * */
+    public Tree(T data) {
+        this.root = new Node<>(data);
+    }
+
+
+    /**
+     * Konstruktor yang menerima {@link Node} sebagai root.
      * */
     public Tree(Node<T> root) {
         this.root = root;
     }
 
     /**
-     * Metode ini memasukkan sebuah value bertipe {@code int}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree.
+     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree.
      *
      * @param data nilai yang ingin dimasukkan
      * */
     public void insert(T data) {
-        var newNode = new Node<T>(data);
+        var newNode = new Node<>(data);
         if (this.root == null) {
             this.root = newNode;
             return;
@@ -53,7 +63,26 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Pencarian rekursif sebuah node yang bernilai {@code getData} yang ingin dihapus pada tree ini.
+     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree secara rekursif.
+     *
+     * @param parent {@link Node<T>} kepala
+     * @param data nilai yang ingin dimasukkan ke parent node
+     * */
+    public Node<T> insert(Node<T> parent, T data) {
+        if (parent == null) {
+            parent = new Node<>(data);
+            return parent;
+        }
+        if (data.compareTo(parent.getData()) < 0) {             // if the data is less than the parent's data
+            parent.setLeft(insert(parent.getLeft(), data));
+        } else {                                                // if the data is more than or the same as parent's data
+            parent.setRight(insert(parent.getRight(), data));
+        }
+        return parent;
+    }
+
+    /**
+     * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini.
      *
      * @param key nilai yang akan dihapus
      * @return {@link Node<T>} yang berisi getData
@@ -149,13 +178,6 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Mengatur root kelas.
-     * */
-    public void setRoot(Node<T> root) {
-        this.root = root;
-    }
-
-    /**
      * Mencari sebuah nilai dari {@link Tree} yang dipanggil.
      *
      * @param key nilai yang dicari.
@@ -243,14 +265,14 @@ public class Tree<T extends Comparable<T>> {
     /**
      * Melakukan penggambaran traversal secara struktural menggunakan '\t'.
      * */
-    public void traverseStructure() {
-//        traverseStructureV1(root, 0);
-        traverseStructureV2("", root, false);
+    public void printStructure() {
+//        printStructureV1(root, 0);
+        printStructureV2("", root, false);
     }
 
     /* Traverse rekursif versi 1 */
     // SRC  : https://github.com/hersa37/SDNL/blob/master/src/main/java/tree/BinaryTree.java
-    private void traverseStructureV1(Node<T> curr, int depth) {
+    private void printStructureV1(Node<T> curr, int depth) {
         if (curr == null) {
             return;
         }
@@ -261,19 +283,19 @@ public class Tree<T extends Comparable<T>> {
 			System.out.print("\u2514\u2500");
 		}
         System.out.println(curr);
-        traverseStructureV1(curr.getLeft(), depth + 1);
-        traverseStructureV1(curr.getRight(), depth + 1);
+        printStructureV1(curr.getLeft(), depth + 1);
+        printStructureV1(curr.getRight(), depth + 1);
     }
 
     /* Traverse rekursif versi 2 */
     // SRC  : https://stackoverflow.com/a/42449385/17299516
     // NOTE : On the first recursion, some-why the previous prefix printed a '|' when n is a left leaf.
     // Checked with this array: {50, 40, 70, 30, 45, 80, 32, 43, 42, 75, 85}. I have fixed the right skewed error.
-    public void traverseStructureV2(String prefix, Node<T> curr, boolean isLeft) {
+    public void printStructureV2(String prefix, Node<T> curr, boolean isLeft) {
         if (curr != null) {
-            System.out.println(prefix + (isLeft ? "\u2514\u2500" : "\u2514\u2500 ") + curr.getData());
-            traverseStructureV2(prefix + ( (isLeft && curr.getRight() != null) ? "│   " : "    "), curr.getLeft(), true);
-            traverseStructureV2(prefix + (isLeft ? "│   " : "    "), curr.getRight(), false);
+            System.out.println(prefix + (isLeft ? "\u2514\u2500" : "\u2514\u2500") + curr.getData());
+            printStructureV2(prefix + ( (isLeft && curr.getRight() != null) ? "│   " : "    "), curr.getLeft(), true);
+            printStructureV2(prefix + (isLeft ? "│   " : "    "), curr.getRight(), false);
         }
     }
 }
