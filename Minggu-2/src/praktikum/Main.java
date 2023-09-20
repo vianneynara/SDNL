@@ -9,32 +9,30 @@ public class Main<T extends Comparable<T>> {
 //        int[] getData = {60, 41, 74, 16, 53, 65, 25, 46, 55, 63, 70, 42, 62, 64};
 //        int[] getData = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
 //        int[] getData = {56, 30, 11, 40, 70, 95};
-        int[] getData = {50, 40, 70, 30, 45, 80, 32, 43, 42, 75, 85};
+        int[] getData = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
+//        int[] getData = {45, 21, 6, 2, 12, 30, 40, 35, 43, 37, 36, 71, 55, 82, 63, 60, 67};
+//        int[] toHapus = {30, 55};
 
-        for (int e : getData) {                                    // Iterasi untuk setiap elemen di getData
+        for (int e : getData) {                                 // Iterasi untuk setiap elemen di getData
             tree.insert(e);                                     // memasukkan elemen ke tree
         }
 
-        System.out.print("[1] Display pre order         : ");
-        tree.traversePreOrder(tree.getRoot());                  // traverse pre order (dari root)
-        System.out.println();
-
-        System.out.print("[2] Display in order          : ");
-        tree.traverseInOrder(tree.getRoot());                   // traverse dari kecil ke besar (dari root)
-        System.out.println();
-
-        System.out.print("[3] Display post order        : ");
-        tree.traversePostOrder(tree.getRoot());                 // traverse secara post order (dari root)
-        System.out.println();
-
-        System.out.print("[4] Display level order       : ");
-        tree.traverseLevelOrder();                              // traverse secara level order (dari root)
-        System.out.println();
-
-        cari(tree, 16);                                         // mencari nilai 16 pada tree dengan method cari
-        cari(tree, 63);                                         // mencari nilai 63 pada tree dengan method cari
-
         tree.getRoot().printDrawnStructure();
+
+        for (int e : toHapus) {
+            tree.remove(e);
+            System.out.print("Display in order          : ");
+            tree.traverseInOrder(tree.getRoot());
+            System.out.println();
+            try {
+                tree.getRoot().printDrawnStructure();
+            } catch (NullPointerException npe) {
+                System.out.println("Tree kosong!");
+            }
+        }
+
+        System.out.println("Test selesai.");
     }
 
     /**
