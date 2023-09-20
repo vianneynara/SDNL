@@ -25,7 +25,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     /**
      * Mengganti anak kiri node.
      * */
-    public void setgetLeft(Node<T> leftLink) {
+    public void setLeft(Node<T> leftLink) {
         this.leftLink = leftLink;
     }
 
@@ -39,7 +39,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     /**
      * Mengatur anak kanan node.
      * */
-    public void setgetRight(Node<T> rightLink) {
+    public void setRight(Node<T> rightLink) {
         this.rightLink = rightLink;
     }
 

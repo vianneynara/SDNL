@@ -38,14 +38,14 @@ public class Tree<T extends Comparable<T>> {
                 if (curr.getLeft() != null) {
                     curr = curr.getLeft();
                 } else {
-                    curr.setgetLeft(newNode);
+                    curr.setLeft(newNode);
                     return;
                 }
             } else {                                            // lebih besar atau sama dengan
                 if (curr.getRight() != null) {
                     curr = curr.getRight();
                 } else {
-                    curr.setgetRight(newNode);
+                    curr.setRight(newNode);
                     return;
                 }
             }
@@ -91,9 +91,9 @@ public class Tree<T extends Comparable<T>> {
             if (curr == this.root) {
                 this.root = null;
             } else if (parent.getLeft().getData() == key) {
-                parent.setgetLeft(null);
+                parent.setLeft(null);
             } else {
-                parent.setgetRight(null);
+                parent.setRight(null);
             }
             return curr;
         }
@@ -102,9 +102,9 @@ public class Tree<T extends Comparable<T>> {
             if (curr == this.root) {
                 this.root = null;
             } else if (parent.getLeft().getData() == key) {
-                parent.setgetLeft(curr.getLeft());
+                parent.setLeft(curr.getLeft());
             } else {
-                parent.setgetRight(curr.getLeft());
+                parent.setRight(curr.getLeft());
             }
             return curr;
         }
@@ -113,9 +113,9 @@ public class Tree<T extends Comparable<T>> {
             if (curr == this.root) {
                 this.root = null;
             } else if (parent.getLeft().getData() == key) {
-                parent.setgetLeft(curr.getRight());
+                parent.setLeft(curr.getRight());
             } else {
-                parent.setgetRight(curr.getRight());
+                parent.setRight(curr.getRight());
             }
             return curr;
         }
@@ -131,9 +131,9 @@ public class Tree<T extends Comparable<T>> {
 
             temp.setData(curr.getData());
             if (getLeftmostParent == curr) {
-                temp.setgetRight(curr.getRight());
+                temp.setRight(curr.getRight());
             } else {
-                getLeftmostParent.setgetLeft(curr.getRight());
+                getLeftmostParent.setLeft(curr.getRight());
             }
             return temp;
         }
