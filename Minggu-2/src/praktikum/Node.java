@@ -3,7 +3,7 @@ package praktikum;
 public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     /* Inisialisasi atribut kelas: Node, Node, int */
     private Node<T> leftLink;
-    private Node<T>  rightLink;
+    private Node<T> rightLink;
     private T data;
 
     /**
