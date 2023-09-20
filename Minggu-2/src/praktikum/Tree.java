@@ -2,13 +2,10 @@ package praktikum;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.TreeMap;
 
 public class Tree<T extends Comparable<T>> {
 
     private Node<T> root;
-    private TreeMap<Node<T>, T> map;
-
 
     public Tree() {
         this.root = null;
@@ -85,24 +82,25 @@ public class Tree<T extends Comparable<T>> {
      * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini.
      *
      * @param key nilai yang akan dihapus
-     * @return {@link Node<T>} yang berisi getData
+     * @return {@link Node<T>} yang berisi data
      * */
     public Node<T> remove(T key) {
+        System.out.println("removing... " + key);
         Node<T> parent = this.root;
         Node<T> curr = this.root;
 
         while (curr != null) {
-            int diff = key.compareTo(curr.getData());
-            if (diff < 0) {
+            if (key.compareTo(curr.getData()) < 0) {
                 parent = curr;
                 curr = curr.getLeft();
-            } else if (diff > 0) {
+            } else if (key.compareTo(curr.getData())  > 0) {
                 parent = curr;
                 curr = curr.getRight();
             } else {
-                return performRemoval(parent, curr, key);
+                return performRemoval(parent, curr);
             }
         }
+        System.out.println("can't find " + key);
         return null;
     }
 
@@ -111,58 +109,118 @@ public class Tree<T extends Comparable<T>> {
      *
      * @param parent orang tua dari curr
      * @param curr anak dari orang tua
-     * @param key nilai yang ingin dihapus
      * @return {@link Node<T>}
      * */
-    private Node<T> performRemoval(Node<T> parent, Node<T> curr, T key) {
+    private Node<T> performRemoval(Node<T> parent, Node<T> curr) {
+        /* Jika curr adalah root tree */
+        if (curr == this.root) {
+            if (curr.getLeft() != null) {
+                if (curr.getLeft().getRight() == null) {
+                    this.root = curr.getLeft();
+                } else {
+                    Node<T> prevRootLeftSucc = curr.getLeft();
+                    Node<T> replacement = curr.getLeft().getRight();
+
+                    while (replacement.getRight() != null) {
+                        prevRootLeftSucc = replacement;
+                        replacement = replacement.getRight();
+                    }
+
+                    prevRootLeftSucc.setRight(replacement.getLeft());
+                    replacement.setLeft(curr.getLeft());
+                    replacement.setRight(curr.getRight());
+                    this.root = replacement;
+                }
+            } else {
+                this.root = curr.getRight();
+            }
+        }
         /* Jika current tidak punya anak */
         if (curr.isTail()) {
-            if (curr == this.root) {
-                this.root = null;
-            } else if (parent.getLeft().getData() == key) {
+            if (parent.getLeft() == curr) {
                 parent.setLeft(null);
             } else {
                 parent.setRight(null);
             }
             return curr;
         }
-        /* Jika current punya anak kiri */
-        else if (curr.getLeft() != null && curr.getRight() == null) {
-            if (curr == this.root) {
-                this.root = null;
-            } else if (parent.getLeft().getData() == key) {
+        /* Jika current anak kiri kosong */
+        else if (curr.getLeft() == null) {
+            if (parent.getRight() == curr) {
+                parent.setRight(curr.getRight());
+            } else {
+                parent.setLeft(curr.getRight());
+            }
+            return curr;
+        }
+        /* Jika current anak kanan kosong */
+        else if (curr.getRight() == null) {
+            if (parent.getLeft() == curr) {
                 parent.setLeft(curr.getLeft());
             } else {
                 parent.setRight(curr.getLeft());
             }
             return curr;
         }
-        /* Jika current punya anak kanan */
-        else if (curr.getLeft() == null && curr.getRight() != null) {
-            if (curr == this.root) {
-                this.root = null;
-            } else if (parent.getLeft().getData() == key) {
-                parent.setLeft(curr.getRight());
-            } else {
-                parent.setRight(curr.getRight());
-            }
-            return curr;
-        }
         /* Jika current memiliki anak kanan dan anak kiri */
         else {
             Node<T> temp = curr.getRight();
-            Node<T> getLeftmostParent = curr;
+            Node<T> leftMostParent = curr;
 
             while (curr.getLeft() != null) {
-                getLeftmostParent = curr;
+                leftMostParent = curr;
                 curr = curr.getLeft();
             }
 
             temp.setData(curr.getData());
-            if (getLeftmostParent == curr) {
+            if (leftMostParent == curr) {
                 temp.setRight(curr.getRight());
             } else {
-                getLeftmostParent.setLeft(curr.getRight());
+                leftMostParent.setLeft(curr.getRight());
+            }
+            return temp;
+        }
+    }
+
+    /**
+     * Melakukan proses penghapusan dan mengatur anak dari sebuah nilai bertipe {@link T} secara rekursif.
+     *
+     * @param parent orang tua dari curr
+     * @param key nilai yang ingin dihapus
+     * @return {@link Node<T>}
+     * */
+    public Node<T> remove(Node<T> parent, T key) {
+        /* Base case: Menyelesaikan stack rekursif */
+        if (parent == null) {
+            return null;
+        }
+        /* Pemanggilan rekursif untuk MENCARI nilai yang dicari */
+        if (key.compareTo(parent.getData()) < 0) {              // JIKA kunci lebih kecil dari parent
+            parent.setRight(remove(parent.getRight(), key));
+            return parent;
+        } else if (key.compareTo(parent.getData()) > 0) {       // JIKA kunci lebih besar dari parent
+            parent.setLeft(remove(parent.getLeft(), key));
+            return parent;
+        }
+        /* Penghapusan */
+        if (parent.getLeft() == null) {                         // JIKA tidak ada anak kiri
+            return parent.getRight();                           // kembalikan anak kanan
+        } else if (parent.getRight() == null) {                 // JIKA tidak ada anak kanan
+            return parent.getLeft();                            // kembalikan anak kiri
+        } else {                                                // JIKA memiliki dua anak
+            Node<T> temp = parent.getRight();
+            Node<T> leftMostParent = parent;
+
+            while (parent.getLeft() != null) {
+                leftMostParent = parent;
+                parent = parent.getLeft();
+            }
+
+            temp.setData(parent.getData());
+            if (leftMostParent == parent) {
+                temp.setRight(parent.getRight());
+            } else {
+                leftMostParent.setLeft(parent.getRight());
             }
             return temp;
         }
