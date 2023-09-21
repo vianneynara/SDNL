@@ -4,25 +4,26 @@ public class Main<T extends Comparable<T>> {
 
     public static void main(String[] args) {
         var tree = new Tree<Integer>();                         // membuat objek Tree ke var. tree
-        int[] getData = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
-        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
+        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37, 1};
 
-        for (int e : getData) {                                 // Iterasi untuk setiap elemen di getData
-            tree.insert(e);                                     // memasukkan elemen ke tree
+        for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
+            tree.insert(key);                                     // memasukkan elemen ke tree
         }
 
         tree.getRoot().printDrawnStructure();
 
-        for (int e : toHapus) {
-            tree.remove(tree.getRoot(), e);
-            System.out.print("Display in order          : ");
-            tree.traverseInOrder(tree.getRoot());
-            System.out.println();
+        for (int key : toHapus) {
+            System.out.println("removing... " + key);
+            boolean isRemoved = (tree.remove(key) != null);
             try {
-                System.out.println("removed {" + e + "}");
+                System.out.println( (isRemoved) ? "removed {" + key + "}" : "failed to remove " + key);
+                System.out.print("Display in order          : ");
+                tree.traverseInOrder(tree.getRoot());
+                System.out.println();
                 tree.getRoot().printDrawnStructure();
             } catch (NullPointerException npe) {
-                System.out.println("Tree kosong!");
+                System.out.println("Tree kosong!\n");
             }
         }
 
@@ -35,7 +36,7 @@ public class Main<T extends Comparable<T>> {
      * @param tree
      * Tree yang digunakan untuk mencari {@code key}
      * @param key
-     * getData atau kunci yang ingin dicari di dalam {@code tree}.
+     * dataset atau kunci yang ingin dicari di dalam {@code tree}.
      * */
     public static <T extends Comparable<T>> void cari(Tree<T> tree, T key) {
         System.out.println(                                     // mencetak:
