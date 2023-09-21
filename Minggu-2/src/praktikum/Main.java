@@ -4,8 +4,9 @@ public class Main<T extends Comparable<T>> {
 
     public static void main(String[] args) {
         var tree = new Tree<Integer>();                         // membuat objek Tree ke var. tree
-        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
-        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37, 1};
+        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88, 41, 42};
+//        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37, 1};
+        int[] toHapus = {100, 63, 65, 60, 95, 56, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37, 1}; // test
 
         for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
             tree.insert(key);                                     // memasukkan elemen ke tree
@@ -15,7 +16,9 @@ public class Main<T extends Comparable<T>> {
 
         for (int key : toHapus) {
             System.out.println("removing... " + key);
-            boolean isRemoved = (tree.delete(key) != null);
+            var returned = (tree.delete(key));
+            boolean isRemoved = returned != null;
+            System.out.println("Got " + returned + " from the tree!");
             try {
                 System.out.println( (isRemoved) ? "removed {" + key + "}" : "failed to remove " + key);
                 System.out.print("Display in order          : ");

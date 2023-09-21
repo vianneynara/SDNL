@@ -2,16 +2,16 @@ package praktikum;
 
 public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     /* Inisialisasi atribut kelas: Node, Node, int */
-    private Node<T> leftLink;
-    private Node<T> rightLink;
-    private T data;
+    Node<T> left;
+    Node<T> right;
+    T data;
 
     /**
      * Constructor kelas dengan nilai awal data.
      * */
     public Node(T data) {
-        this.leftLink = null;
-        this.rightLink = null;
+        this.left = null;
+        this.right = null;
         this.data = data;
     }
 
@@ -19,28 +19,28 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
      * Mendapatkan node anak kiri.
      * */
     public Node<T> getLeft() {
-        return leftLink;
+        return left;
     }
 
     /**
      * Mengganti anak kiri node.
      * */
-    public void setLeft(Node<T> leftLink) {
-        this.leftLink = leftLink;
+    public void setLeft(Node<T> left) {
+        this.left = left;
     }
 
     /**
      * Mendapatkan node anak kanan.
      * */
     public Node<T> getRight() {
-        return rightLink;
+        return right;
     }
 
     /**
      * Mengatur anak kanan node.
      * */
-    public void setRight(Node<T> rightLink) {
-        this.rightLink = rightLink;
+    public void setRight(Node<T> right) {
+        this.right = right;
     }
 
     /**
@@ -53,20 +53,20 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     /**
      * Mengatur isi node. 
      * */
-    public void setData(T data) {                           // METODE mengatur getData, param: int
-        this.data = data;                                   // ATUR getData kelas dgn. getData parameter
+    public void setData(T data) {
+        this.data = data;
     }
 
     /**
      * Mengecek apakah node ini memiliki anak.
      * */
     public boolean isTail() {
-        return (leftLink == null && rightLink == null);     // mengecek apakah punya anak atau tidak
+        return (left == null && right == null);
     }
 
     @Override
-    public String toString() {                              // metode toString / self-explanatory
-        return "{" + data + '}';                            // KEMBALIKAN getData dengan format
+    public String toString() {
+        return "{" + data + '}';
     }
 
     /**
@@ -85,12 +85,12 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
 
     /* Penggambaran struktur secara rekursif */
     private StringBuilder drawStructure(StringBuilder prefix, boolean isTail, StringBuilder sb) {
-        if (rightLink != null) {
-            rightLink.drawStructure(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
+        if (right != null) {
+            right.drawStructure(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
         }
         sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString()).append("\n");
-        if (leftLink != null) {
-            leftLink.drawStructure(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
+        if (left != null) {
+            left.drawStructure(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
         }
         return sb;
     }
