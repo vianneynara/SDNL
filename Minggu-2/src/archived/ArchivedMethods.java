@@ -6,6 +6,7 @@ public class ArchivedMethods<T extends Comparable<T>> {
 
     private Node<T> root;
 
+    // NOT WORKING
     public Node<T> remove(Node<T> root, T key) {
         Node<T> curr = root;
         Node<T> parent = null;
@@ -82,5 +83,84 @@ public class ArchivedMethods<T extends Comparable<T>> {
             curr.setData(temp.getData());                       // menukar data curr dengan data temp
         }
         return root;
+    }
+
+    /**
+     * Melakukan proses penghapusan dan mengatur posisi {@link Node<T>}-node di bawahnya.
+     *
+     * @param parent orang tua dari curr
+     * @param curr anak dari orang tua
+     * @return {@link Node<T>}
+     * */
+    private Node<T> performRemoval(Node<T> parent, Node<T> curr) {
+        /* Jika curr adalah root tree */
+        if (curr == this.root) {
+            if (curr.getLeft() != null) {                           // JIKA anak kiri curr tidak kosong
+                if (curr.getLeft().getRight() == null) {            // JIKA anak kanan dari anak kiri curr kosong
+                    this.root = curr.getLeft();                     // ubah root tree menjadi anak kiri curr
+                } else {                                            // Selain itu
+                    Node<T> prevRootLeftSucc = curr.getLeft();      // simpan anak kiri curr
+                    Node<T> replacement = curr.getLeft().getRight();// simpan anak kanan dari anak kiri curr
+
+                    while (replacement.getRight() != null) {        // selama anak kiri node pengganti tidak kosong
+                        prevRootLeftSucc = replacement;             // tukar (untuk mendapat anak paling kiri)
+                        replacement = replacement.getRight();       // ubah node pengganti dengan node selanjutnya
+                    }
+
+                    /* Atur anak kanan node paling kiri dengan anak kiri node pengganti root */
+                    prevRootLeftSucc.setRight(replacement.getLeft());
+                    replacement.setLeft(curr.getLeft());            // ubah anak kiri node pengganti dgn. anak kiri curr
+                    replacement.setRight(curr.getRight());          // ubah anak kanan node pengganti dgn. anak kanan curr
+                    this.root = replacement;                        // ubah pointer root ke node pengganti
+                }
+            } else {                                                // Jika anak kirinya kosong
+                this.root = curr.getRight();                        // langsung arahkan pointer root ke anak kanan curr
+            }
+        }
+        /* Jika current tidak punya anak */
+        if (curr.isTail()) {
+            if (parent.getLeft() == curr) {
+                parent.setLeft(null);
+            } else {
+                parent.setRight(null);
+            }
+            return curr;
+        }
+        /* Jika current anak kiri kosong */
+        else if (curr.getLeft() == null) {
+            if (parent.getRight() == curr) {
+                parent.setRight(curr.getRight());
+            } else {
+                parent.setLeft(curr.getRight());
+            }
+            return curr;
+        }
+        /* Jika current anak kanan kosong */
+        else if (curr.getRight() == null) {
+            if (parent.getLeft() == curr) {
+                parent.setLeft(curr.getLeft());
+            } else {
+                parent.setRight(curr.getLeft());
+            }
+            return curr;
+        }
+        /* Jika current memiliki anak kanan dan anak kiri */
+        else {
+            Node<T> temp = curr.getRight();
+            Node<T> leftMostParent = curr;
+
+            while (curr.getLeft() != null) {
+                leftMostParent = curr;
+                curr = curr.getLeft();
+            }
+
+            temp.setData(curr.getData());
+            if (leftMostParent == curr) {
+                temp.setRight(curr.getRight());
+            } else {
+                leftMostParent.setLeft(curr.getRight());
+            }
+            return temp;
+        }
     }
 }
