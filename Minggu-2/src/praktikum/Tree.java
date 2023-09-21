@@ -102,7 +102,7 @@ public class Tree<T extends Comparable<T>> {
         }
 
         if (curr == null) {
-            return root;
+            return null;
         }
 
         /* Jika curr adalah root tree */
@@ -150,22 +150,12 @@ public class Tree<T extends Comparable<T>> {
             return curr;
         /* Jika current memiliki 2 anak */
         } else {
-            Node<T> temp = curr.getRight();
-            Node<T> leftMostParent = curr;
+            Node<T> rightLeftMost = findSuccessor(curr);
 
-            while (curr.getLeft() != null) {
-                leftMostParent = curr;
-                curr = curr.getLeft();
-            }
-
-            temp.setData(curr.getData());
-            if (leftMostParent == curr) {
-                temp.setRight(curr.getRight());
-            } else {
-                leftMostParent.setLeft(curr.getRight());
-            }
-            return temp;
+            curr.data = rightLeftMost.data;
+            curr.right = findPredecessor(curr.right);
         }
+        return this.root;
     }
 
     /**
@@ -174,12 +164,12 @@ public class Tree<T extends Comparable<T>> {
      * @param curr node untuk mencari
      * @return {@link Node<T>} yang terkecil atau null
      * */
-    private Node<T> getSuccessor(Node<T> curr) {
+    private Node<T> findSuccessor(Node<T> curr) {
         curr = curr.getRight();                                 // pindah curr ke subtree kanannya
         if (curr == null) {                                     // JIKA curr kosong
             return null;                                        // KEMBALIKAN null
         } else {                                                // SELAIN ITU (curr tidak kosong)
-            while (curr.getLeft() != null) {                    // SELAMA curr punya subtree kiri
+            while (curr.getLeft() != null) {                    // SELAMA curr punya subtree kanan
                 curr = curr.getLeft();                          // pindah curr ke kanan
             }
             return curr;                                        // kembalikan curr (node terkecil  pada subtree kiri)
@@ -192,8 +182,8 @@ public class Tree<T extends Comparable<T>> {
      * @param curr node untuk mencari
      * @return {@link Node<T>} terbesar atau null
      * */
-    private Node<T> getPredecessor(Node<T> curr) {
-        curr = curr.getLeft();                                  // pindah curr ke subtree kiri
+    private Node<T> findPredecessor(Node<T> curr) {
+        curr = curr.getLeft();                                  // pindah curr ke subtree kanannya
         if (curr == null) {                                     // JIKA curr kosong
             return null;                                        // KEMBALIKAN null
         } else {                                                // SELAIN ITU (curr tidak kosong)
@@ -201,6 +191,23 @@ public class Tree<T extends Comparable<T>> {
                 curr = curr.getRight();                         // pindah curr ke kanan
             }
             return curr;                                        // kembalikan curr (node terbesar pada subtree kiri)
+        }
+    }
+
+    private Node<T> findParent(Node<T> curr, Node<T> child) {
+        if (child == this.root || curr == null){
+            return null;
+        }
+        else{
+            if(curr.left == child || curr.right == child)
+                return curr;
+            else {
+                if (child.compareTo(curr) < 0) {
+                    return findParent(curr.left, child);
+                } else {
+                    return findParent(curr.right, child);
+                }
+            }
         }
     }
 
