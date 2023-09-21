@@ -7,7 +7,7 @@ public class ArchivedMethods<T extends Comparable<T>> {
     private Node<T> root;
 
     // NOT WORKING
-    public Node<T> remove(Node<T> root, T key) {
+    public Node<T> delete(Node<T> root, T key) {
         Node<T> curr = root;
         Node<T> parent = null;
 
@@ -92,7 +92,7 @@ public class ArchivedMethods<T extends Comparable<T>> {
      * @param curr anak dari orang tua
      * @return {@link Node<T>}
      * */
-    private Node<T> performRemoval(Node<T> parent, Node<T> curr) {
+    private Node<T> performDeletion(Node<T> parent, Node<T> curr) {
         /* Jika curr adalah root tree */
         if (curr == this.root) {
             if (curr.getLeft() != null) {                           // JIKA anak kiri curr tidak kosong

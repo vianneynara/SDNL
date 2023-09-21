@@ -79,36 +79,32 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini.
+     * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini. Jika ditemukan maka akan
+     * melakukan proses pengaturan dan rekonfigurasi struktur tree.
      *
      * @param key nilai yang akan dihapus
+     * @return {@link Node<T>} yang dihapus atau null jika tidak ditemukan
      */
-    public Node<T> remove(T key) {
+    public Node<T> delete(T key) {
         Node<T> parent = this.root;
         Node<T> curr = this.root;
 
         while (curr != null) {
-            if (key.compareTo(curr.getData()) < 0) {
+            if (key.compareTo(curr.getData()) == 0) {
+                break;
+            } else if (key.compareTo(curr.getData()) < 0) {
                 parent = curr;
                 curr = curr.getLeft();
-            } else if (key.compareTo(curr.getData())  > 0) {
+            } else {
                 parent = curr;
                 curr = curr.getRight();
-            } else {
-                return performRemoval(parent, curr);
             }
         }
-        return null;
-    }
 
-    /**
-     * Melakukan proses penghapusan dan mengatur posisi {@link Node<T>}-node di bawahnya.
-     *
-     * @param parent orang tua dari curr
-     * @param curr anak dari orang tua
-     * @return {@link Node<T>}
-     * */
-    private Node<T> performRemoval(Node<T> parent, Node<T> curr) {
+        if (curr == null) {
+            return root;
+        }
+
         /* Jika curr adalah root tree */
         if (curr == this.root) {
             if (curr.getLeft() != null) {                           // JIKA anak kiri curr tidak kosong
@@ -133,17 +129,16 @@ public class Tree<T extends Comparable<T>> {
                 this.root = curr.getRight();                        // langsung arahkan pointer root ke anak kanan curr
             }
         }
-        /* Jika current tidak punya anak */
+        /* Jika current tidak punya anak/tail */
         if (curr.isTail()) {
-            if (parent.getLeft() == curr) {
-                parent.setLeft(null);
+            if (parent.getLeft() == curr) {                         // JIKA anak kiri parent adalah curr
+                parent.setLeft(null);                               //
             } else {
                 parent.setRight(null);
             }
             return curr;
-        }
-
-        if (curr.getLeft() == null || curr.getRight() == null) {
+        /* Jika current memiliki maksimal 1 anak */
+        } else if (curr.getLeft() == null || curr.getRight() == null) {
             Node<T> child = (curr.getLeft() != null) ?
                 curr.getLeft() :
                 curr.getRight();
@@ -153,23 +148,60 @@ public class Tree<T extends Comparable<T>> {
                 parent.setRight(child);
             }
             return curr;
-        }
-
-        Node<T> temp = curr.getRight();
-        Node<T> leftMostParent = curr;
-
-        while (curr.getLeft() != null) {
-            leftMostParent = curr;
-            curr = curr.getLeft();
-        }
-
-        temp.setData(curr.getData());
-        if (leftMostParent == curr) {
-            temp.setRight(curr.getRight());
+        /* Jika current memiliki 2 anak */
         } else {
-            leftMostParent.setLeft(curr.getRight());
+            Node<T> temp = curr.getRight();
+            Node<T> leftMostParent = curr;
+
+            while (curr.getLeft() != null) {
+                leftMostParent = curr;
+                curr = curr.getLeft();
+            }
+
+            temp.setData(curr.getData());
+            if (leftMostParent == curr) {
+                temp.setRight(curr.getRight());
+            } else {
+                leftMostParent.setLeft(curr.getRight());
+            }
+            return temp;
         }
-        return temp;
+    }
+
+    /**
+     * Mencari nilai terkecil dari subtree kanan milik sebuah {@link Node<T>}.
+     *
+     * @param curr node untuk mencari
+     * @return {@link Node<T>} yang terkecil atau null
+     * */
+    private Node<T> getSuccessor(Node<T> curr) {
+        curr = curr.getRight();                                 // pindah curr ke subtree kanannya
+        if (curr == null) {                                     // JIKA curr kosong
+            return null;                                        // KEMBALIKAN null
+        } else {                                                // SELAIN ITU (curr tidak kosong)
+            while (curr.getLeft() != null) {                    // SELAMA curr punya subtree kiri
+                curr = curr.getLeft();                          // pindah curr ke kanan
+            }
+            return curr;                                        // kembalikan curr (node terkecil  pada subtree kiri)
+        }
+    }
+
+    /**
+     * Mencari nilai terbesar dari subtree kiri milik sebuah {@link Node<T>}.
+     *
+     * @param curr node untuk mencari
+     * @return {@link Node<T>} terbesar atau null
+     * */
+    private Node<T> getPredecessor(Node<T> curr) {
+        curr = curr.getLeft();                                  // pindah curr ke subtree kiri
+        if (curr == null) {                                     // JIKA curr kosong
+            return null;                                        // KEMBALIKAN null
+        } else {                                                // SELAIN ITU (curr tidak kosong)
+            while (curr.getRight() != null) {                   // SELAMA curr punya subtree kanan
+                curr = curr.getRight();                         // pindah curr ke kanan
+            }
+            return curr;                                        // kembalikan curr (node terbesar pada subtree kiri)
+        }
     }
 
     /**
@@ -231,8 +263,7 @@ public class Tree<T extends Comparable<T>> {
      * @param key nilai yang dicari.
      * */
     public Node<T> search(T key) {
-        Node<T> curr = this.root;
-        return search(curr, key);
+        return search(this.root, key);
     }
 
     /**

@@ -15,7 +15,7 @@ public class Main<T extends Comparable<T>> {
 
         for (int key : toHapus) {
             System.out.println("removing... " + key);
-            boolean isRemoved = (tree.remove(key) != null);
+            boolean isRemoved = (tree.delete(key) != null);
             try {
                 System.out.println( (isRemoved) ? "removed {" + key + "}" : "failed to remove " + key);
                 System.out.print("Display in order          : ");
