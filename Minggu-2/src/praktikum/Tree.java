@@ -90,21 +90,17 @@ public class Tree<T extends Comparable<T>> {
         Node<T> curr = this.root;
 
         while (curr != null) {
-            if (key.compareTo(curr.getData()) == 0) {
-                return delete(parent, curr);
-            } else if (key.compareTo(curr.getData()) < 0) {
+            if (key.compareTo(curr.getData()) < 0) {
                 parent = curr;
                 curr = curr.getLeft();
-            } else {
+            } else if (key.compareTo(curr.getData()) > 0) {
                 parent = curr;
                 curr = curr.getRight();
+            } else {
+                break;
             }
         }
 
-        return null;
-    }
-
-    private Node<T> delete(Node<T> parent, Node<T> curr) {
         if (curr == null) {
             return null;
         }
@@ -158,7 +154,13 @@ public class Tree<T extends Comparable<T>> {
             Node<T> mostOfLeft = findSuccessor(curr);
             Node<T> leastParent = findParent(this.root, mostOfLeft);
             curr.data = mostOfLeft.data;
-            leastParent.right = null;
+            if ((leastParent != null ? leastParent.getLeft() : null) == mostOfLeft) {
+                leastParent.setLeft(null);
+            } else {
+                if (leastParent != null) {
+                    leastParent.setRight(null);
+                }
+            }
             return removed;
         }
     }
