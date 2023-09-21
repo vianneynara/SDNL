@@ -3,7 +3,7 @@ package praktikum;
 public class Main<T extends Comparable<T>> {
 
     public static void main(String[] args) {
-        var tree = new Tree<Integer>();                                  // membuat objek Tree ke var. tree
+        var tree = new Tree<Integer>();                         // membuat objek Tree ke var. tree
         int[] getData = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
         int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
 
@@ -14,11 +14,12 @@ public class Main<T extends Comparable<T>> {
         tree.getRoot().printDrawnStructure();
 
         for (int e : toHapus) {
-            tree.remove(e);
+            tree.remove(tree.getRoot(), e);
             System.out.print("Display in order          : ");
             tree.traverseInOrder(tree.getRoot());
             System.out.println();
             try {
+                System.out.println("removed {" + e + "}");
                 tree.getRoot().printDrawnStructure();
             } catch (NullPointerException npe) {
                 System.out.println("Tree kosong!");
