@@ -80,25 +80,17 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
      * Mengembalikan penggambaran struktur {@link Node} ini.
      * */
     public void printDrawnStructure() {
-        printDrawnStructure(null);
-    }
-
-    /**
-     * Mengembalikan penggambaran struktur {@link Node} ini.
-     * */
-    public void printDrawnStructure(T highLightItem) {
-        var highLighted = Tree.search(this, highLightItem).data;
-        System.out.println(this.drawStructure(new StringBuilder(), true, new StringBuilder(), highLighted).toString());
+        System.out.println(this.drawStructure(new StringBuilder(), true, new StringBuilder()).toString());
     }
 
     /* Penggambaran struktur secara rekursif */
-    private StringBuilder drawStructure(StringBuilder prefix, boolean isTail, StringBuilder sb, T highLighted) {
+    private StringBuilder drawStructure(StringBuilder prefix, boolean isTail, StringBuilder sb) {
         if (right != null) {
-            right.drawStructure(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb, highLighted);
+            right.drawStructure(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
         }
-        sb.append(prefix).append(isTail ? "└── " : "┌── ").append( (highLighted == data) ? "#" + data.toString() : data.toString() ).append("\n");
+        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString()).append("\n");
         if (left != null) {
-            left.drawStructure(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb, highLighted);
+            left.drawStructure(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
         }
         return sb;
     }

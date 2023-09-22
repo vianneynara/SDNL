@@ -13,23 +13,17 @@ public class Main {
 
 
         for (int key : toHapus) {
-            var toFind = Tree.search(tree.getRoot(), key);
-            if (toFind != null) {
-                var parentToDelete = tree.findParent(tree.getRoot(), toFind);
-                if (parentToDelete != null) {
-                    tree.getRoot().printDrawnStructure(parentToDelete.getData());
-                }
-            }
             System.out.println("removing... " + key);
             var returned = (tree.delete(key));
             boolean isRemoved = returned != null;
             System.out.println("Got " + returned + " from the tree!");
+            System.out.println( (isRemoved) ? "removed {" + key + "}" : "failed to remove " + key);
+            System.out.print("Display in order          : ");
+            tree.traverseInOrder(tree.getRoot());
+            System.out.println();
+            System.out.println("root: " + tree.getRoot());
             try {
-                System.out.println( (isRemoved) ? "removed {" + key + "}" : "failed to remove " + key);
-                System.out.print("Display in order          : ");
-                tree.traverseInOrder(tree.getRoot());
-                System.out.println();
-//                tree.getRoot().printDrawnStructure();
+                tree.getRoot().printDrawnStructure();
             } catch (NullPointerException npe) {
                 System.out.println("Tree kosong!\n");
             }
