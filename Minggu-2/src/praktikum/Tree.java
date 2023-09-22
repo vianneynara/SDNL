@@ -6,6 +6,7 @@ import java.util.Queue;
 public class Tree<T extends Comparable<T>> {
 
     private Node<T> root;
+    private int size;
 
     public Tree() {
         this.root = null;
@@ -27,151 +28,12 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree.
-     *
-     * @param data nilai yang ingin dimasukkan
-     * */
-    public void insert(T data) {
-        var newNode = new Node<>(data);
-        if (this.root == null) {
-            this.root = newNode;
-            return;
-        }
-
-        Node<T> curr = root;
-        while (curr != null) {
-            int diff = data.compareTo(curr.getData());
-            if (diff < 0) {                                     // lebih kecil
-                if (curr.getLeft() != null) {
-                    curr = curr.getLeft();
-                } else {
-                    curr.setLeft(newNode);
-                    return;
-                }
-            } else {                                            // lebih besar atau sama dengan
-                if (curr.getRight() != null) {
-                    curr = curr.getRight();
-                } else {
-                    curr.setRight(newNode);
-                    return;
-                }
-            }
-        }
-    }
-
-    /**
-     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree secara rekursif.
-     *
-     * @param parent {@link Node<T>} kepala
-     * @param data nilai yang ingin dimasukkan ke parent node
-     * */
-    public Node<T> r_insert(Node<T> parent, T data) {
-        if (parent == null) {
-            parent = new Node<>(data);
-            return parent;
-        }
-        if (data.compareTo(parent.getData()) < 0) {             // if the data is less than the parent's data
-            parent.setLeft(r_insert(parent.getLeft(), data));
-        } else {                                                // if the data is more than or the same as parent's data
-            parent.setRight(r_insert(parent.getRight(), data));
-        }
-        return parent;
-    }
-
-    /**
-     * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini. Jika ditemukan maka akan
-     * melakukan proses pengaturan dan rekonfigurasi struktur tree.
-     *
-     * @param key nilai yang akan dihapus
-     * @return {@link Node<T>} yang dihapus atau null jika tidak ditemukan
-     */
-    public Node<T> delete(T key) {
-        Node<T> parent = this.root;
-        Node<T> curr = this.root;
-
-        while (curr != null) {
-            if (key.compareTo(curr.getData()) < 0) {
-                parent = curr;
-                curr = curr.getLeft();
-            } else if (key.compareTo(curr.getData()) > 0) {
-                parent = curr;
-                curr = curr.getRight();
-            } else {
-                break;
-            }
-        }
-
-        if (curr == null) {
-            return null;
-        }
-
-        /* Jika curr adalah root tree */
-        if (curr == this.root) {
-            if (curr.getLeft() != null) {                           // JIKA anak kiri curr tidak kosong
-                if (curr.getLeft().getRight() == null) {            // JIKA anak kanan dari anak kiri curr kosong
-                    this.root = curr.getLeft();                     // ubah root tree menjadi anak kiri curr
-                } else {                                            // Selain itu
-                    Node<T> prevRootLeftSucc = curr.getLeft();      // simpan anak kiri curr
-                    Node<T> replacement = curr.getLeft().getRight();// simpan anak kanan dari anak kiri curr
-
-                    while (replacement.getRight() != null) {        // selama anak kiri node pengganti tidak kosong
-                        prevRootLeftSucc = replacement;             // tukar (untuk mendapat anak paling kiri)
-                        replacement = replacement.getRight();       // ubah node pengganti dengan node selanjutnya
-                    }
-
-                    /* Atur anak kanan node paling kiri dengan anak kiri node pengganti root */
-                    prevRootLeftSucc.setRight(replacement.getLeft());
-                    replacement.setLeft(curr.getLeft());            // ubah anak kiri node pengganti dgn. anak kiri curr
-                    replacement.setRight(curr.getRight());          // ubah anak kanan node pengganti dgn. anak kanan curr
-                    this.root = replacement;                        // ubah pointer root ke node pengganti
-                }
-            } else {                                                // Jika anak kirinya kosong
-                this.root = curr.getRight();                        // langsung arahkan pointer root ke anak kanan curr
-            }
-        }
-        /* Jika current tidak punya anak/tail */
-        if (curr.isTail()) {
-            if (parent.getLeft() == curr) {                         // JIKA anak kiri parent adalah curr
-                parent.setLeft(null);                               //
-            } else {
-                parent.setRight(null);
-            }
-            return curr;
-        /* Jika current memiliki maksimal 1 anak */
-        } else if (curr.getLeft() == null || curr.getRight() == null) {
-            Node<T> child = (curr.getLeft() != null) ?
-                curr.getLeft() :
-                curr.getRight();
-            if (parent.getLeft() == curr) {
-                parent.setLeft(child);
-            } else {
-                parent.setRight(child);
-            }
-            return curr;
-        /* Jika current memiliki 2 anak */
-        } else {
-            final Node<T> removed = new Node<>(curr.data);
-            Node<T> mostOfLeft = findSuccessor(curr);
-            Node<T> leastParent = findParent(this.root, mostOfLeft);
-            curr.data = mostOfLeft.data;
-            if ((leastParent != null ? leastParent.getLeft() : null) == mostOfLeft) {
-                leastParent.setLeft(null);
-            } else {
-                if (leastParent != null) {
-                    leastParent.setRight(null);
-                }
-            }
-            return removed;
-        }
-    }
-
-    /**
      * Mencari nilai terkecil dari subtree kanan milik sebuah {@link Node<T>}.
      *
      * @param curr node untuk mencari
      * @return {@link Node<T>} yang terkecil atau null
      * */
-    private Node<T> findSuccessor(Node<T> curr) {
+    public Node<T> findSuccessor(Node<T> curr) {
         if (curr == null) {                                     // JIKA curr kosong
             return null;                                        // KEMBALIKAN null
         } else {                                                // SELAIN ITU (curr tidak kosong)
@@ -193,7 +55,7 @@ public class Tree<T extends Comparable<T>> {
      * @param curr node untuk mencari
      * @return {@link Node<T>} terbesar atau null
      * */
-    private Node<T> findPredecessor(Node<T> curr) {
+    public Node<T> findPredecessor(Node<T> curr) {
         if (curr == null) {                                     // JIKA curr kosong
             return null;                                        // KEMBALIKAN null
         } else {                                                // SELAIN ITU (curr tidak kosong)
@@ -216,7 +78,7 @@ public class Tree<T extends Comparable<T>> {
      * @param child {@link Node<T>} yang dicari
      * @return {@link Node<T>} iterator yang maju atau hasil pencarian parent
      * */
-    private Node<T> findParent(Node<T> curr, Node<T> child) {
+    public Node<T> findParent(Node<T> curr, Node<T> child) {
         if (child == this.root || curr == null){
             return null;
         }
@@ -233,48 +95,164 @@ public class Tree<T extends Comparable<T>> {
         }
     }
 
-    private T findMin(Node<T> node) {
-        if (node == null) {
-            return null;
+    /**
+     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree.
+     *
+     * @param data nilai yang ingin dimasukkan
+     * */
+    public void insert(T data) {
+        var newNode = new Node<>(data);
+        if (this.root == null) {
+            this.root = newNode;
+            size++;
+            return;
         }
-        while (node.left != null) {
-            node = node.left;
+
+        Node<T> curr = root;
+        while (curr != null) {
+            int diff = data.compareTo(curr.getData());
+            if (diff < 0) {                                     // lebih kecil
+                if (curr.getLeft() != null) {
+                    curr = curr.getLeft();
+                } else {
+                    curr.setLeft(newNode);
+                    size++;
+                    return;
+                }
+            } else {                                            // lebih besar atau sama dengan
+                if (curr.getRight() != null) {
+                    curr = curr.getRight();
+                } else {
+                    curr.setRight(newNode);
+                    size++;
+                    return;
+                }
+            }
         }
-        return node.data;
     }
 
     /**
-     * Melakukan proses penghapusan dan mengatur anak dari sebuah nilai bertipe {@link T} secara rekursif.
+     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree secara rekursif.
      *
-     * @param parent orang tua dari curr
-     * @param key nilai yang ingin dihapus
+     * @param parent {@link Node<T>} kepala
+     * @param data nilai yang ingin dimasukkan ke parent node
+     * */
+    public Node<T> insert(Node<T> parent, T data) {
+        if (parent == null) {
+            parent = new Node<>(data);
+            size++;
+            return parent;
+        }
+        if (data.compareTo(parent.getData()) < 0) {             // if the data is less than the parent's data
+            parent.setLeft(insert(parent.getLeft(), data));
+        } else {                                                // if the data is more than or the same as parent's data
+            parent.setRight(insert(parent.getRight(), data));
+        }
+        return parent;
+    }
+
+    /**
+     * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini. Jika ditemukan maka akan
+     * melakukan proses pengaturan dan rekonfigurasi struktur tree.
+     *
+     * @param key nilai yang akan dihapus
+     * @return {@link Node<T>} yang dihapus atau null jika tidak ditemukan
+     */
+    public Node<T> delete(T key) {
+        Node<T> parent = this.root;
+        Node<T> curr = this.root;
+
+        /* Mencari kunci */
+        while (curr != null) {                                      // SELAMA curr tidak kosong
+            if (key.compareTo(curr.getData()) < 0) {                // JIKA perbandingan key dgn. curr -1 (kurang dari)
+                parent = curr;                                      // masukkan curr ke parent
+                curr = curr.getLeft();                              // curr bergerak ke anak kiri
+            } else if (key.compareTo(curr.getData()) > 0) {         // JIKA perbandingan key dgn. curr 1 (lebih dari)
+                parent = curr;                                      // masukkan curr ke parent
+                curr = curr.getRight();                             // curr bergerak ke anak kanan
+            } else {                                                // SELAIN ITU (nilainya ditemukan)
+                break;                                              // HENTIKAN loop
+            }
+        }
+
+        if (curr == null) {                                         // JIKA curr kosong (tdk. ditemukan kecocokan)
+            return null;                                            // KEMBALIKAN null
+        }
+
+        /* Jika curr adalah root tree */
+        if (curr == this.root) {
+            if (curr.getLeft() != null) {                           // JIKA anak kiri curr tidak kosong
+                if (curr.getLeft().getRight() == null) {            // JIKA anak kanan dari anak kiri curr kosong
+                    this.root = curr.getLeft();                     // ubah root tree menjadi anak kiri curr
+                } else {                                            // Selain itu
+                    Node<T> prevRootLeftSucc = curr.getLeft();      // simpan anak kiri curr
+                    Node<T> replacement = curr.getLeft().getRight();// simpan anak kanan dari anak kiri curr
+
+                    while (replacement.getRight() != null) {        // selama anak kiri node pengganti tidak kosong
+                        prevRootLeftSucc = replacement;             // tukar (untuk mendapat anak paling kiri)
+                        replacement = replacement.getRight();       // ubah node pengganti dengan node selanjutnya
+                    }
+
+                    /* Atur anak kanan node paling kiri dengan anak kiri node pengganti root */
+                    prevRootLeftSucc.setRight(replacement.getLeft());
+                    replacement.setLeft(curr.getLeft());            // ubah anak kiri node pengganti dgn. anak kiri curr
+                    replacement.setRight(curr.getRight());          // ubah anak kanan node pengganti dgn. anak kanan curr
+                    this.root = replacement;                        // ubah pointer root ke node pengganti
+                }
+            } else {                                                // SELAIN ITU (anak kirinya kosong)
+                this.root = curr.getRight();                        // langsung arahkan pointer root ke anak kanan curr
+            }
+        }
+        /* Jika current tidak punya anak/tail */
+        if (curr.isTail()) {
+            if (parent.getLeft() == curr) {                         // JIKA anak kiri parent adalah curr (sama)
+                parent.setLeft(null);                               // kosongkan anak kiri parent
+            } else {                                                // SELAIN ITU (anak kiri bukan curr)
+                parent.setRight(null);                              // kosongkan anak kanan parent
+            }
+            return curr;                                            // KEMBALIKAN curr
+        /* Jika current memiliki maksimal 1 anak */
+        } else if (curr.getLeft() == null || curr.getRight() == null) {
+            Node<T> child = (curr.getLeft() != null) ?              /* JIKA anak kiri curr tidak kosong: */
+                curr.getLeft() :                                        // masukkan anak kiri curr ke child
+                curr.getRight();                                        // masukkan anak kiana curr ke child
+            if (parent.getLeft() == curr) {                         // JIKA anak kiri parent adalah curr (sama)
+                parent.setLeft(child);                              // kosongkan anak kiri parent
+            } else {                                                // SELAIN ITU (anak kiri bukan curr)
+                parent.setRight(child);                             // kosongkan anak kanan parent
+            }
+            return curr;                                            // KEMBALIKAN curr
+        /* Jika current memiliki 2 anak */
+        } else { // ngerjain ini doang 6 jam T_T
+            final Node<T> removed = new Node<>(curr.data);          // menyimpan node yang ingin dihapus
+            Node<T> leastOnRight = findSuccessor(curr);             // mendapatkan nilai yang paling kecil di subtree kanan
+            Node<T> leastParent = findParent(this.root, leastOnRight);  // mencari parent dari leastOnRight
+            curr.data = leastOnRight.data;                          // masukkan data leastOfRight ke curr
+
+            /* JIKA leastParent tidak kosong, maka dapatkan anak kirinya, selain itu null (safety system) */
+            // Bandingkan leastParent hasil ternary, apakah sama dengan leastOnRight
+            if ((leastParent != null ? leastParent.getLeft() : null) == leastOnRight) {
+                leastParent.setLeft(null);                          // kosongkan anak kiri leastParent
+            } else {                                                // SELAIN ITU (leastOnRight tidak punya anak kiri)
+                if (leastParent != null) {                          // JIKA leastParent kosong.
+                    leastParent.setRight(null);                     // kosongkan anak kanan leastParent
+                }
+            }
+            return removed;                                         // KEMBALIKAN node yang dihapus
+        }
+    }
+
+    /**
+     * Mengembalikan size tree.
+     *
      * @return {@link Node<T>}
      * */
-public Node<T> r_remove(Node<T> parent, T key) {
-    if (parent == null) {
-        return null;
+    public int getSize() {
+        return this.size;
     }
-    if (key.compareTo(parent.data) == 0) {
-        return parent.left;
-    } else if (key.compareTo(parent.data) < 0) {
-        parent.left = r_remove(parent.left, key);
-    } else if (key.compareTo(parent.data) > 0) {
-        parent.right = r_remove(parent.right, key);
-    } else {
-        if (parent.left == null) {
-            return parent.right;
-        } else if (parent.right == null) {
-            return parent.left;
-        }
-        T minKey = findMin(parent.right);
-        parent.data = minKey;
-        parent.right = r_remove(parent.right, minKey);
-    }
-    return parent;
-}
 
     /**
-     * Mengembalikan root kelas.
+     * Mengembalikan root tree.
      *
      * @return {@link Node<T>}
      * */
@@ -397,7 +375,7 @@ public Node<T> r_remove(Node<T> parent, T key) {
     // Checked with this array: {50, 40, 70, 30, 45, 80, 32, 43, 42, 75, 85}. I have fixed the right skewed error.
     public void printStructureV2(String prefix, Node<T> curr, boolean isLeft) {
         if (curr != null) {
-            System.out.println(prefix + (isLeft ? "\u2514\u2500" : "\u2514\u2500") + curr.getData());
+            System.out.println(prefix + ("└─") + curr.getData());
             printStructureV2(prefix + ( (isLeft && curr.getRight() != null) ? "│   " : "    "), curr.getLeft(), true);
             printStructureV2(prefix + (isLeft ? "│   " : "    "), curr.getRight(), false);
         }
