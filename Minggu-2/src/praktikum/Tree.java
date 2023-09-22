@@ -81,9 +81,8 @@ public class Tree<T extends Comparable<T>> {
     public Node<T> findParent(Node<T> curr, Node<T> child) {
         if (child == this.root || curr == null){
             return null;
-        }
-        else{
-            if(curr.left == child || curr.right == child)
+        } else {
+            if (curr.left == child || curr.right == child)
                 return curr;
             else {
                 if (child.compareTo(curr) < 0) {
@@ -179,6 +178,7 @@ public class Tree<T extends Comparable<T>> {
             return null;                                            // KEMBALIKAN null
         }
 
+        size--;
         /* Jika curr adalah root tree */
         if (curr == this.root) {
             if (curr.getLeft() != null) {                           // JIKA anak kiri curr tidak kosong
