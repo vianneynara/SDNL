@@ -1,20 +1,25 @@
 package praktikum;
 
-public class Main<T extends Comparable<T>> {
+public class Main {
 
     public static void main(String[] args) {
         var tree = new Tree<Integer>();                         // membuat objek Tree ke var. tree
-        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88, 41, 42};
-//        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37, 1};
-        int[] toHapus = {100, 63, 65, 60, 95, 56, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37, 1}; // test
+        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
 
         for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
             tree.insert(key);                                     // memasukkan elemen ke tree
         }
 
-        tree.getRoot().printDrawnStructure();
 
         for (int key : toHapus) {
+            var toFind = Tree.search(tree.getRoot(), key);
+            if (toFind != null) {
+                var parentToDelete = tree.findParent(tree.getRoot(), toFind);
+                if (parentToDelete != null) {
+                    tree.getRoot().printDrawnStructure(parentToDelete.getData());
+                }
+            }
             System.out.println("removing... " + key);
             var returned = (tree.delete(key));
             boolean isRemoved = returned != null;
@@ -24,7 +29,7 @@ public class Main<T extends Comparable<T>> {
                 System.out.print("Display in order          : ");
                 tree.traverseInOrder(tree.getRoot());
                 System.out.println();
-                tree.getRoot().printDrawnStructure();
+//                tree.getRoot().printDrawnStructure();
             } catch (NullPointerException npe) {
                 System.out.println("Tree kosong!\n");
             }
