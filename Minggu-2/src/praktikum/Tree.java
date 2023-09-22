@@ -225,6 +225,7 @@ public class Tree<T extends Comparable<T>> {
         /* Jika current memiliki 2 anak */
         } else { // ngerjain ini doang 6 jam T_T
             final Node<T> removed = new Node<>(curr.data);          // menyimpan node yang ingin dihapus
+
             Node<T> leastOnRight = findSuccessor(curr);             // mendapatkan nilai yang paling kecil di subtree kanan
             Node<T> leastParent = findParent(this.root, leastOnRight);  // mencari parent dari leastOnRight
             curr.data = leastOnRight.data;                          // masukkan data leastOfRight ke curr
