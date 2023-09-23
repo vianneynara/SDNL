@@ -64,6 +64,20 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
         return (left == null && right == null);
     }
 
+    /**
+     * Mengecek apakah node ini memiliki anak kiri.
+     * */
+    public boolean hasLeft() {
+        return (left != null);
+    }
+
+    /**
+     * Mengecek apakah node ini memiliki anak kanan.
+     * */
+    public boolean hasRight() {
+        return (right != null);
+    }
+
     @Override
     public String toString() {
         return "{" + data + '}';
