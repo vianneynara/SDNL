@@ -28,21 +28,21 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Mencari nilai terkecil dari subtree kanan milik sebuah {@link Node<T>}.
+     * Mencari nilai terkecil dari subtree kanan milik sebuah {@link Node <T>}.
      *
      * @param curr node untuk mencari
-     * @return {@link Node<T>} yang terkecil atau null
+     * @return {@link Node <T>} yang terkecil atau null
      * */
     public Node<T> findSuccessor(Node<T> curr) {
         if (curr == null) {                                     // JIKA curr kosong
             return null;                                        // KEMBALIKAN null
         } else {                                                // SELAIN ITU (curr tidak kosong)
-            curr = curr.getRight();                             // pindah curr ke subtree kanan
+            curr = curr.right;                                  // pindah curr ke subtree kanan
             if (curr == null) {                                 // JIKA curr kosong
                 return null;                                    // KEMBALIKAN null
             } else {                                            // SELAIN ITU (curr tidak kosong)
-                while (curr.getLeft() != null) {                // SELAMA curr punya subtree kiri
-                    curr = curr.getLeft();                      // pindah curr ke kiri
+                while (curr.left != null) {                     // SELAMA curr punya subtree kiri
+                    curr = curr.left;                           // pindah curr ke kiri
                 }
                 return curr;                                    // kembalikan curr (node terkecil  pada subtree kiri)
             }
@@ -50,21 +50,21 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Mencari nilai terbesar dari subtree kiri milik sebuah {@link Node<T>}.
+     * Mencari nilai terbesar dari subtree kiri milik sebuah {@link Node <T>}.
      *
      * @param curr node untuk mencari
-     * @return {@link Node<T>} terbesar atau null
+     * @return {@link Node <T>} terbesar atau null
      * */
     public Node<T> findPredecessor(Node<T> curr) {
         if (curr == null) {                                     // JIKA curr kosong
             return null;                                        // KEMBALIKAN null
         } else {                                                // SELAIN ITU (curr tidak kosong)
-            curr = curr.getLeft();                              // pindah curr ke subtree kiri
+            curr = curr.left;                                   // pindah curr ke subtree kiri
             if (curr == null) {                                 // JIKA curr kosong
                 return null;                                    // KEMBALIKAN null
             } else {                                            // SELAIN ITU (curr tidak kosong)
-                while (curr.getRight() != null) {               // SELAMA curr punya subtree kanan
-                    curr = curr.getRight();                     // pindah curr ke kanan
+                while (curr.right != null) {                    // SELAMA curr punya subtree kanan
+                    curr = curr.right;                          // pindah curr ke kanan
                 }
                 return curr;                                    // kembalikan curr (node terbesar pada subtree kiri)
             }
@@ -72,30 +72,31 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Mencari parent node dari sebuah node di dalam {@link Tree<T>} dimulai dari {@link Tree#root}.
+     * Mencari parent node dari sebuah node di dalam {@link Node <T>} dimulai dari {@link Tree#root}.
      *
      * @param curr root tree / iterator current node
-     * @param child {@link Node<T>} yang dicari
-     * @return {@link Node<T>} iterator yang maju atau hasil pencarian parent
+     * @param child {@link Node <T>} yang dicari
+     * @return {@link Node <T>} iterator yang maju atau hasil pencarian parent
      * */
     public Node<T> findParent(Node<T> curr, Node<T> child) {
-        if (child == this.root || curr == null){
-            return null;
-        } else {
-            if (curr.left == child || curr.right == child)
-                return curr;
-            else {
-                if (child.compareTo(curr) < 0) {
-                    return findParent(curr.left, child);
-                } else {
-                    return findParent(curr.right, child);
+        /* Base Case */
+        if (child == this.root || curr == null) {               // JIKA child merupakan root tree atau curr kosong
+            return null;                                        // KEMBALIKAN null
+        } else {                                                // SELAIN ITU
+            if (curr.left == child || curr.right == child)      // JIKA anak kiri atau kanan curr adalah child
+                return curr;                                    // KEMBALIKAN curr
+            else {                                              // SELAIN ITU
+                if (child.compareTo(curr) < 0) {                // JIKA perbandingan child dgn. curr adalah -1 (kecil)
+                    return findParent(curr.left, child);        // KEMBLAIKAN rekursif dengan anak kiri curr & child
+                } else {                                        // SELAIN ITU
+                    return findParent(curr.right, child);       // KEMBALIKAN rekursif dengan anak kanan curr & child
                 }
             }
         }
     }
 
     /**
-     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree.
+     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node <T>}, dan menyambungkannya ke tree.
      *
      * @param data nilai yang ingin dimasukkan
      * */
@@ -107,22 +108,21 @@ public class Tree<T extends Comparable<T>> {
             return;
         }
 
-        Node<T> curr = root;
-        while (curr != null) {
+        for (var curr = root; curr != null;) {
             int diff = data.compareTo(curr.getData());
             if (diff < 0) {                                     // lebih kecil
-                if (curr.getLeft() != null) {
-                    curr = curr.getLeft();
+                if (curr.left != null) {
+                    curr = curr.left;
                 } else {
-                    curr.setLeft(newNode);
+                    curr.left = newNode;
                     size++;
                     return;
                 }
             } else {                                            // lebih besar atau sama dengan
-                if (curr.getRight() != null) {
-                    curr = curr.getRight();
+                if (curr.right != null) {
+                    curr = curr.right;
                 } else {
-                    curr.setRight(newNode);
+                    curr.right = newNode;
                     size++;
                     return;
                 }
@@ -131,9 +131,9 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree secara rekursif.
+     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node <T>}, dan menyambungkannya ke tree secara rekursif.
      *
-     * @param parent {@link Node<T>} kepala
+     * @param parent {@link Node <T>} kepala
      * @param data nilai yang ingin dimasukkan ke parent node
      * */
     public Node<T> insert(Node<T> parent, T data) {
@@ -142,10 +142,10 @@ public class Tree<T extends Comparable<T>> {
             size++;
             return parent;
         }
-        if (data.compareTo(parent.getData()) < 0) {             // if the data is less than the parent's data
-            parent.setLeft(insert(parent.getLeft(), data));
-        } else {                                                // if the data is more than or the same as parent's data
-            parent.setRight(insert(parent.getRight(), data));
+        if (data.compareTo(parent.getData()) < 0) {                 // if the data is less than the parent's data
+            parent.left = insert(parent.left, data);
+        } else {                                                    // if the data is more than or the same as parent's data
+            parent.right = insert(parent.right, data);
         }
         return parent;
     }
@@ -155,76 +155,78 @@ public class Tree<T extends Comparable<T>> {
      * melakukan proses pengaturan dan rekonfigurasi struktur tree.
      *
      * @param key nilai yang akan dihapus
-     * @return {@link Node<T>} yang dihapus atau null jika tidak ditemukan
+     * @return {@link Node <T>} yang dihapus atau null jika tidak ditemukan
      */
-    public Node<T> delete(T key) {
+    public boolean delete(T key) {
         Node<T> parent = this.root;
         Node<T> curr = this.root;
 
-        /* Mencari kunci */
+        /* Mencari kunci dan parent dari kunci */
         while (curr != null) {                                      // SELAMA curr tidak kosong
             if (key.compareTo(curr.getData()) < 0) {                // JIKA perbandingan key dgn. curr -1 (kurang dari)
                 parent = curr;                                      // masukkan curr ke parent
-                curr = curr.getLeft();                              // curr bergerak ke anak kiri
+                curr = curr.left;                                   // curr bergerak ke anak kiri
             } else if (key.compareTo(curr.getData()) > 0) {         // JIKA perbandingan key dgn. curr 1 (lebih dari)
                 parent = curr;                                      // masukkan curr ke parent
-                curr = curr.getRight();                             // curr bergerak ke anak kanan
+                curr = curr.right;                                  // curr bergerak ke anak kanan
             } else {                                                // SELAIN ITU (nilainya ditemukan)
                 break;                                              // HENTIKAN loop
             }
         }
 
         if (curr == null) {                                         // JIKA curr kosong (tdk. ditemukan kecocokan)
-            return null;                                            // KEMBALIKAN null
+            return false;                                           // KEMBALIKAN gagal
         }
 
-        size--;
+        size--;                                                     // mengurangi jumlah elemen pada tree
         /* Jika curr adalah root tree */
         if (curr == this.root) {
-            if (curr.getLeft() != null) {                           // JIKA anak kiri curr tidak kosong
-                if (curr.getLeft().getRight() == null) {            // JIKA anak kanan dari anak kiri curr kosong
-                    this.root = curr.getLeft();                     // ubah root tree menjadi anak kiri curr
+            if (curr.left != null) {                                // JIKA anak kiri curr tidak kosong
+                if (curr.left.right == null) {                      // JIKA anak kanan dari anak kiri curr kosong
+                    this.root = curr.left;                          // ubah root tree menjadi anak kiri curr
                 } else {                                            // Selain itu
-                    Node<T> prevRootLeftSucc = curr.getLeft();      // simpan anak kiri curr
-                    Node<T> replacement = curr.getLeft().getRight();// simpan anak kanan dari anak kiri curr
+                    Node<T> prevPredecessor = curr.left;            // simpan anak kiri curr
+                    Node<T> replacement = curr.left.right;          // simpan anak kanan dari anak kiri curr
 
-                    while (replacement.getRight() != null) {        // selama anak kiri node pengganti tidak kosong
-                        prevRootLeftSucc = replacement;             // tukar (untuk mendapat anak paling kiri)
-                        replacement = replacement.getRight();       // ubah node pengganti dengan node selanjutnya
+                    while (replacement.right != null) {             // selama anak kiri node pengganti tidak kosong
+                        prevPredecessor = replacement;              // tukar (untuk mendapat anak paling kiri)
+                        replacement = replacement.right;            // ubah node pengganti dengan node selanjutnya
                     }
 
                     /* Atur anak kanan node paling kiri dengan anak kiri node pengganti root */
-                    prevRootLeftSucc.setRight(replacement.getLeft());
-                    replacement.setLeft(curr.getLeft());            // ubah anak kiri node pengganti dgn. anak kiri curr
-                    replacement.setRight(curr.getRight());          // ubah anak kanan node pengganti dgn. anak kanan curr
-                    this.root = replacement;                        // ubah pointer root ke node pengganti
+                    prevPredecessor.right = replacement.left;
+                    replacement.left = curr.left;                   // ubah anak kiri node pengganti dgn. anak kiri curr
+                    replacement.right = curr.right;                 // ubah anak kanan node pengganti dgn. anak kanan curr
+                    this.root = replacement;                        // ubah pointer root tree ke node pengganti
                 }
             } else {                                                // SELAIN ITU (anak kirinya kosong)
-                this.root = curr.getRight();                        // langsung arahkan pointer root ke anak kanan curr
+                this.root = curr.right;                             // langsung arahkan pointer root ke anak kanan curr
             }
         }
         /* Jika current tidak punya anak/tail */
         if (curr.isTail()) {
-            if (parent.getLeft() == curr) {                         // JIKA anak kiri parent adalah curr (sama)
-                parent.setLeft(null);                               // kosongkan anak kiri parent
+            if (parent.left == curr) {                              // JIKA anak kiri parent adalah curr (sama)
+                parent.left = null;                                 // kosongkan anak kiri parent
             } else {                                                // SELAIN ITU (anak kiri bukan curr)
-                parent.setRight(null);                              // kosongkan anak kanan parent
+                parent.right = null;                                // kosongkan anak kanan parent
             }
-            return curr;                                            // KEMBALIKAN curr
+//            return curr;                                            // KEMBALIKAN curr
+            return true;                                            // KEMBALIKAN berhasil
         /* Jika current memiliki maksimal 1 anak */
-        } else if (curr.getLeft() == null || curr.getRight() == null) {
-            Node<T> child = (curr.getLeft() != null) ?              /* JIKA anak kiri curr tidak kosong: */
-                curr.getLeft() :                                        // masukkan anak kiri curr ke child
-                curr.getRight();                                        // masukkan anak kiana curr ke child
-            if (parent.getLeft() == curr) {                         // JIKA anak kiri parent adalah curr (sama)
-                parent.setLeft(child);                              // kosongkan anak kiri parent
+        } else if (curr.left == null || curr.right == null) {
+            Node<T> child = (curr.left != null) ?                   /* JIKA anak kiri curr tidak kosong: */
+                curr.left :                                         // masukkan anak kiri curr ke child
+                curr.right;                                         // masukkan anak kiana curr ke child
+            if (parent.left == curr) {                              // JIKA anak kiri parent adalah curr (sama)
+                parent.left = child;                                // kosongkan anak kiri parent
             } else {                                                // SELAIN ITU (anak kiri bukan curr)
-                parent.setRight(child);                             // kosongkan anak kanan parent
+                parent.right = child;                               // kosongkan anak kanan parent
             }
-            return curr;                                            // KEMBALIKAN curr
+//            return curr;                                            // KEMBALIKAN curr
+            return true;                                            // KEMBALIKAN berhasil
         /* Jika current memiliki 2 anak */
         } else { // ngerjain ini doang 6 jam T_T
-            final Node<T> removed = new Node<>(curr.data);          // menyimpan node yang ingin dihapus
+//            final Node<T> removed = new Node<>(curr.data);        // menyimpan node yang ingin dihapus
 
             Node<T> leastOnRight = findSuccessor(curr);             // mendapatkan nilai yang paling kecil di subtree kanan
             Node<T> leastParent = findParent(this.root, leastOnRight);  // mencari parent dari leastOnRight
@@ -232,21 +234,22 @@ public class Tree<T extends Comparable<T>> {
 
             /* JIKA leastParent tidak kosong, maka dapatkan anak kirinya, selain itu null (safety system) */
             // Bandingkan leastParent hasil ternary, apakah sama dengan leastOnRight
-            if ((leastParent != null ? leastParent.getLeft() : null) == leastOnRight) {
-                leastParent.setLeft(null);                          // kosongkan anak kiri leastParent
+            if ((leastParent != null) && (leastParent.left == leastOnRight)) {
+                leastParent.left = null;                            // kosongkan anak kiri leastParent
             } else {                                                // SELAIN ITU (leastOnRight tidak punya anak kiri)
                 if (leastParent != null) {                          // JIKA leastParent kosong.
-                    leastParent.setRight(null);                     // kosongkan anak kanan leastParent
+                    leastParent.right = null;                       // kosongkan anak kanan leastParent
                 }
             }
-            return removed;                                         // KEMBALIKAN node yang dihapus
+//            return removed;                                         // KEMBALIKAN curr
+            return true;                                            // KEMBALIKAN berhasil
         }
     }
 
     /**
      * Mengembalikan size tree.
      *
-     * @return {@link Node<T>}
+     * @return {@link Node <T>}
      * */
     public int getSize() {
         return this.size;
@@ -255,14 +258,14 @@ public class Tree<T extends Comparable<T>> {
     /**
      * Mengembalikan root tree.
      *
-     * @return {@link Node<T>}
+     * @return {@link Node <T>}
      * */
     public Node<T> getRoot() {
         return this.root;
     }
 
     /**
-     * Mencari sebuah nilai dari {@link Tree} yang dipanggil.
+     * Mencari sebuah nilai dari {@link Node} yang dipanggil.
      *
      * @param key nilai yang dicari.
      * */
@@ -273,58 +276,58 @@ public class Tree<T extends Comparable<T>> {
     /**
      * (rekursif) Melakukan pencarian secara rekursif hingga {@code root} bernilai null atau {@code root} bernilai {@code key}.
      *
-     * @param root {@link Node<T>} untuk mencari
+     * @param root {@link Node <T>} untuk mencari
      * @param key nilai yang dicari
-     * @return {@link Node<T>} yang dicari atau nilai null bila tidak ditemukan
+     * @return {@link Node <T>} yang dicari atau nilai null bila tidak ditemukan
      * */
     public static <T extends Comparable<T>> Node<T> search(Node<T> root, T key) {
-        if (root == null || root.getData() == key) {
+        if (root == null || root.data == key) {
             return root;
-        } else if (key.compareTo(root.getData()) < 0) {
-            return search(root.getLeft(), key);
+        } else if (key.compareTo(root.data) < 0) {
+            return search(root.left, key);
         } else {
-            return search(root.getRight(), key);
+            return search(root.right, key);
         }
     }
 
     /**
-     * (rekursif) Pre Order | Melakukan traversal dari ujung kiri ke ujung kanan, mencetak setiap isi {@link Node<T>}.
+     * (rekursif) Pre Order | Melakukan traversal dari ujung kiri ke ujung kanan, mencetak setiap isi {@link Node <T>}.
      *
      * @param curr awal mulai
      * */
     public void traversePreOrder(Node<T> curr) {
         System.out.print(curr.getData() + " ");
-        if (curr.getLeft() != null) {
-            traversePreOrder(curr.getLeft());
+        if (curr.left != null) {
+            traversePreOrder(curr.left);
         }
-        if (curr.getRight() != null) {
-            traversePreOrder(curr.getRight());
+        if (curr.right != null) {
+            traversePreOrder(curr.right);
         }
     }
 
     /**
-     * (rekursif) In Order | Melakukan traversal dari nilai terkecil hingga terbesar, mencetak setiap isi {@link Node<T>}.
+     * (rekursif) In Order | Melakukan traversal dari nilai terkecil hingga terbesar, mencetak setiap isi {@link Node <T>}.
      *
      * @param curr awal mulai
      * */
     public void traverseInOrder(Node<T> curr) {
         if (curr != null) {
-            traverseInOrder(curr.getLeft());
+            traverseInOrder(curr.left);
             System.out.print((curr.getData()) + " ");
-            traverseInOrder(curr.getRight());
+            traverseInOrder(curr.right);
         }
     }
 
     /**
-     * (rekursif) Post Order | Melakukan traversal dari leaf kiri-kanan-parent, mencetak setiap isi {@link Node<T>}.
+     * (rekursif) Post Order | Melakukan traversal dari leaf kiri-kanan-parent, mencetak setiap isi {@link Node <T>}.
      *
      * @param curr awal mulai
      * */
     public void traversePostOrder(Node<T> curr) {
         if (curr != null) {
-            traversePostOrder(curr.getLeft());
-            traversePostOrder(curr.getRight());
-            System.out.print((curr.getData()) + " ");
+            traversePostOrder(curr.left);
+            traversePostOrder(curr.right);
+            System.out.print((curr.data) + " ");
         }
     }
 
@@ -337,11 +340,11 @@ public class Tree<T extends Comparable<T>> {
 
         while (!queue.isEmpty()) {
             Node<T> curr = queue.poll();
-            System.out.print(curr.getData() + " ");
-            if (curr.getLeft() != null)
-                queue.add(curr.getLeft());
-            if (curr.getRight() != null)
-                queue.add(curr.getRight());
+            System.out.print(curr.data + " ");
+            if (curr.left != null)
+                queue.add(curr.left);
+            if (curr.right != null)
+                queue.add(curr.right);
         }
     }
 
@@ -366,8 +369,8 @@ public class Tree<T extends Comparable<T>> {
 			System.out.print("\u2514\u2500");
 		}
         System.out.println(curr);
-        printStructureV1(curr.getLeft(), depth + 1);
-        printStructureV1(curr.getRight(), depth + 1);
+        printStructureV1(curr.left, depth + 1);
+        printStructureV1(curr.right, depth + 1);
     }
 
     /* Traverse rekursif versi 2 */
@@ -377,8 +380,8 @@ public class Tree<T extends Comparable<T>> {
     public void printStructureV2(String prefix, Node<T> curr, boolean isLeft) {
         if (curr != null) {
             System.out.println(prefix + ("└─") + curr.getData());
-            printStructureV2(prefix + ( (isLeft && curr.getRight() != null) ? "│   " : "    "), curr.getLeft(), true);
-            printStructureV2(prefix + (isLeft ? "│   " : "    "), curr.getRight(), false);
+            printStructureV2(prefix + ( (isLeft && curr.right != null) ? "│   " : "    "), curr.left, true);
+            printStructureV2(prefix + (isLeft ? "│   " : "    "), curr.right, false);
         }
     }
 }
