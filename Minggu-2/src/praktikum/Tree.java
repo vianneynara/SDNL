@@ -96,7 +96,8 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree.
+     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>},
+     * memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree.
      *
      * @param data nilai yang ingin dimasukkan
      * */
@@ -131,7 +132,8 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>}, memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree secara rekursif.
+     * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>},
+     * memasukkannya ke {@link Node<T>}, dan menyambungkannya ke tree secara rekursif.
      *
      * @param parent {@link Node<T>} kepala
      * @param data nilai yang ingin dimasukkan ke parent node
@@ -271,7 +273,8 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * (rekursif) Melakukan pencarian secara rekursif hingga {@code root} bernilai null atau {@code root} bernilai {@code key}.
+     * (rekursif) Melakukan pencarian secara rekursif hingga {@code root} bernilai null
+     * atau {@code root} bernilai {@code key}.
      *
      * @param root {@link Node<T>} untuk mencari
      * @param key nilai yang dicari
