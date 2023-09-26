@@ -152,13 +152,7 @@ public class Tree<T extends Comparable<T>> {
         return parent;
     }
 
-    /**
-     * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini secara iteratif.
-     * Jika ditemukan maka akan melakukan proses pengaturan dan rekonfigurasi struktur tree kemudian mengembalikannya.
-     *
-     * @param key nilai yang akan dihapus
-     * @return {@link Node<T>} yang dihapus atau null jika tidak ditemukan
-     */
+
     public Node<T> delete(T key) {
         Node<T> parent = this.root;
         Node<T> curr = this.root;
@@ -180,51 +174,40 @@ public class Tree<T extends Comparable<T>> {
             return null;
         }
 
-        size--;                                                     
-        /* Jika curr adalah root tree */
+        size--;
+        /* If curr is the root of the tree */
         if (curr == this.root) {
-            if (curr.left != null) {                                
-                if (curr.left.right == null) {                      
-                    this.root = curr.left;                          
-                } else {                                            
-                    Node<T> prevPredecessor = curr.left;            
-                    Node<T> replacement = curr.left.right;          
-
-                    while (replacement.right != null) {             
-                        prevPredecessor = replacement;              
-                        replacement = replacement.right;            
-                    }
-
-                    /* Atur anak kanan node paling kiri dengan anak kiri node pengganti root */
-                    prevPredecessor.right = replacement.left;
-                    replacement.left = curr.left;                   
-                    replacement.right = curr.right;                 
-                    this.root = replacement;                        
+            if (curr.left == null && curr.right == null) {
+                this.root = null;
+            } else if (curr.right != null) {
+                Node<T> leftChild = this.root.left;
+                this.root = this.root.right;
+                if (curr.left != null) {
+                    this.root.left = leftChild;
                 }
-            } else {                                                
-                this.root = curr.right;                             
+            } else {
+                this.root = curr.left;
             }
+            return curr;
         }
-        /* Jika current tidak punya anak/tail */
+        /* If curr doesn't have children */
         if (curr.isTail()) {
             if (parent.left == curr) {                              
                 parent.left = null;                                 
             } else {                                                
                 parent.right = null;                                
             }
-            return curr;                                          
-        /* Jika current memiliki maksimal 1 anak */
+            return curr;
+        /* If curr has at maximum 1 child */
         } else if (curr.left == null || curr.right == null) {
-            Node<T> child = (curr.left != null) ?                   
-                curr.left :                                         
-                curr.right;                                         
+            Node<T> child = (curr.left != null) ? curr.left : curr.right;
             if (parent.left == curr) {                              
                 parent.left = child;                                
             } else {                                                
                 parent.right = child;                               
             }
             return curr;                                          
-        /* Jika current memiliki 2 anak */
+        /* If curr has 2 children */
         } else {
             final Node<T> removed = new Node<>(curr.data);        
 
