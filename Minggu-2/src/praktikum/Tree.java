@@ -152,7 +152,13 @@ public class Tree<T extends Comparable<T>> {
         return parent;
     }
 
-
+    /**
+     * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini secara iteratif.
+     * Jika ditemukan maka akan melakukan proses pengaturan dan rekonfigurasi struktur tree kemudian mengembalikannya.
+     *
+     * @param key nilai yang akan dihapus
+     * @return {@link Node<T>} yang dihapus atau null jika tidak ditemukan
+     */
     public Node<T> delete(T key) {
         Node<T> parent = this.root;
         Node<T> curr = this.root;
