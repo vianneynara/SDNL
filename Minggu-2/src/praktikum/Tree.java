@@ -160,7 +160,7 @@ public class Tree<T extends Comparable<T>> {
      * @return {@link Node<T>} yang dihapus atau null jika tidak ditemukan
      */
     public Node<T> delete(T key) {
-        Node<T> parent = this.root;
+        Node<T> parent = null;
         Node<T> curr = this.root;
 
         /* Mencari kunci dan parent dari kunci */
@@ -194,16 +194,14 @@ public class Tree<T extends Comparable<T>> {
             } else {
                 this.root = curr.left;
             }
-            return curr;
         }
         /* If curr doesn't have children */
-        if (curr.isTail()) {
+        else if (curr.isTail()) {
             if (parent.left == curr) {                              
                 parent.left = null;                                 
             } else {                                                
                 parent.right = null;                                
             }
-            return curr;
         /* If curr has at maximum 1 child */
         } else if (curr.left == null || curr.right == null) {
             Node<T> child = (curr.left != null) ? curr.left : curr.right;
@@ -212,17 +210,14 @@ public class Tree<T extends Comparable<T>> {
             } else {                                                
                 parent.right = child;                               
             }
-            return curr;                                          
         /* If curr has 2 children */
         } else {
-            final Node<T> removed = new Node<>(curr.data);        
+            final Node<T> removed = new Node<>(curr.data);
 
-            Node<T> leastOnRight = findSuccessor(curr);             
+            Node<T> leastOnRight = findSuccessor(curr);
             Node<T> leastParent = findParent(this.root, leastOnRight);  
-            curr.data = leastOnRight.data;                          
+            curr.data = leastOnRight.data;
 
-            /* JIKA leastParent tidak kosong, maka dapatkan anak kirinya, selain itu null (safety system) */
-            // Bandingkan leastParent hasil ternary, apakah sama dengan leastOnRight
             if ((leastParent != null) && (leastParent.left == leastOnRight)) {
                 leastParent.left = null;                            
             } else {                                                
@@ -230,8 +225,47 @@ public class Tree<T extends Comparable<T>> {
                     leastParent.right = null;                       
                 }
             }
-            return removed;                                        
+            return removed;
         }
+        return curr;
+    }
+
+    public Node<T> delete(Node<T> curr, T key) {
+        if (curr == null) {
+            return null;
+        }
+
+        if (key.compareTo(curr.getData()) < 0) {
+            curr.left = delete(curr.left, key);
+        } else if (key.compareTo(curr.getData()) > 0) {
+            curr.right = delete(curr.right, key);
+        } else {
+            /* When curr is the root of this tree */
+            if (curr == root) {
+                if (curr.left == null && curr.right == null) {
+                    this.root = null;
+                } else if (curr.right != null) {
+                    Node<T> leftChild = this.root.left;
+                    this.root = this.root.right;
+                    if (curr.left != null) {
+                        this.root.left = leftChild;
+                    }
+                } else {
+                    this.root = curr.left;
+                }
+                return curr;
+            } else {
+                if (curr.left == null) {
+                    return curr.right;
+                } else if (curr.right == null) {
+                    return curr.left;
+                }
+
+                curr.data = findPredecessor(curr).data;
+                curr.right = delete(curr.right, key);
+            }
+        }
+        return curr;
     }
 
     /**
