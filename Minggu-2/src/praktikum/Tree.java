@@ -242,29 +242,20 @@ public class Tree<T extends Comparable<T>> {
         if (curr == null) {
             return null;
         }
-
         if (key.compareTo(curr.getData()) < 0) {
             curr.left = delete(curr.left, key);
         } else if (key.compareTo(curr.getData()) > 0) {
             curr.right = delete(curr.right, key);
         } else {
-            if (curr == root) {
-                if (curr.left == null) {
-                    root = curr.right;
-                } else if (curr.right == null) {
-                    root = curr.left;
-                } else {
-                    Node<T> predecessor = findPredecessor(curr);
-                    curr.data = predecessor.data;
-                    curr.left = delete(curr.left, predecessor.data);
-                }
-            } else {
-                if (curr.left == null) {
+            if (curr.left == null) {
+                if (curr != this.root)
                     return curr.right;
-                } else if (curr.right == null) {
+                this.root = curr.right;
+            } else if (curr.right == null) {
+                if (curr != this.root)
                     return curr.left;
-                }
-
+                this.root = curr.left;
+            } else {
                 Node<T> predecessor = findPredecessor(curr);
                 curr.data = predecessor.data;
                 curr.left = delete(curr.left, predecessor.data);
