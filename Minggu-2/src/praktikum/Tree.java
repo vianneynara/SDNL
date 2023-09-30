@@ -230,6 +230,14 @@ public class Tree<T extends Comparable<T>> {
         return curr;
     }
 
+    /**
+     * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini secara rekursif.
+     * Jika ditemukan maka akan melakukan proses pengaturan dan rekonfigurasi struktur tree kemudian mengembalikannya.
+     *
+     * @param curr root node dari nilai yang akan dihapus
+     * @param key nilai yang akan dihapus
+     * @return {@link Node<T>} yang dihapus atau null jika tidak ditemukan
+     */
     public Node<T> delete(Node<T> curr, T key) {
         if (curr == null) {
             return null;
@@ -240,20 +248,16 @@ public class Tree<T extends Comparable<T>> {
         } else if (key.compareTo(curr.getData()) > 0) {
             curr.right = delete(curr.right, key);
         } else {
-            /* When curr is the root of this tree */
             if (curr == root) {
-                if (curr.left == null && curr.right == null) {
-                    this.root = null;
-                } else if (curr.right != null) {
-                    Node<T> leftChild = this.root.left;
-                    this.root = this.root.right;
-                    if (curr.left != null) {
-                        this.root.left = leftChild;
-                    }
+                if (curr.left == null) {
+                    root = curr.right;
+                } else if (curr.right == null) {
+                    root = curr.left;
                 } else {
-                    this.root = curr.left;
+                    Node<T> predecessor = findPredecessor(curr);
+                    curr.data = predecessor.data;
+                    curr.left = delete(curr.left, predecessor.data);
                 }
-                return curr;
             } else {
                 if (curr.left == null) {
                     return curr.right;
@@ -261,8 +265,9 @@ public class Tree<T extends Comparable<T>> {
                     return curr.left;
                 }
 
-                curr.data = findPredecessor(curr).data;
-                curr.right = delete(curr.right, key);
+                Node<T> predecessor = findPredecessor(curr);
+                curr.data = predecessor.data;
+                curr.left = delete(curr.left, predecessor.data);
             }
         }
         return curr;
