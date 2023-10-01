@@ -14,10 +14,7 @@ public class Main {
 
         for (int key : toHapus) {
             System.out.println("removing... " + key);
-            var returned = tree.delete(tree.getRoot(), key);
-            boolean isRemoved = returned != null;
-            System.out.println("Got " + returned + " from the tree!");
-            System.out.println( (isRemoved) ? "removed {" + key + "}" : "failed to remove " + key);
+            tree.delete(tree.getRoot(), key);
             System.out.print("Display in order          : ");
             tree.traverseInOrder(tree.getRoot());
             System.out.println();
