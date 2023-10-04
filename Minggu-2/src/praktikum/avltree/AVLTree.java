@@ -1,11 +1,10 @@
 package praktikum.avltree;
 
-import praktikum.bst.Node;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
 // src: https://www.happycoders.eu/algorithms/avl-tree-java/
+@SuppressWarnings("DuplicatedCode")
 public class AVLTree<T extends Comparable<T>> {
 
 	private AVLNode<T> root;
@@ -41,6 +40,7 @@ public class AVLTree<T extends Comparable<T>> {
 	 * Mengembalikan balance factor dari sebuah {@link AVLNode<T>}.
 	 */
 	private int balanceFactor(AVLNode<T> node) {
+		/* Mendapatkan balance factor dengan mengurangi ketinggian node kanan dengan node kiri */
 		return height(node.right) - height(node.left);
 	}
 
@@ -49,6 +49,7 @@ public class AVLTree<T extends Comparable<T>> {
 	 * tertinggi dengan 1.
 	 */
 	private AVLNode<T> updateHeight(AVLNode<T> node) {
+		/* Mendapatkan tinggi anak yang paling dominan / dalam, ditambah dengan 1 */
 		node.height = Math.max(height(node.left), height(node.right)) + 1;
 		return node;
 	}
@@ -58,17 +59,18 @@ public class AVLTree<T extends Comparable<T>> {
 	 * <br>1. Mengubah anak kiri node menjadi root (posisi node yang original).
 	 * <br>2. Anak kanan root sebelumnya diubah menjadi anak kiri node.
 	 * <br>3. Kemudian node diubah menjadi anak kanan root yang baru.
+	 * <br>4. Melakukan update ketinggian node yang ditukar dan anak kirinya.
 	 *
 	 * @param node root asli yang ingin dilakukan penukaran.
 	 */
 	private AVLNode<T> rotateRight(AVLNode<T> node) {
-		AVLNode<T> leftChild = node.left;
+		AVLNode<T> leftChild = node.left;							// simpan anak kiri
 
-		node.left = leftChild.right;
-		leftChild.right = node;
+		node.left = leftChild.right;								// isi anak kiri node dengan anak kanan leftChild
+		leftChild.right = node;										// ubah anak kanan leftChild dengan node
 
-		updateHeight(node);
-		updateHeight(leftChild);
+		updateHeight(node);											// perbarui ketinggian node
+		updateHeight(leftChild);									// perbarui ketinggian leftChild
 
 		return leftChild;
 	}
@@ -78,17 +80,18 @@ public class AVLTree<T extends Comparable<T>> {
 	 * <br>1. Mengubah anak kanan node menjadi root (posisi node yang original).
 	 * <br>2. Anak kanan root sebelumnya diubah menjadi anak kanan node.
 	 * <br>3. Kemudian node diubah menjadi anak kiri root yang baru.
+	 * <br>4. Melakukan update ketinggian node yang ditukar dan anak kanannya.
 	 *
 	 * @param node root asli yang ingin dilakukan penukaran.
 	 */
 	private AVLNode<T> rotateLeft(AVLNode<T> node) {
-		AVLNode<T> rightChild = node.right;
+		AVLNode<T> rightChild = node.right;							// simpan anak kanan
 
-		node.right = rightChild.left;
-		rightChild.left = node;
+		node.right = rightChild.left;								// isi anak kanan node dengan anak kiri rightChild
+		rightChild.left = node;										// ubah anak kiri rightChild dengan node
 
-		updateHeight(node);
-		updateHeight(rightChild);
+		updateHeight(node);											// perbarui ketinggian node
+		updateHeight(rightChild);									// perbarui ketinggian rightChild
 
 		return rightChild;
 	}
@@ -98,20 +101,24 @@ public class AVLTree<T extends Comparable<T>> {
 	 * rotasi kiri.
 	 */
 	private AVLNode<T> rebalance(AVLNode<T> node) {
-		int rootBalanceFactor = balanceFactor(node);
+		int rootBalanceFactor = balanceFactor(node);			// hitung balance factor root awal dengan fungsi
 		System.out.println("AVLNode " + node + " balance factor is: " + rootBalanceFactor);
 		node.printDrawnStructure();
 
-		if (rootBalanceFactor < -1) {
-			if (balanceFactor(node.left) > 0) {                // Case 1: right
-				node.left = rotateLeft(node.left);
+		if (rootBalanceFactor < -1) {							// JIKA node berat di kiri
+			if (balanceFactor(node.left) > 0) {                	// JIKA anak kirinya berat di kanan
+				node.left = rotateLeft(node.left);				// ubah anak kiri dengan anak kiri yang diputer kiri
+				node.printDrawnStructure();
 			}
-			node = rotateRight(node);
-		} else if (rootBalanceFactor > 1) {
-			if (balanceFactor(node.right) < 0) {                // Case 3: left
-				node.right = rotateRight(node.right);
+			node = rotateRight(node);							// ubah node menjadi node yang diputar kanan
+			node.printDrawnStructure();
+		} else if (rootBalanceFactor > 1) {						// JIKA node berat di kanan
+			if (balanceFactor(node.right) < 0) {                // JIKA anak kanannya berat di kiri
+				node.right = rotateRight(node.right);			// ubah anak kanan dengan anak kanan yang diputer kanan
+				node.printDrawnStructure();
 			}
-			node = rotateLeft(node);
+			node = rotateLeft(node);							// ubah node menjadi node yang diputar kiri
+			node.printDrawnStructure();
 		}
 
 		System.out.println("AVLNode " + node + " has been balanced.");
@@ -128,23 +135,26 @@ public class AVLTree<T extends Comparable<T>> {
 
 	/**
 	 * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>},
-	 * memasukkannya ke {@link AVLNode<T>}, dan menyambungkan ke tree secara rekursif.
+	 * memasukkannya ke {@link AVLNode<T>}, dan menyambungkan ke tree secara rekursif. Selanjutnya melakukan update
+	 * ketinggian node dan melakukan penyeimbangan node.
 	 *
 	 * @param curr {@link AVLNode<T>} kepala yang dimasukkan
 	 * @param data nilai yang ingin dimasukkan ke parent node
 	 */
 	private AVLNode<T> insert(AVLNode<T> curr, T data) {
-		if (curr == null) {                                   // Base case, curr kosong.
+		/* Melakukan pemasukan node biasa seperti pada BST secara rekursif */
+		if (curr == null) {                                   	// Base case, curr kosong.
 			size++;                                             // menambah size dari tree dengan 1
 			return new AVLNode<>(data);
 		}
-		if (data.compareTo(curr.getData()) < 0) {            // JIKA data lebih besar dari curr
+		if (data.compareTo(curr.getData()) < 0) {            	// JIKA data lebih besar dari curr
 			curr.left = insert(curr.left, data);
-		} else if (data.compareTo(curr.getData()) > 0) {      // JIKA data lebih besar dari curr
+		} else if (data.compareTo(curr.getData()) > 0) {      	// JIKA data lebih besar dari curr
 			curr.right = insert(curr.right, data);
 		} else {                                                // Hindari duplikat
 			System.out.println("Duplicate value " + data + " found!");
 		}
+		/* Melakukan pembaruan ketinggian node curr dan penyeimbangan */
 		updateHeight(curr);
 		return rebalance(curr);
 	}
@@ -182,12 +192,14 @@ public class AVLTree<T extends Comparable<T>> {
 	/**
 	 * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini secara rekursif.
 	 * Jika ditemukan maka akan melakukan proses pengaturan dan rekonfigurasi struktur tree kemudian mengembalikannya.
+	 * Selanjutnya melakukan update ketinggian node dan melakukan penyeimbangan node.
 	 *
 	 * @param curr root node dari nilai yang akan dihapus
 	 * @param key  nilai yang akan dihapus
 	 * @return {@link AVLNode<T>} yang dihapus atau null jika tidak ditemukan
 	 */
 	private AVLNode<T> delete(AVLNode<T> curr, T key) {
+		/* Melakukan penghapusan node biasa seperti pada BST secara rekursif */
 		if (curr == null) {
 			size--;
 			return null;
@@ -198,11 +210,11 @@ public class AVLTree<T extends Comparable<T>> {
 			curr.right = delete(curr.right, key);
 		} else {
 			if (curr.left == null) {
-				if (curr == this.root)
+				if (curr == this.root)								// inverse urutan IF yang sebelumnya pada BST
 					this.root = curr.right;
 				return curr.right;
 			} else if (curr.right == null) {
-				if (curr == this.root)
+				if (curr == this.root)								// inverse urutan IF yang sebelumnya pada BST
 					this.root = curr.left;
 				return curr.left;
 			} else {
@@ -211,14 +223,26 @@ public class AVLTree<T extends Comparable<T>> {
 				curr.left = delete(curr.left, predecessor.data);
 			}
 		}
+		/* Melakukan pembaruan ketinggian node curr dan penyeimbangan */
 		updateHeight(curr);
 		return rebalance(curr);
 	}
 
-	public AVLNode<T> getRoot() {
+
+    /**
+     * Mengembalikan size tree.
+     *
+     * @return {@link AVLNode<T>}
+     * */
+    public AVLNode<T> getRoot() {
 		return this.root;
 	}
 
+    /**
+     * Mengembalikan root tree.
+     *
+     * @return {@link AVLNode<T>}
+     * */
 	public int getSize() {
 		return this.size;
 	}
