@@ -1,5 +1,7 @@
 package praktikum;
 
+import praktikum.bst.Node;
+
 /**
  * @author 225314091 Yohanes Maria Vianney Nara Narwandaru
  * */

@@ -1,5 +1,9 @@
 package praktikum;
 
+import praktikum.avltree.AVLNode;
+import praktikum.avltree.AVLTree;
+import praktikum.bst.Tree;
+
 public class Main {
 
     /**
@@ -47,6 +51,18 @@ public class Main {
 
     private static void runAVLTest() {
 
+        var tree = new AVLTree<Integer>();                         // membuat objek Tree ke var. tree
+        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
+
+        for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
+            System.out.println("Inserting... " + key);
+            tree.insert(tree.getRoot(), key);
+            System.out.print("Display in order          : ");
+            tree.traverseInOrder(tree.getRoot());
+            System.out.println();
+            tree.getRoot().printDrawnStructure();
+        }
     }
 
     public static void main(String[] args) {

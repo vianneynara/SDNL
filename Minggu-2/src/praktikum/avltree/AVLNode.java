@@ -1,16 +1,17 @@
-package praktikum;
+package praktikum.avltree;
 
 public class AVLNode<T extends Comparable<T>> implements Comparable<AVLNode<T>> {
 
-	private AVLNode<T> left;
-	private AVLNode<T> right;
-	private T data;
-	private int height;
+	AVLNode<T> left;
+	AVLNode<T> right;
+	T data;
+	int height;
 	
 	public AVLNode(T data) {
         this.left = null;
         this.right = null;
         this.data = data;
+        this.height = 0;
     }
 
     /**

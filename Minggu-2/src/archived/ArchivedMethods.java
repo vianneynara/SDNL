@@ -1,6 +1,6 @@
 package archived;
 
-import praktikum.Node;
+import praktikum.bst.Node;
 
 public class ArchivedMethods<T extends Comparable<T>> {
 
