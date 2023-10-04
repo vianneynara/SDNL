@@ -215,10 +215,21 @@ public class AVLTree<T extends Comparable<T>> {
 		return rebalance(curr);
 	}
 
-	public AVLNode<T> getRoot() {
+
+    /**
+     * Mengembalikan size tree.
+     *
+     * @return {@link AVLNode<T>}
+     * */
+    public AVLNode<T> getRoot() {
 		return this.root;
 	}
 
+    /**
+     * Mengembalikan root tree.
+     *
+     * @return {@link AVLNode<T>}
+     * */
 	public int getSize() {
 		return this.size;
 	}
