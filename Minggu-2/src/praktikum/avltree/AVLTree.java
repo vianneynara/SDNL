@@ -34,7 +34,7 @@ public class AVLTree<T extends Comparable<T>> {
 	 * null atau tidak.
 	 */
 	private int height(AVLNode<T> node) {
-		return node != null ? node.height : -1;
+		return (node != null) ? node.height : -1;
 	}
 
 	/**
@@ -48,8 +48,9 @@ public class AVLTree<T extends Comparable<T>> {
 	 * Memperbarui ketinggian/height dari sebuah {@link AVLNode<T>} dengan menjumlahkan anak yang memiliki height
 	 * tertinggi dengan 1.
 	 */
-	private void updateHeight(AVLNode<T> node) {
+	private AVLNode<T> updateHeight(AVLNode<T> node) {
 		node.height = Math.max(height(node.left), height(node.right)) + 1;
+		return node;
 	}
 
 	/**
@@ -98,49 +99,50 @@ public class AVLTree<T extends Comparable<T>> {
 	 * */
 	private AVLNode<T> rebalance(AVLNode<T> node) {
 		int rootBalanceFactor = balanceFactor(node);
+		System.out.println("Node " + node + " balance factor is: " + rootBalanceFactor);
+		node.printDrawnStructure();
 
 		if (rootBalanceFactor < -1) {
-			if (balanceFactor(node.left) <= 0) {    			// Case 1: right
-				node = rotateRight(node);
-			} else {                                			// Case 2: left-right
+			if (balanceFactor(node.left) > 0) {    			// Case 1: right
 				node.left = rotateLeft(node.left);
-				node = rotateRight(node);
 			}
+			node = rotateRight(node);
 		} else if (rootBalanceFactor > 1) {
-			if (balanceFactor(node.right) >= 0) {    			// Case 3: left
-				node = rotateLeft(node);
-			} else {                                 			// Case 4: right-left
+			if (balanceFactor(node.right) < 0) {    			// Case 3: left
 				node.right = rotateRight(node.right);
-				node = rotateLeft(node);
 			}
+			node = rotateLeft(node);
 		}
 
+		System.out.println("Node " + node + " has been balanced.");
 		return node;
 	}
 
 	/**
+	 * Memasukkan sebuah data {@link T} ke AVL tree ini. Menggunakan pemasukan rekursif dari akar pohon.
+	 * */
+	public void insert(T data) {
+		this.root = insert(this.root, data);
+	}
+
+	/**
 	 * Metode ini memasukkan sebuah value bertipe {@code T} yang bersifat {@link Comparable<T>},
-	 * memasukkannya ke {@link AVLNode<T>}, dan menyambungkannya ke tree secara rekursif.
+	 * memasukkannya ke {@link AVLNode<T>}, dan menyambungkan ke tree secara rekursif.
 	 *
-	 * @param parent {@link AVLNode<T>} kepala
+	 * @param parent {@link AVLNode<T>} kepala yang dimasukkan
 	 * @param data   nilai yang ingin dimasukkan ke parent node
 	 */
-	public AVLNode<T> insert(AVLNode<T> parent, T data) {
-		if (this.root == null) {								// JIKA root dari tree masih kosong
-			AVLNode<T> newRoot = new AVLNode<>(data);
-            this.root = newRoot;
-            size++;
-            return newRoot;
-        }
+	private AVLNode<T> insert(AVLNode<T> parent, T data) {
 		if (parent == null) {                                   // Base case, parent kosong.
 			size++;                                             // menambah size dari tree dengan 1
 			return new AVLNode<>(data);
-		} else if (data.compareTo(parent.getData()) < 0) {     	// JIKA data lebih besar dari parent
+		}
+		if (data.compareTo(parent.getData()) < 0) {     		// JIKA data lebih besar dari parent
 			parent.left = insert(parent.left, data);
 		} else if (data.compareTo(parent.getData()) > 0) {      // JIKA data lebih besar dari parent
 			parent.right = insert(parent.right, data);
 		} else {												// Hindari duplikat
-			throw new IllegalArgumentException("Duplicate value!");
+			System.out.println("Duplicate value " + data + " found!");
 		}
 		updateHeight(parent);
 		return rebalance(parent);

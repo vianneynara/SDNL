@@ -129,6 +129,9 @@ public class Tree<T extends Comparable<T>> {
                 }
             }
         }
+
+        /* Using recursive */
+//        this.root = insert(this.root, data);
     }
 
     /**
@@ -138,7 +141,7 @@ public class Tree<T extends Comparable<T>> {
      * @param parent {@link Node<T>} kepala
      * @param data nilai yang ingin dimasukkan ke parent node
      * */
-    public Node<T> insert(Node<T> parent, T data) {
+    private Node<T> insert(Node<T> parent, T data) {
         if (parent == null) {
             size++;
             return new Node<>(data);
