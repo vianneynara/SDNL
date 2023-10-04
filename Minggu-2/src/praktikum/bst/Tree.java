@@ -1,4 +1,4 @@
-package praktikum;
+package praktikum.bst;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -140,9 +140,8 @@ public class Tree<T extends Comparable<T>> {
      * */
     public Node<T> insert(Node<T> parent, T data) {
         if (parent == null) {
-            parent = new Node<>(data);
             size++;
-            return parent;
+            return new Node<>(data);
         }
         if (data.compareTo(parent.getData()) < 0) {                 
             parent.left = insert(parent.left, data);
