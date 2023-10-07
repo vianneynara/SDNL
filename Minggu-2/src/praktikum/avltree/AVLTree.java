@@ -210,11 +210,11 @@ public class AVLTree<T extends Comparable<T>> {
 			curr.right = delete(curr.right, key);
 		} else {
 			if (curr.left == null) {
-				if (curr == this.root)								// inverse urutan IF yang sebelumnya pada BST
+				if (curr == this.root)								// invert urutan IF yang sebelumnya pada BST
 					this.root = curr.right;
 				return curr.right;
 			} else if (curr.right == null) {
-				if (curr == this.root)								// inverse urutan IF yang sebelumnya pada BST
+				if (curr == this.root)								// invert urutan IF yang sebelumnya pada BST
 					this.root = curr.left;
 				return curr.left;
 			} else {
@@ -228,8 +228,7 @@ public class AVLTree<T extends Comparable<T>> {
 		return rebalance(curr);
 	}
 
-
-    /**
+	/**
      * Mengembalikan size tree.
      *
      * @return {@link AVLNode<T>}
