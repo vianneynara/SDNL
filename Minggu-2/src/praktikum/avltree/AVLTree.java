@@ -64,13 +64,13 @@ public class AVLTree<T extends Comparable<T>> {
 	 * @param node root asli yang ingin dilakukan penukaran.
 	 */
 	private AVLNode<T> rotateRight(AVLNode<T> node) {
-		AVLNode<T> leftChild = node.left;							// simpan anak kiri
+		AVLNode<T> leftChild = node.left;						// simpan anak kiri
 
-		node.left = leftChild.right;								// isi anak kiri node dengan anak kanan leftChild
-		leftChild.right = node;										// ubah anak kanan leftChild dengan node
+		node.left = leftChild.right;							// isi anak kiri node dengan anak kanan leftChild
+		leftChild.right = node;									// ubah anak kanan leftChild dengan node
 
-		updateHeight(node);											// perbarui ketinggian node
-		updateHeight(leftChild);									// perbarui ketinggian leftChild
+		updateHeight(node);										// perbarui ketinggian node
+		updateHeight(leftChild);								// perbarui ketinggian leftChild
 
 		return leftChild;
 	}
@@ -85,13 +85,13 @@ public class AVLTree<T extends Comparable<T>> {
 	 * @param node root asli yang ingin dilakukan penukaran.
 	 */
 	private AVLNode<T> rotateLeft(AVLNode<T> node) {
-		AVLNode<T> rightChild = node.right;							// simpan anak kanan
+		AVLNode<T> rightChild = node.right;						// simpan anak kanan
 
-		node.right = rightChild.left;								// isi anak kanan node dengan anak kiri rightChild
-		rightChild.left = node;										// ubah anak kiri rightChild dengan node
+		node.right = rightChild.left;							// isi anak kanan node dengan anak kiri rightChild
+		rightChild.left = node;									// ubah anak kiri rightChild dengan node
 
-		updateHeight(node);											// perbarui ketinggian node
-		updateHeight(rightChild);									// perbarui ketinggian rightChild
+		updateHeight(node);										// perbarui ketinggian node
+		updateHeight(rightChild);								// perbarui ketinggian rightChild
 
 		return rightChild;
 	}
