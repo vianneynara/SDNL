@@ -94,7 +94,7 @@ public class AVLNode<T extends Comparable<T>> implements Comparable<AVLNode<T>> 
         if (right != null) {
             right.drawStructure(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
         }
-        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString() + "["+ height + "]").append("\n");
+        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString() + "["+ height + "]" + "("+ balanceFactor(this) + ")").append("\n");
         if (left != null) {
             left.drawStructure(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
         }
@@ -108,4 +108,17 @@ public class AVLNode<T extends Comparable<T>> implements Comparable<AVLNode<T>> 
 	public int compareTo(AVLNode<T> node) {
         return this.data.compareTo(node.getData());
 	}
+
+    	private int height(AVLNode<T> node) {
+		return (node == null) ? -1 : node.height;
+	}
+
+	/**
+	 * Mengembalikan balance factor dari sebuah {@link AVLNode<T>}.
+	 */
+	private int balanceFactor(AVLNode<T> node) {
+		/* Mendapatkan balance factor dengan mengurangi ketinggian node kanan dengan node kiri */
+		return height(node.right) - height(node.left);
+	}
+
 }
