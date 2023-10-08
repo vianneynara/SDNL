@@ -98,14 +98,14 @@ public class Main {
     private static void runTest() {
 
         AVLTree<Integer> tree = new AVLTree<>();
-        int[] dataset = {56, 30, 40, 11, 70, 61, 96, 88};
+        int[] dataset = {4, 3, 6, 1, 2};
 
         for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
-            System.out.println("Inserting... " + key);
+            System.out.println("-".repeat(40));
+            System.out.println(">>> INSERTING " + key);
             tree.insert(key);
         }
         System.out.println();
-        tree.getRoot().printDrawnStructure();
         System.out.print("Display in order          : ");
         tree.traverseInOrder(tree.getRoot());
     }
