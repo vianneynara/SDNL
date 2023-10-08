@@ -3,7 +3,7 @@ package praktikum.avltree;
 import java.util.LinkedList;
 import java.util.Queue;
 
-// src: https://www.happycoders.eu/algorithms/avl-tree-java/
+// resource: https://www.happycoders.eu/algorithms/avl-tree-java/
 @SuppressWarnings("DuplicatedCode")
 public class AVLTree<T extends Comparable<T>> {
 
@@ -102,26 +102,19 @@ public class AVLTree<T extends Comparable<T>> {
 	 */
 	private AVLNode<T> rebalance(AVLNode<T> node) {
 		int rootBalanceFactor = balanceFactor(node);			// hitung balance factor root awal dengan fungsi
-		System.out.println("AVLNode " + node + " balance factor is: " + rootBalanceFactor);
-		node.printDrawnStructure();
 
 		if (rootBalanceFactor < -1) {							// JIKA node berat di kiri
 			if (balanceFactor(node.left) > 0) {                	// JIKA anak kirinya berat di kanan
 				node.left = rotateLeft(node.left);				// ubah anak kiri dengan anak kiri yang diputer kiri
-				node.printDrawnStructure();
 			}
 			node = rotateRight(node);							// ubah node menjadi node yang diputar kanan
-			node.printDrawnStructure();
 		} else if (rootBalanceFactor > 1) {						// JIKA node berat di kanan
 			if (balanceFactor(node.right) < 0) {                // JIKA anak kanannya berat di kiri
 				node.right = rotateRight(node.right);			// ubah anak kanan dengan anak kanan yang diputer kanan
-				node.printDrawnStructure();
 			}
 			node = rotateLeft(node);							// ubah node menjadi node yang diputar kiri
-			node.printDrawnStructure();
 		}
 
-		System.out.println("AVLNode " + node + " has been balanced.");
 		return node;
 	}
 
@@ -255,7 +248,7 @@ public class AVLTree<T extends Comparable<T>> {
 	public void traverseInOrder(AVLNode<T> curr) {
 		if (curr != null) {
 			traverseInOrder(curr.left);
-			System.out.print((curr.getData()) + " ");
+			System.out.print(curr.getData() + " ");
 			traverseInOrder(curr.right);
 		}
 	}

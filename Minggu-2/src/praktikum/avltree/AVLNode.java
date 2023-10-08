@@ -94,7 +94,7 @@ public class AVLNode<T extends Comparable<T>> implements Comparable<AVLNode<T>> 
         if (right != null) {
             right.drawStructure(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
         }
-        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString()).append("\n");
+        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString() + "["+ height + "]").append("\n");
         if (left != null) {
             left.drawStructure(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
         }

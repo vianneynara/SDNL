@@ -53,7 +53,6 @@ public class Main {
 
         AVLTree<Integer> tree = new AVLTree<>();
         int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
-        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
 
         for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
             System.out.println("-".repeat(40));
@@ -64,6 +63,8 @@ public class Main {
             System.out.println();
             tree.getRoot().printDrawnStructure();
         }
+
+        System.out.println("\nTest selesai.");
     }
 
     private static void runAVLTestDelete() {
@@ -94,9 +95,25 @@ public class Main {
         System.out.println("\nTest selesai.");
     }
 
+    private static void runTest() {
+
+        AVLTree<Integer> tree = new AVLTree<>();
+        int[] dataset = {56, 30, 40, 11, 70, 61, 96, 88};
+
+        for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
+            System.out.println("Inserting... " + key);
+            tree.insert(key);
+        }
+        System.out.println();
+        tree.getRoot().printDrawnStructure();
+        System.out.print("Display in order          : ");
+        tree.traverseInOrder(tree.getRoot());
+    }
+
     public static void main(String[] args) {
 //        runBSTTest();
 //        runAVLTestInsert();
-        runAVLTestDelete();
+//        runAVLTestDelete();
+        runTest();
     }
 }
