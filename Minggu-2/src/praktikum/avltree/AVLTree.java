@@ -33,7 +33,7 @@ public class AVLTree<T extends Comparable<T>> {
 	 * null atau tidak.
 	 */
 	private int height(AVLNode<T> node) {
-		return (node != null) ? node.height : -1;
+		return (node == null) ? -1 : node.height;
 	}
 
 	/**
@@ -64,13 +64,13 @@ public class AVLTree<T extends Comparable<T>> {
 	 * @param node root asli yang ingin dilakukan penukaran.
 	 */
 	private AVLNode<T> rotateRight(AVLNode<T> node) {
-		AVLNode<T> leftChild = node.left;						// simpan anak kiri
+		AVLNode<T> leftChild = node.left;
 
-		node.left = leftChild.right;							// isi anak kiri node dengan anak kanan leftChild
-		leftChild.right = node;									// ubah anak kanan leftChild dengan node
+		node.left = leftChild.right;
+		leftChild.right = node;
 
-		updateHeight(node);										// perbarui ketinggian node
-		updateHeight(leftChild);								// perbarui ketinggian leftChild
+		updateHeight(node);
+		updateHeight(leftChild);
 
 		return leftChild;
 	}
@@ -85,13 +85,13 @@ public class AVLTree<T extends Comparable<T>> {
 	 * @param node root asli yang ingin dilakukan penukaran.
 	 */
 	private AVLNode<T> rotateLeft(AVLNode<T> node) {
-		AVLNode<T> rightChild = node.right;						// simpan anak kanan
+		AVLNode<T> rightChild = node.right;
 
-		node.right = rightChild.left;							// isi anak kanan node dengan anak kiri rightChild
-		rightChild.left = node;									// ubah anak kiri rightChild dengan node
+		node.right = rightChild.left;
+		rightChild.left = node;
 
-		updateHeight(node);										// perbarui ketinggian node
-		updateHeight(rightChild);								// perbarui ketinggian rightChild
+		updateHeight(node);
+		updateHeight(rightChild);
 
 		return rightChild;
 	}
@@ -101,18 +101,18 @@ public class AVLTree<T extends Comparable<T>> {
 	 * rotasi kiri.
 	 */
 	private AVLNode<T> rebalance(AVLNode<T> node) {
-		int rootBalanceFactor = balanceFactor(node);			// hitung balance factor root awal dengan fungsi
+		int rootBalanceFactor = balanceFactor(node);
 
-		if (rootBalanceFactor < -1) {							// JIKA node berat di kiri
-			if (balanceFactor(node.left) > 0) {                	// JIKA anak kirinya berat di kanan
-				node.left = rotateLeft(node.left);				// ubah anak kiri dengan anak kiri yang diputer kiri
+		if (rootBalanceFactor < -1) {
+			if (balanceFactor(node.left) > 0) {
+				node.left = rotateLeft(node.left);
 			}
-			node = rotateRight(node);							// ubah node menjadi node yang diputar kanan
-		} else if (rootBalanceFactor > 1) {						// JIKA node berat di kanan
-			if (balanceFactor(node.right) < 0) {                // JIKA anak kanannya berat di kiri
-				node.right = rotateRight(node.right);			// ubah anak kanan dengan anak kanan yang diputer kanan
+			node = rotateRight(node);
+		} else if (rootBalanceFactor > 1) {
+			if (balanceFactor(node.right) < 0) {
+				node.right = rotateRight(node.right);
 			}
-			node = rotateLeft(node);							// ubah node menjadi node yang diputar kiri
+			node = rotateLeft(node);
 		}
 
 		return node;
@@ -136,15 +136,15 @@ public class AVLTree<T extends Comparable<T>> {
 	 */
 	private AVLNode<T> insert(AVLNode<T> curr, T data) {
 		/* Melakukan pemasukan node biasa seperti pada BST secara rekursif */
-		if (curr == null) {                                   	// Base case, curr kosong.
-			size++;                                             // menambah size dari tree dengan 1
+		if (curr == null) {
+			size++;
 			return new AVLNode<>(data);
 		}
-		if (data.compareTo(curr.getData()) < 0) {            	// JIKA data lebih besar dari curr
+		if (data.compareTo(curr.getData()) < 0) {
 			curr.left = insert(curr.left, data);
-		} else if (data.compareTo(curr.getData()) > 0) {      	// JIKA data lebih besar dari curr
+		} else if (data.compareTo(curr.getData()) > 0) {
 			curr.right = insert(curr.right, data);
-		} else {                                                // Hindari duplikat
+		} else {
 			System.out.println("Duplicate value " + data + " found!");
 		}
 		/* Melakukan pembaruan ketinggian node curr dan penyeimbangan */
@@ -203,11 +203,11 @@ public class AVLTree<T extends Comparable<T>> {
 			curr.right = delete(curr.right, key);
 		} else {
 			if (curr.left == null) {
-				if (curr == this.root)								// invert urutan IF yang sebelumnya pada BST
+				if (curr == this.root)
 					this.root = curr.right;
 				return curr.right;
 			} else if (curr.right == null) {
-				if (curr == this.root)								// invert urutan IF yang sebelumnya pada BST
+				if (curr == this.root)
 					this.root = curr.left;
 				return curr.left;
 			} else {
