@@ -33,7 +33,7 @@ public class Main {
 
         for (int key : toHapus) {
             System.out.println("-".repeat(40));
-            System.out.println("removing... " + key);
+            System.out.println(">>> REMOVING " + key);
             tree.delete(tree.getRoot(), key);
             System.out.print("Display in order          : ");
             tree.traverseInOrder(tree.getRoot());
@@ -56,7 +56,7 @@ public class Main {
 
         for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
             System.out.println("-".repeat(40));
-            System.out.println("Inserting... " + key);
+            System.out.println(">>> INSERTING " + key);
             tree.insert(key);
             System.out.print("Display in order          : ");
             tree.traverseInOrder(tree.getRoot());
@@ -79,7 +79,7 @@ public class Main {
 
         for (int key : toHapus) {
             System.out.println("-".repeat(40));
-            System.out.println("removing... " + key);
+            System.out.println(">>> REMOVING " + key);
             tree.delete(key);
             System.out.print("Display in order          : ");
             tree.traverseInOrder(tree.getRoot());
@@ -112,8 +112,8 @@ public class Main {
 
     public static void main(String[] args) {
 //        runBSTTest();
-//        runAVLTestInsert();
+        runAVLTestInsert();
 //        runAVLTestDelete();
-        runTest();
+//        runTest();
     }
 }
