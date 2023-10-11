@@ -5,6 +5,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
     Node<T> left;
     Node<T> right;
     T data;
+    int height;
 
     /**
      * Constructor kelas dengan nilai awal data.
@@ -13,6 +14,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
         this.left = null;
         this.right = null;
         this.data = data;
+        this.height = 0;
     }
 
     /**
@@ -94,7 +96,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
      * Mengembalikan penggambaran struktur {@link Node} ini.
      * */
     public void printDrawnStructure() {
-        System.out.println(this.drawStructure(new StringBuilder(), true, new StringBuilder()).toString());
+        System.out.println(this.drawStructure(new StringBuilder(), true, new StringBuilder()));
     }
 
     /* Penggambaran struktur secara rekursif */
