@@ -3,6 +3,7 @@ package praktikum.bst;
 import java.util.LinkedList;
 import java.util.Queue;
 
+// source:https://www.happycoders.eu/algorithms/binary-tree-java/
 public class Tree<T extends Comparable<T>> {
 
     private Node<T> root;
@@ -28,7 +29,7 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Mencari nilai terkecil dari subtree kanan milik sebuah {@link Node<T>}.
+     * Mencari node terkecil dari subtree kanan milik sebuah {@link Node<T>}.
      *
      * @param curr node untuk mencari
      * @return {@link Node<T>} yang terkecil atau null
@@ -50,7 +51,7 @@ public class Tree<T extends Comparable<T>> {
     }
 
     /**
-     * Mencari nilai terbesar dari subtree kiri milik sebuah {@link Node<T>}.
+     * Mencari node terbesar dari subtree kiri milik sebuah {@link Node<T>}.
      *
      * @param curr node untuk mencari
      * @return {@link Node<T>} terbesar atau null
@@ -309,6 +310,60 @@ public class Tree<T extends Comparable<T>> {
         } else {
             return search(root.right, key);
         }
+    }
+
+    /**
+     * Mencari node terkecil sebuah {@link Node<T>}.
+     *
+     * @param curr node untuk mencari
+     * @return {@link Node<T>} yang terkecil atau null
+     * */
+    public Node<T> findMin(Node<T> curr) {
+        if (curr == null) {
+            return null;
+        } else {
+            while (curr.left != null) {
+                curr = curr.left;
+            }
+            return curr;
+        }
+    }
+
+    /**
+     * Mencari node terbesar sebuah {@link Node<T>}.
+     *
+     * @param curr node untuk mencari
+     * @return {@link Node<T>} terbesar atau null
+     * */
+    public Node<T> findMax(Node<T> curr) {
+        if (curr == null) {
+            return null;
+        } else {
+            while (curr.right != null) {
+                curr = curr.right;
+            }
+            return curr;
+        }
+    }
+
+    /**
+     * Mencari nilai terkecil sebuah {@link Node<T>}.
+     *
+     * @param curr node untuk mencari
+     * @return {@link Node<T>} terkecil atau null
+     * */
+    public T findMinValue(Node<T> curr) {
+        return findMin(curr).data;
+    }
+
+    /**
+     * Mencari nilai terbesar sebuah {@link Node<T>}.
+     *
+     * @param curr node untuk mencari
+     * @return {@link T} nilai terkecil atau null
+     * */
+    public T findMaxValue(Node<T> curr) {
+        return findMax(curr).data;
     }
 
     /**
