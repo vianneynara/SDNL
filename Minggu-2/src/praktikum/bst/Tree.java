@@ -118,6 +118,7 @@ public class Tree<T extends Comparable<T>> {
                 } else {
                     curr.left = newNode;
                     size++;
+                    updateHeight(curr);
                     return;
                 }
             } else {
@@ -125,6 +126,7 @@ public class Tree<T extends Comparable<T>> {
                     curr = curr.right;
                 } else {
                     curr.right = newNode;
+                    updateHeight(curr);
                     size++;
                     return;
                 }
@@ -132,7 +134,8 @@ public class Tree<T extends Comparable<T>> {
         }
 
         /* Using recursive */
-//        this.root = insert(this.root, data);
+        this.root = insert(this.root, data);
+        updateHeight(this.root);
     }
 
     /**
@@ -152,6 +155,7 @@ public class Tree<T extends Comparable<T>> {
         } else {                                                    
             parent.right = insert(parent.right, data);
         }
+        updateHeight(parent);
         return parent;
     }
 
@@ -162,6 +166,7 @@ public class Tree<T extends Comparable<T>> {
      * @param key nilai yang akan dihapus
      * @return {@link Node<T>} yang dihapus atau null jika tidak ditemukan
      */
+    // <editor-fold defaultstate="collapsed" desc="Long ass boring DELETE method code">
     public Node<T> delete(T key) {
         Node<T> parent = null;
         Node<T> curr = this.root;
@@ -228,10 +233,12 @@ public class Tree<T extends Comparable<T>> {
                     leastParent.right = null;                       
                 }
             }
+            updateHeight(removed);
             return removed;
         }
+        updateHeight(curr);
         return curr;
-    }
+    } //</editor-fold>
 
     /**
      * Pencarian sebuah node yang bernilai {@code key} yang ingin dihapus pada tree ini secara rekursif.
@@ -264,6 +271,7 @@ public class Tree<T extends Comparable<T>> {
                 curr.left = delete(curr.left, predecessor.data);
             }
         }
+        updateHeight(curr);
         return curr;
     }
 
@@ -365,6 +373,24 @@ public class Tree<T extends Comparable<T>> {
     public T findMaxValue(Node<T> curr) {
         return findMax(curr).data;
     }
+    
+	/**
+	 * Mendapatkan height/ketinggian dari sebuah {@link Node<T>} dengan melakukan pengecekan apakah node tersebut
+	 * null atau tidak.
+	 */
+	private int height(Node<T> node) {
+		return (node == null) ? -1 : node.height;
+	}
+    
+	/**
+	 * Memperbarui ketinggian/height dari sebuah {@link Node<T>} dengan menjumlahkan anak yang memiliki height
+	 * tertinggi dengan 1. Diasumsikan bahwa node di bawahnya punya height.
+	 */
+	private Node<T> updateHeight(Node<T> node) {
+		/* Mendapatkan tinggi anak yang paling dominan / dalam, ditambah dengan 1 */
+		node.height = Math.max(height(node.left), height(node.right)) + 1;
+		return node;
+	}
 
     /**
      * (rekursif) Pre Order | Melakukan traversal dari ujung kiri ke ujung kanan, mencetak setiap isi {@link Node<T>}.

@@ -104,10 +104,26 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
         if (right != null) {
             right.drawStructure(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
         }
-        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString()).append("\n");
+        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString() + "["+ height + "]" + "("+ balanceFactor(this) + ")").append("\n");
         if (left != null) {
             left.drawStructure(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
         }
         return sb;
     }
+
+	/**
+	 * Mendapatkan height / ketinggian sebuah node.
+	 * */
+	private int height(Node<T> node) {
+		return (node == null) ? -1 : node.height;
+	}
+
+	/**
+	 * Mengembalikan balance factor dari sebuah {@link Node<T>}.
+	 */
+	private int balanceFactor(Node<T> node) {
+		/* Mendapatkan balance factor dengan mengurangi ketinggian node kanan dengan node kiri */
+		return height(node.right) - height(node.left);
+	}
 }
+
