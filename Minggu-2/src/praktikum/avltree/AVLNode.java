@@ -110,17 +110,10 @@ public class AVLNode<T extends Comparable<T>> implements Comparable<AVLNode<T>> 
     }
 
 	/**
-	 * Mendapatkan height / ketinggian sebuah node.
-	 * */
-	private int height(AVLNode<T> node) {
-		return (node == null) ? -1 : node.height;
-	}
-
-	/**
 	 * Mengembalikan balance factor dari sebuah {@link AVLNode<T>}.
 	 */
 	private int balanceFactor(AVLNode<T> node) {
 		/* Mendapatkan balance factor dengan mengurangi ketinggian node kanan dengan node kiri */
-		return height(node.right) - height(node.left);
+		return AVLTree.height(node.right) - AVLTree.height(node.left);
 	}
 }

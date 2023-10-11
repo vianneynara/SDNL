@@ -123,7 +123,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
 	 */
 	private int balanceFactor(Node<T> node) {
 		/* Mendapatkan balance factor dengan mengurangi ketinggian node kanan dengan node kiri */
-		return height(node.right) - height(node.left);
+		return Tree.height(node.right) - Tree.height(node.left);
 	}
 }
 

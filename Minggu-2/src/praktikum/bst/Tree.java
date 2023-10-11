@@ -5,6 +5,13 @@ import java.util.Queue;
 
 // source:https://www.happycoders.eu/algorithms/binary-tree-java/
 public class Tree<T extends Comparable<T>> {
+	/**
+	 * Mendapatkan height/ketinggian dari sebuah {@link Node<T>} dengan melakukan pengecekan apakah node tersebut
+	 * null atau tidak.
+	 */
+	protected static <T extends Comparable<T>> int height(Node<T> node) {
+		return (node == null) ? -1 : node.height;
+	}
 
     private Node<T> root;
     private int size;
@@ -373,14 +380,6 @@ public class Tree<T extends Comparable<T>> {
     public T findMaxValue(Node<T> curr) {
         return findMax(curr).data;
     }
-    
-	/**
-	 * Mendapatkan height/ketinggian dari sebuah {@link Node<T>} dengan melakukan pengecekan apakah node tersebut
-	 * null atau tidak.
-	 */
-	private int height(Node<T> node) {
-		return (node == null) ? -1 : node.height;
-	}
     
 	/**
 	 * Memperbarui ketinggian/height dari sebuah {@link Node<T>} dengan menjumlahkan anak yang memiliki height

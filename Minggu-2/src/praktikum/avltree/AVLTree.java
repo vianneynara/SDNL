@@ -6,6 +6,13 @@ import java.util.Queue;
 // resource: https://www.happycoders.eu/algorithms/avl-tree-java/
 @SuppressWarnings("DuplicatedCode")
 public class AVLTree<T extends Comparable<T>> {
+	/**
+	 * Mendapatkan height/ketinggian dari sebuah {@link AVLNode<T>} dengan melakukan pengecekan apakah node tersebut
+	 * null atau tidak.
+	 */
+	protected static <T extends Comparable<T>> int height(AVLNode<T> node) {
+		return (node == null) ? -1 : node.height;
+	}
 
 	private AVLNode<T> root;
 	private int size;
@@ -26,14 +33,6 @@ public class AVLTree<T extends Comparable<T>> {
 	 */
 	public AVLTree(AVLNode<T> root) {
 		this.root = root;
-	}
-
-	/**
-	 * Mendapatkan height/ketinggian dari sebuah {@link AVLNode<T>} dengan melakukan pengecekan apakah node tersebut
-	 * null atau tidak.
-	 */
-	private int height(AVLNode<T> node) {
-		return (node == null) ? -1 : node.height;
 	}
 
 	/**
