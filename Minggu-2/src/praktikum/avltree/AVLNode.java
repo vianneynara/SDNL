@@ -83,6 +83,14 @@ public class AVLNode<T extends Comparable<T>> implements Comparable<AVLNode<T>> 
     }
 
     /**
+     * Melakukan komparasi / perbandingan antar objek yang bisa dibandingkan.
+     * */
+	@Override
+	public int compareTo(AVLNode<T> node) {
+        return this.data.compareTo(node.getData());
+	}
+
+    /**
      * Mengembalikan penggambaran struktur {@link AVLNode} ini.
      * */
     public void printDrawnStructure() {
@@ -101,15 +109,10 @@ public class AVLNode<T extends Comparable<T>> implements Comparable<AVLNode<T>> 
         return sb;
     }
 
-    /**
-     * Melakukan komparasi / perbandingan antar objek yang bisa dibandingkan.
-     * */
-	@Override
-	public int compareTo(AVLNode<T> node) {
-        return this.data.compareTo(node.getData());
-	}
-
-    	private int height(AVLNode<T> node) {
+	/**
+	 * Mendapatkan height / ketinggian sebuah node.
+	 * */
+	private int height(AVLNode<T> node) {
 		return (node == null) ? -1 : node.height;
 	}
 
@@ -120,5 +123,4 @@ public class AVLNode<T extends Comparable<T>> implements Comparable<AVLNode<T>> 
 		/* Mendapatkan balance factor dengan mengurangi ketinggian node kanan dengan node kiri */
 		return height(node.right) - height(node.left);
 	}
-
 }
