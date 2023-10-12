@@ -1,8 +1,9 @@
 package praktikum;
 
-import praktikum.avltree.AVLNode;
 import praktikum.avltree.AVLTree;
 import praktikum.bst.Tree;
+
+import java.util.Random;
 
 public class Main {
 
@@ -27,6 +28,16 @@ public class Main {
         int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
         int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
 
+//        int size = 100_000;
+//        double[] randomInts = new double[size];
+//        for (int i = 0; i < size; i++) {
+//            randomInts[i] = (Math.random() * 10000) + 1;
+//        }
+//
+//        for (double n : randomInts) {
+//            tree.insert(n);
+//        }
+
         for (int key : dataset) {
             tree.insert(key);
         }
@@ -47,6 +58,21 @@ public class Main {
         }
 
         System.out.println("\nTest selesai.");
+    }
+
+    private static void runCompleteBST() {
+
+        Tree<Integer> tree = new Tree<>();
+        int[] isNotComplete = {25, 15, 30, 10, 20, 28, 5, 12, 23};
+        int[] isComplete = {25, 15, 30, 31, 10, 20, 28, 5, 12, 23, 18};
+
+
+        for (int key : isNotComplete) {
+            tree.insert(key);
+        }
+
+        System.out.println("Is the tree complete? " + ((tree.isComplete()) ? "Yup" : "Nah"));
+        tree.getRoot().printDrawnStructure();
     }
 
     private static void runAVLTestInsert() {
@@ -98,7 +124,7 @@ public class Main {
     private static void runTest() {
 
         AVLTree<Integer> tree = new AVLTree<>();
-        int[] dataset = {4, 3, 6, 1, 2};
+        int[] dataset = {10, 6, 15, 8, 2, 13, 12, 14, 18, 20};
 
         for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
             System.out.println("-".repeat(40));
@@ -108,11 +134,13 @@ public class Main {
         System.out.println();
         System.out.print("Display in order          : ");
         tree.traverseInOrder(tree.getRoot());
+        tree.getRoot().printDrawnStructure();
     }
 
     public static void main(String[] args) {
 //        runBSTTest();
-        runAVLTestInsert();
+        runCompleteBST();
+//        runAVLTestInsert();
 //        runAVLTestDelete();
 //        runTest();
     }

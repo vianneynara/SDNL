@@ -230,9 +230,7 @@ public class AVLTree<T extends Comparable<T>> {
 	}
 
     /**
-     * Mengembalikan root tree.
-     *
-     * @return {@link AVLNode<T>}
+     * Mengembalikan size / ukuran / banyaknya node dari tree.
      * */
 	public int getSize() {
 		return this.size;

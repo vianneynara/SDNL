@@ -104,7 +104,7 @@ public class Node<T extends Comparable<T>> implements Comparable<Node<T>> {
         if (right != null) {
             right.drawStructure(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
         }
-        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString() + "["+ height + "]" + "("+ balanceFactor(this) + ")").append("\n");
+        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(data.toString()).append("\n");
         if (left != null) {
             left.drawStructure(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
         }
