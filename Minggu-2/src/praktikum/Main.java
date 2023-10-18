@@ -4,6 +4,7 @@ import praktikum.avltree.AVLTree;
 import praktikum.bst.Tree;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
 
@@ -25,8 +26,9 @@ public class Main {
     private static void runBSTTest() {
 
         Tree<Integer> tree = new Tree<>();
-        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
-        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
+        int[] dataset = {40, 30, 25, 15, 28, 35, 50, 45, 60, 55, 70};
+//        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+//        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
 
 //        int size = 100_000;
 //        double[] randomInts = new double[size];
@@ -41,23 +43,24 @@ public class Main {
         for (int key : dataset) {
             tree.insert(key);
         }
+        tree.traversePostOrder(tree.getRoot());
 
-        for (int key : toHapus) {
-            System.out.println("-".repeat(40));
-            System.out.println(">>> REMOVING " + key);
-            tree.delete(tree.getRoot(), key);
-            System.out.print("Display in order          : ");
-            tree.traverseInOrder(tree.getRoot());
-            System.out.println();
-            System.out.println("root: " + tree.getRoot());
-            try {
-                tree.getRoot().printDrawnStructure();
-            } catch (NullPointerException npe) {
-                System.out.println("Tree kosong!\n");
-            }
-        }
-
-        System.out.println("\nTest selesai.");
+//        for (int key : toHapus) {
+//            System.out.println("-".repeat(40));
+//            System.out.println(">>> REMOVING " + key);
+//            tree.delete(tree.getRoot(), key);
+//            System.out.print("Display in order          : ");
+//            tree.traverseInOrder(tree.getRoot());
+//            System.out.println();
+//            System.out.println("root: " + tree.getRoot());
+//            try {
+//                tree.getRoot().printDrawnStructure();
+//            } catch (NullPointerException npe) {
+//                System.out.println("Tree kosong!\n");
+//            }
+//        }
+//
+//        System.out.println("\nTest selesai.");
     }
 
     private static void runCompleteBST() {
@@ -78,7 +81,7 @@ public class Main {
     private static void runAVLTestInsert() {
 
         AVLTree<Integer> tree = new AVLTree<>();
-        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
+        int[] dataset = {20, 11, 5, 32, 40, 2, 4, 27, 23, 28, 50};
 
         for (int key : dataset) {                                 // Iterasi untuk setiap elemen di dataset
             System.out.println("-".repeat(40));
@@ -137,11 +140,32 @@ public class Main {
         tree.getRoot().printDrawnStructure();
     }
 
+    private static void runUTSTest() {
+        UTS1<Integer> tree = new UTS1<>();
+        int[] data = {23, 19, 45, 5, 21, 35, 65, 8, 33, 42};
+
+        for (int n : data)
+            tree.insert(n);
+
+        tree.getRoot().printDrawnStructure();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Masukkan angka yang ingin dicari: ");
+        int toFind = sc.nextInt();
+        System.out.printf("Mencari angka %d...%n", toFind + 1);
+        var hasil = tree.cariDataTepatLebihKecil(toFind);
+        System.out.println(
+            (hasil != null) ?
+                "Ditemukan " + hasil :
+                "Tidak ditemukan pencarian anak sebelum " + (toFind + 1)
+        );
+    }
+
     public static void main(String[] args) {
 //        runBSTTest();
-        runCompleteBST();
+//        runCompleteBST();
 //        runAVLTestInsert();
 //        runAVLTestDelete();
 //        runTest();
+        runUTSTest();
     }
 }
