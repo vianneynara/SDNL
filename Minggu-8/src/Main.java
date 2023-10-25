@@ -8,7 +8,7 @@ public class Main {
 		theGraph.addVertex("B"); // 1
 		theGraph.addVertex("C"); // 2
 		theGraph.addVertex("D"); // 3
-//		theGraph.addVertex("E"); // 4
+		theGraph.addVertex("E"); // 4
 
 		theGraph.displayVertices();
 		theGraph.addEdge(0, 1); // AB

@@ -1,21 +1,31 @@
 package praktikum;
 
 public class Graph {
-	private Vertex[] vertices;
-	private int verticesIdx = 0;
-	private int[][] adjMatrix;
+	private Vertex[] vertices;									// Menyimpan vertex dalam array
+	private int[][] adjMatrix;									// Menyimpan adjacency matrix hubungan antar vertex
+	private int backIdx;										// Menyimpan posisi vertex terakhir
 
 	public Graph(int nVertices) {
-		vertices = new Vertex[nVertices];
-		adjMatrix = new int[nVertices][nVertices];
+		this.vertices = new Vertex[nVertices];
+		this.adjMatrix = new int[nVertices][nVertices];
+		this.backIdx = 0;
 	}
 
 	// Getters & Setters
 
+	/**
+	 * Menambahkan sebuah vertex / titik ke dalam graf dengan label vertex.
+	 * @param label label vertex
+	 * */
 	public void addVertex(String label) {
-		vertices[verticesIdx++] = new Vertex(label);
+		vertices[backIdx++] = new Vertex(label);
 	}
 
+	/**
+	 * Menambahkan edge/penghubung vertex dengan format adjacency matrix.
+	 * @param src posisi node 1
+	 * @param dest posisi node 2
+	 * */
 	public void addEdge(int src, int dest) {
 		adjMatrix[src][dest] = 1;
 		adjMatrix[dest][src] = 1;
@@ -42,6 +52,9 @@ public class Graph {
 		return adjMatrix[i][j];
 	}
 
+	/**
+	 * Menampilkan seluruh vertex yang ada dalam graf.
+	 * */
 	public void displayVertices() {
 		System.out.print("Vertices: ");
 		for (Vertex v : vertices)
@@ -49,19 +62,23 @@ public class Graph {
 		System.out.println();
 	}
 
+	/**
+	 * Menggambarkan adjacency matrix hubungan antar vertex.
+	 * */
 	public void displayMatrix() {
 		System.out.print("%  ");
-		for (Vertex vertex : vertices) {
-			if (vertex != null)
+		for (Vertex vertex : vertices) {								// Mencetak title label horizontal
+			if (vertex != null) {										// Jika vertex tidak null / vertex ada
 				System.out.print(vertex.label + "  ");
+			}
 		}
 		System.out.println();
 
 		for (int i = 0; i < vertices.length; i++) {
-			if (vertices[i] != null) {
-				System.out.print(vertices[i].label + "  ");
+			if (vertices[i] != null) {									// Jika vertex tidak null / vertex ada
+				System.out.print(vertices[i].label + "  ");				// Mencetak title label vertikal
 				for (int j = 0; j < vertices.length; j++) {
-					if (vertices[j] != null)
+					if (vertices[j] != null)							// Jika vertex tidak null / vertex ada
 						System.out.print(adjMatrix[i][j] + "  ");
 				}
 			}
