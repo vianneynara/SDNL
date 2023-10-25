@@ -26,7 +26,7 @@ public class Main {
     private static void runBSTTest() {
 
         Tree<Integer> tree = new Tree<>();
-        int[] dataset = {40, 30, 25, 15, 28, 35, 50, 45, 60, 55, 70};
+        int[] dataset = {42, 21, 38, 27, 71, 82, 55, 63, 6, 2, 40, 12};
 //        int[] dataset = {56, 30, 40, 22, 70, 95, 60, 65, 11, 16, 63, 67, 3, 37, 88};
 //        int[] toHapus = {100, 63, 65, 60, 95, 88, 67, 70, 56, 22, 16, 11, 3, 30, 40, 37};
 
@@ -42,6 +42,7 @@ public class Main {
 
         for (int key : dataset) {
             tree.insert(key);
+            tree.getRoot().printDrawnStructure();
         }
         tree.traversePostOrder(tree.getRoot());
 
@@ -161,11 +162,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        runBSTTest();
+        runBSTTest();
 //        runCompleteBST();
 //        runAVLTestInsert();
 //        runAVLTestDelete();
 //        runTest();
-        runUTSTest();
+//        runUTSTest();
     }
 }

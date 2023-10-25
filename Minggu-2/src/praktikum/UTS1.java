@@ -4,7 +4,6 @@ import praktikum.bst.Node;
 import praktikum.bst.Tree;
 
 public class UTS1<T extends Number & Comparable<T>> extends Tree<T> {
-
 	/**
 	 * INTERPRETASI:
 	 * Mencari key "tepat lebih kecil dari sebuah nilai" artinya mengembalikan key tepat sebelum
