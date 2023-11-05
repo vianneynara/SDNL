@@ -2,23 +2,16 @@ package praktikum;
 
 public class Vertex {
 
-	String label;
-	int id;
-	Object data;
+	String label;											// Menyimpan nama dari sebuah vertex
+	int id;													// Menyimpan id, untuk sekarang posisi indeks pada graf
+	Object data;											// Data yang disimpan di dalam vertex
 
-	public Vertex(int id) {
-		this.id = id;
-	}
-
-	public Vertex(String label) {
-		this.label = label;
-	}
-
+	/* Konstruktor tidak spesifik */
 	public Vertex(String label, int id) {
-		this.label = label;
-		this.id = id;
+		this(label, id, null);
 	}
 
+	/* Konstruktor utama */
 	public Vertex(String label, int id, Object data) {
 		this.label = label;
 		this.id = id;
