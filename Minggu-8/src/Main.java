@@ -3,19 +3,37 @@ import praktikum.*;
 public class Main {
 
 	public static void main(String[] args) {
-		Graph theGraph = new Graph(5);
-		theGraph.addVertex("A"); // 0
-		theGraph.addVertex("B"); // 1
-		theGraph.addVertex("C"); // 2
-		theGraph.addVertex("D"); // 3
-		theGraph.addVertex("E"); // 4
+		Graph graph = new Graph(9);
+		graph.addVertex("A"); // 0
+		graph.addVertex("B"); // 1
+		graph.addVertex("C"); // 2
+		graph.addVertex("D"); // 3
+		graph.addVertex("E"); // 4
+		graph.addVertex("F"); // 5
+		graph.addVertex("G"); // 6
+		graph.addVertex("H"); // 7
+		graph.addVertex("I"); // 8
 
-		theGraph.displayVertices();
-		theGraph.addEdge(0, 1); // AB
-		theGraph.addEdge(1, 2); // BC
-		theGraph.addEdge(0, 3); // AD
-		theGraph.addEdge(3, 4); // DE
+		graph.displayVertices();
+		graph.addEdge(0, 1); // AB
+		graph.addEdge(0, 5); // AF
+		graph.addEdge(0, 8); // AI
+		graph.addEdge(1, 2); // BC
+		graph.addEdge(1, 4); // BE
+		graph.addEdge(2, 3); // CD
+		graph.addEdge(2, 4); // CE
+		graph.addEdge(3, 6); // DG
+		graph.addEdge(3, 7); // DH
+		graph.addEdge(4, 6); // EG
+		graph.addEdge(5, 6); // FG
+		graph.addEdge(6, 4); // GE
 		System.out.println("Adjacency Matrix:");
-		theGraph.displayMatrix();
+		graph.displayMatrix();
+
+		System.out.println("Depth First Search:");
+		graph.depthFirstSearch();
+
+		System.out.println("Breadth First Search:");
+		graph.breadthFirstSearch();
 	}
 }
