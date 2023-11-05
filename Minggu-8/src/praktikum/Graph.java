@@ -141,40 +141,50 @@ public class Graph {
 	 * @param start posisi vertex nya.
 	 * */
 	public void depthFirstSearch(int start) {
-//		dfsRecursiveHandler(start, new boolean[adjMatrix.length]);
 		dfsOriginalHandler(start);
+//		dfsRecursiveHandler(start, new boolean[adjMatrix.length]);
 		System.out.println();
 	}
 
 	/**
 	 * (Handler) Melakukan traversal dengan algoritma seperti DFS namun khusus menggunakan adjacent matrix. Menyimpan
-	 * posisi vertex yang sudah dilewati dalam sebuah list boolean. Metode ini merupakan versi rekursif.
+	 * posisi vertex yang sudah dilewati dalam sebuah HashSet (isinya unik) dan menggunakan Stack.
 	 * */
-	private void dfsRecursiveHandler(int currVert, boolean[] visited) {
-		System.out.print(vertices[currVert].label + " ");
-		visited[currVert] = true;
-		for (int i = 0; i < adjMatrix[currVert].length; i++) {
-			if (adjMatrix[currVert][i] >= 1 && (!visited[i])) {
-				dfsRecursiveHandler(i, visited);
+	private void dfsOriginalHandler(int start) {
+		Stack<Integer> stack = new Stack<>();					// Inisialisasi stack
+		Set<Integer> visited = new HashSet<>();					// Inisialisasi HashSet visited
+		stack.push(start);										// Isi stack awal dengan posisi index mulai
+
+		while (!stack.isEmpty()) {								// Selama stack tidak kosong
+			int curr = stack.pop();								// Ambil isi paling belakang stack dalam curr
+			if (!visited.contains(curr)) {						// Jika HashSet tidak berisi nilai pada curr
+				visited.add(curr);								// Tambahkan nilai curr pada HashSet visited
+				System.out.print(vertices[curr].label + " ");	// Cetak label pada vertex di index curr di vertices
+
+				/* Melakukan looping dari belakang (karena stack menggunakan sistem First In Last Out) */
+				for (int vPos = adjMatrix[curr].length - 1; vPos >= 0; vPos--) {
+					/* Jika terdapat koneksi antar vertex curr dan vPos DAN vPos belum ada di visited */
+					if (adjMatrix[curr][vPos] >= 1 && !visited.contains(vPos)) {
+						stack.push(vPos);						// Masukkan vPos pada stack
+					}
+				}
 			}
 		}
 	}
 
-	private void dfsOriginalHandler(int start) {
-		Stack<Integer> stack = new Stack<>();
-		Set<Integer> visited = new HashSet<>();
-		stack.push(start);
+	/**
+	 * (Handler) Melakukan traversal dengan algoritma seperti DFS rekursif namun khusus menggunakan adjacent matrix.
+	 * Menyimpan posisi vertex yang sudah dilewati dalam sebuah list boolean. Lebih sederhana, namun mahal.
+	 * */
+	private void dfsRecursiveHandler(int currVert, boolean[] visited) {
+		System.out.print(vertices[currVert].label + " ");		// Mencetak label vertex
+		visited[currVert] = true;								// Mengatur nilai visited pada indeks sekarang dgn. true
 
-		while (!stack.isEmpty()) {
-			int curr = stack.pop();
-			if (!visited.contains(curr)) {
-				visited.add(curr);
-				System.out.print(vertices[curr].label + " ");
-			}
-			for (int vPos = adjMatrix[curr].length - 1; vPos > 0; vPos--) {
-				if (adjMatrix[curr][vPos] == 1 && !visited.contains(vPos)) {
-					stack.push(vPos);
-				}
+		/* Loop dari 0 selama kurang dari penjang matrix - 1; iterator menaik 1 per loop */
+		for (int vPos = 0; vPos < adjMatrix[currVert].length; vPos++) {
+			/* Jika terdapat koneksi antar vertex curr dan vPos DAN vPos belum ada di visited */
+			if (adjMatrix[currVert][vPos] >= 1 && (!visited[vPos])) {
+				dfsRecursiveHandler(vPos, visited);				// Memanggil rekursi metode ini sendiri
 			}
 		}
 	}
