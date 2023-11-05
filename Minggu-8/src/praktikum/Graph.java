@@ -6,46 +6,79 @@ public class Graph {
 	private Vertex[] vertices;									// Menyimpan vertex dalam array
 	private int[][] adjMatrix;									// Menyimpan adjacency matrix hubungan antar vertex
 	private int backIdx;										// Menyimpan posisi vertex terakhir
+	private HashMap<String, Integer> vertexPosition;			// Menyimpan korelasi label dengan posisi indeks
 
 	public Graph(int nVertices) {
 		this.vertices = new Vertex[nVertices];
 		this.adjMatrix = new int[nVertices][nVertices];
 		this.backIdx = 0;
+		vertexPosition = new HashMap<>();
 	}
-
-	// Getters & Setters
 
 	/**
 	 * Menambahkan sebuah vertex / titik ke dalam graf dengan label vertex.
 	 * @param label label vertex
 	 * */
 	public void addVertex(String label) {
-		vertices[backIdx] = new Vertex(label, backIdx++);
-	}
-
-	/**
-	 * Menambahkan edge/penghubung vertex dengan format adjacency matrix.
-	 * @param src posisi node 1
-	 * @param dest posisi node 2
-	 * */
-	public void addEdge(int src, int dest) {
-		adjMatrix[src][dest] = 1;
-		adjMatrix[dest][src] = 1;
+		vertices[backIdx] = new Vertex(label, backIdx);
+		vertexPosition.put(label.toUpperCase(), backIdx);
+		backIdx++;
 	}
 
 	public void removeVertex(String label) {
-		// Menghapus vertex dari graph
+		// TODO: Menghapus vertex dari graph
+	}
+	
+	/**
+	 * Menambahkan edge/penghubung vertex dengan nama label yang terdapat pada graf.
+	 * @param src label vertex 1
+	 * @param dst label vertex 2
+	 * */
+	public void addEdge(String src, String dst) {
+		addEdge(
+			vertexPosition.get(src.toUpperCase()), 
+			vertexPosition.get(dst.toUpperCase())
+		);
 	}
 
-	public void removeEdge(int src, int dest) {
-		adjMatrix[src][dest] = 0;
-		adjMatrix[dest][src] = 0;
+	/**
+	 * Menambahkan edge/penghubung vertex dengan format index pada adjacency matrix.
+	 * @param src posisi vertex 1
+	 * @param dst posisi vertex 2
+	 * */
+	public void addEdge(int src, int dst) {
+		adjMatrix[src][dst] = 1;
+		adjMatrix[dst][src] = 1;
 	}
 
+	/**
+	 * Menghapus edge/penghubung vertex dengan nama label yang terdapat pada graf.
+	 * @param src label vertex 1
+	 * @param dst label vertex 2
+	 * */
+	public void removeEdge(String src, String dst) {
+		removeEdge(
+			vertexPosition.get(src.toUpperCase()),
+			vertexPosition.get(dst.toUpperCase())
+		);
+	}
+
+	/**
+	 * Menghapus edge/penghubung vertex dengan format index pada adjacency matrix.
+	 * @param src posisi vertex 1
+	 * @param dst posisi vertex 2
+	 * */
+	public void removeEdge(int src, int dst) {
+		adjMatrix[src][dst] = 0;
+		adjMatrix[dst][src] = 0;
+	}
+
+	/** Mengembalikan list vertices / vertex-vertex milik graf ini. */
 	public Vertex[] getVertices() {
 		return vertices;
 	}
 
+	/** Mengembalikan matriks adjacency milik graf ini. */
 	public int[][] getAdjMatrix() {
 		return adjMatrix;
 	}
@@ -108,20 +141,40 @@ public class Graph {
 	 * @param start posisi vertex nya.
 	 * */
 	public void depthFirstSearch(int start) {
-		dfsHandler(start, new boolean[adjMatrix.length]);
+//		dfsRecursiveHandler(start, new boolean[adjMatrix.length]);
+		dfsOriginalHandler(start);
 		System.out.println();
 	}
 
 	/**
 	 * (Handler) Melakukan traversal dengan algoritma seperti DFS namun khusus menggunakan adjacent matrix. Menyimpan
-	 * posisi vertex yang sudah dilewati dalam sebuah list boolean.
+	 * posisi vertex yang sudah dilewati dalam sebuah list boolean. Metode ini merupakan versi rekursif.
 	 * */
-	public void dfsHandler(int currVert, boolean[] visited) {
+	private void dfsRecursiveHandler(int currVert, boolean[] visited) {
 		System.out.print(vertices[currVert].label + " ");
 		visited[currVert] = true;
 		for (int i = 0; i < adjMatrix[currVert].length; i++) {
 			if (adjMatrix[currVert][i] >= 1 && (!visited[i])) {
-				dfsHandler(i, visited);
+				dfsRecursiveHandler(i, visited);
+			}
+		}
+	}
+
+	private void dfsOriginalHandler(int start) {
+		Stack<Integer> stack = new Stack<>();
+		Set<Integer> visited = new HashSet<>();
+		stack.push(start);
+
+		while (!stack.isEmpty()) {
+			int curr = stack.pop();
+			if (!visited.contains(curr)) {
+				visited.add(curr);
+				System.out.print(vertices[curr].label + " ");
+			}
+			for (int vPos = adjMatrix[curr].length - 1; vPos > 0; vPos--) {
+				if (adjMatrix[curr][vPos] == 1 && !visited.contains(vPos)) {
+					stack.push(vPos);
+				}
 			}
 		}
 	}
@@ -162,6 +215,7 @@ public class Graph {
 		System.out.println();
 	}
 
+	/* Metode untuk mencetak isi Queue */
 	private void printQueueContent(Queue<Integer> list) {
 		System.out.print("Queue: ");
 		for (int v : list) {
