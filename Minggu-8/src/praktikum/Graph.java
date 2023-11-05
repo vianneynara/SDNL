@@ -1,5 +1,7 @@
 package praktikum;
 
+import java.util.*;
+
 public class Graph {
 	private Vertex[] vertices;									// Menyimpan vertex dalam array
 	private int[][] adjMatrix;									// Menyimpan adjacency matrix hubungan antar vertex
@@ -84,5 +86,84 @@ public class Graph {
 			}
 			System.out.println();
 		}
+	}
+
+	/**
+	 * Mengembalikan indikator koneksi atau berat antara dua posisi vertex.
+	 * @return boolean
+	 * */
+	private boolean isConnected(int vertex1, int vertex2) {
+		return getWeight(vertex1, vertex2) >= 1;
+	}
+
+	/**
+	 * (Wrapper) Melakukan traversal dengan depth first search / ke dalam mulai dari vertex paling awal (0).
+	 * */
+	public void depthFirstSearch() {
+		depthFirstSearch(0);
+	}
+
+	/**
+	 * (Wrapper) Melakukan traversal dengan depth first search / ke dalam mulai dari vertex posisi indeks vertex spesifik.
+	 * @param start posisi vertex nya.
+	 * */
+	public void depthFirstSearch(int start) {
+		dfsHandler(start, new boolean[adjMatrix.length]);
+		System.out.println();
+	}
+
+	/**
+	 * (Handler) Melakukan traversal dengan algoritma seperti DFS namun khusus menggunakan adjacent matrix. Menyimpan
+	 * posisi vertex yang sudah dilewati dalam sebuah list boolean.
+	 * */
+	public void dfsHandler(int currVert, boolean[] visited) {
+		System.out.print(vertices[currVert].label + " ");
+		visited[currVert] = true;
+		for (int i = 0; i < adjMatrix[currVert].length; i++) {
+			if (adjMatrix[currVert][i] >= 1 && (!visited[i])) {
+				dfsHandler(i, visited);
+			}
+		}
+	}
+
+	/**
+	 * (Wrapper) Melakukan traversal dengan breadth first search / melebar mulai dari vertex paling awal (0).
+	 * */
+	public void breadthFirstSearch() {
+		breadthFirstSearch(0);
+	}
+
+	/**
+	 * (Wrapper) Melakukan traversal dengan breadth first search / melebar mulai dari vertex posisi indeks vertex
+	 * spesifik. BFS menggunakan sistem Queue untuk menyimpan node yang selevel.
+	 * @param start posisi vertex nya.
+	 * */
+	public void breadthFirstSearch(int start) {
+		boolean[] visited = new boolean[adjMatrix.length];
+		Queue<Integer> queue = new LinkedList<>();
+		visited[start] = true;
+		queue.add(start);
+
+		int currVert;
+		while (!queue.isEmpty()) {
+			currVert = queue.poll();
+			System.out.print(vertices[currVert].label + " ");
+
+			for (int i = 0; i < adjMatrix.length; i++) {
+				if (adjMatrix[currVert][i] >= 1 && !visited[i]) {
+					queue.add(i);
+					visited[i] = true;
+				}
+			}
+		}
+		System.out.println();
+	}
+
+	private void printQueueContent(Queue<Integer> list) {
+		System.out.print("Queue: ");
+		for (int v : list) {
+			System.out.print(vertices[v] + " ");
+		}
+		System.out.println();
 	}
 }
