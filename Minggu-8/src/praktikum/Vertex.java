@@ -2,8 +2,8 @@ package praktikum;
 
 public class Vertex {
 
-	int id;
 	String label;
+	int id;
 	Object data;
 
 	public Vertex(int id) {
@@ -14,15 +14,12 @@ public class Vertex {
 		this.label = label;
 	}
 
-	// Getters & Setters
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
+	public Vertex(String label, int id) {
+		this.label = label;
 		this.id = id;
 	}
+
+	// Getters & Setters
 
 	public String getLabel() {
 		return label;
@@ -30,6 +27,14 @@ public class Vertex {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Object getData() {
@@ -42,6 +47,6 @@ public class Vertex {
 
 	@Override
 	public String toString() {
-		return '{' + label + '}';
+		return "{%s: %d}".formatted(label, id);
 	}
 }
