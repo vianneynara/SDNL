@@ -20,7 +20,7 @@ public class Graph {
 	 * @param label label vertex
 	 * */
 	public void addVertex(String label) {
-		vertices[backIdx++] = new Vertex(label);
+		vertices[backIdx] = new Vertex(label, backIdx++);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class Graph {
 	}
 
 	/**
-	 * (Wrapper) Melakukan traversal dengan breadth first search / melebar mulai dari vertex posisi indeks vertex
+	 * Melakukan traversal dengan breadth first search / melebar mulai dari posisi indeks vertex
 	 * spesifik. BFS menggunakan sistem Queue untuk menyimpan node yang selevel.
 	 * @param start posisi vertex nya.
 	 * */
@@ -143,11 +143,13 @@ public class Graph {
 		Queue<Integer> queue = new LinkedList<>();
 		visited[start] = true;
 		queue.add(start);
+		printQueueContent(queue);
 
 		int currVert;
 		while (!queue.isEmpty()) {
 			currVert = queue.poll();
-			System.out.print(vertices[currVert].label + " ");
+//			System.out.print(vertices[currVert].label + " ");
+			System.out.print("Popped: " + vertices[currVert].label + " (" + currVert  + ") ");
 
 			for (int i = 0; i < adjMatrix.length; i++) {
 				if (adjMatrix[currVert][i] >= 1 && !visited[i]) {
@@ -155,6 +157,7 @@ public class Graph {
 					visited[i] = true;
 				}
 			}
+			printQueueContent(queue);
 		}
 		System.out.println();
 	}

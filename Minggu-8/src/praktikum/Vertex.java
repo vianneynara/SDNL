@@ -19,6 +19,12 @@ public class Vertex {
 		this.id = id;
 	}
 
+	public Vertex(String label, int id, Object data) {
+		this.label = label;
+		this.id = id;
+		this.data = data;
+	}
+
 	// Getters & Setters
 
 	public String getLabel() {
