@@ -151,24 +151,28 @@ public class Graph {
 	 * posisi vertex yang sudah dilewati dalam sebuah HashSet (isinya unik) dan menggunakan Stack.
 	 * */
 	private void dfsOriginalHandler(int start) {
+		boolean[] visited = new boolean[adjMatrix.length];		// List boolean untuk simpan index yg sudah dilewati
 		Stack<Integer> stack = new Stack<>();					// Inisialisasi stack
-		Set<Integer> visited = new HashSet<>();					// Inisialisasi HashSet visited
 		stack.push(start);										// Isi stack awal dengan posisi index mulai
 
 		while (!stack.isEmpty()) {								// Selama stack tidak kosong
 			int curr = stack.pop();								// Ambil isi paling belakang stack dalam curr
-			if (!visited.contains(curr)) {						// Jika HashSet tidak berisi nilai pada curr
-				visited.add(curr);								// Tambahkan nilai curr pada HashSet visited
-				System.out.print(vertices[curr].label + " ");	// Cetak label pada vertex di index curr di vertices
+			System.out.print("Popped: " + vertices[curr].label + " (" + curr  + ") ");
+			if (!visited[curr]) {								// Jika visited pada posisi curr masih false
+				printListContent(visited);
+				visited[curr] = true;							// Tambahkan nilai curr pada HashSet visited
+//				System.out.print(vertices[curr].label + " ");	// Cetak label pada vertex di index curr di vertices
 
 				/* Melakukan looping dari belakang (karena stack menggunakan sistem First In Last Out) */
 				for (int vPos = adjMatrix[curr].length - 1; vPos >= 0; vPos--) {
-					/* Jika terdapat koneksi antar vertex curr dan vPos DAN vPos belum ada di visited */
-					if (adjMatrix[curr][vPos] >= 1 && !visited.contains(vPos)) {
+					/* Jika terdapat koneksi antar vertex curr dan vPos DAN vPos belum true ada di visited */
+					if (adjMatrix[curr][vPos] >= 1 && !visited[vPos]) {
 						stack.push(vPos);						// Masukkan vPos pada stack
 					}
 				}
+				printListContent(stack);
 			}
+//			System.out.println();
 		}
 	}
 
@@ -176,14 +180,14 @@ public class Graph {
 	 * (Handler) Melakukan traversal dengan algoritma seperti DFS rekursif namun khusus menggunakan adjacent matrix.
 	 * Menyimpan posisi vertex yang sudah dilewati dalam sebuah list boolean. Lebih sederhana, namun mahal.
 	 * */
-	private void dfsRecursiveHandler(int currVert, boolean[] visited) {
-		System.out.print(vertices[currVert].label + " ");		// Mencetak label vertex
-		visited[currVert] = true;								// Mengatur nilai visited pada indeks sekarang dgn. true
+	private void dfsRecursiveHandler(int curr, boolean[] visited) {
+		System.out.print(vertices[curr].label + " ");		// Mencetak label vertex
+		visited[curr] = true;								// Mengatur nilai visited pada indeks sekarang dgn. true
 
 		/* Loop dari 0 selama kurang dari penjang matrix - 1; iterator menaik 1 per loop */
-		for (int vPos = 0; vPos < adjMatrix[currVert].length; vPos++) {
+		for (int vPos = 0; vPos < adjMatrix[curr].length; vPos++) {
 			/* Jika terdapat koneksi antar vertex curr dan vPos DAN vPos belum ada di visited */
-			if (adjMatrix[currVert][vPos] >= 1 && (!visited[vPos])) {
+			if (adjMatrix[curr][vPos] >= 1 && (!visited[vPos])) {
 				dfsRecursiveHandler(vPos, visited);				// Memanggil rekursi metode ini sendiri
 			}
 		}
@@ -202,34 +206,54 @@ public class Graph {
 	 * @param start posisi vertex nya.
 	 * */
 	public void breadthFirstSearch(int start) {
-		boolean[] visited = new boolean[adjMatrix.length];
-		Queue<Integer> queue = new LinkedList<>();
-		visited[start] = true;
-		queue.add(start);
-		printQueueContent(queue);
+		boolean[] visited = new boolean[adjMatrix.length];		// List boolean untuk simpan index yg sudah dilewati
+		Queue<Integer> queue = new LinkedList<>();				// Sistem queue untuk proses BFS
+		visited[start] = true;									// Mengatur index awal menjadi dilewati
+		queue.add(start);										// Memasukkan posisi awal ke queue
+		printListContent(queue);
 
-		int currVert;
-		while (!queue.isEmpty()) {
-			currVert = queue.poll();
-//			System.out.print(vertices[currVert].label + " ");
-			System.out.print("Popped: " + vertices[currVert].label + " (" + currVert  + ") ");
+		int curr;												// Iterator untuk loop, berisi posisi index vertex
+		while (!queue.isEmpty()) {								// Selama queue masih memiliki isi
+			curr = queue.poll();								// Ambil nilai paling depan di queue
+			System.out.print(vertices[curr].label + " ");		// Cetak label pada vertices di posisi curr
+			System.out.print("Polled: " + vertices[curr].label + " (" + curr  + ") ");
 
-			for (int i = 0; i < adjMatrix.length; i++) {
-				if (adjMatrix[currVert][i] >= 1 && !visited[i]) {
-					queue.add(i);
-					visited[i] = true;
+			for (int i = 0; i < adjMatrix.length; i++) {		// Loop dari 0, selama iterator kurang dari panjang matrix
+				/* Jika terdapat koneksi antar vertex curr dan i DAN i belum true di visited */
+				if (adjMatrix[curr][i] >= 1 && !visited[i]) {
+					queue.add(i);								// Masukkan i ke dalam queue
+					visited[i] = true;							// Atur visited pada i menjadi true
 				}
 			}
-			printQueueContent(queue);
+			printListContent(queue);
 		}
 		System.out.println();
 	}
 
 	/* Metode untuk mencetak isi Queue */
-	private void printQueueContent(Queue<Integer> list) {
-		System.out.print("Queue: ");
+	private void printListContent(Queue<Integer> list) {
+		System.out.print("; Queue: ");
 		for (int v : list) {
-			System.out.print(vertices[v] + " ");
+			System.out.print(vertices[v].label + " ");
+		}
+		System.out.println();
+	}
+
+	/* Metode untuk mencetak isi Stack */
+	private void printListContent(Stack<Integer> list) {
+		System.out.print("; Stack: ");
+		for (int v : list) {
+			System.out.print(vertices[v].label + " ");
+		}
+		System.out.println();
+	}
+
+	/* Metode untuk mencetak isi Stack */
+	private void printListContent(boolean[] list) {
+		System.out.print("; Visited: ");
+		for (int v = 0; v < list.length; v++) {
+			if (list[v])
+				System.out.print(vertices[v].label + " ");
 		}
 		System.out.println();
 	}
