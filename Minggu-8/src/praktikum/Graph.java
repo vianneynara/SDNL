@@ -257,8 +257,9 @@ public class Graph {
 	public void minimumSpanningTree_Prim() {
 		boolean[] visited = new boolean[adjMatrix.length];
 		int edgeCount = 0;
+		int totalCost = 0;
 
-		while (edgeCount < adjMatrix.length - 1) {
+		while (edgeCount < adjMatrix.length) {
 			int min = Integer.MAX_VALUE;
 			int row = 0;
 			int col = 0;
@@ -277,9 +278,14 @@ public class Graph {
 				}
 			}
 
+			if (edgeCount == 0)
+				min = 0;
+			totalCost += min;
 			System.out.println("Edge " + edgeCount++ + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
 			visited[col] = true;
 		}
+
+		System.out.println("Total cost: " + totalCost);
 	}
 
 	/* Metode untuk mencetak isi Queue */
