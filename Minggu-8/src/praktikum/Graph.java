@@ -30,7 +30,7 @@ public class Graph {
 	}
 	
 	/**
-	 * Menambahkan edge/penghubung vertex dengan nama label yang terdapat pada graf.
+	 * Menambahkan edge/penghubung vertex dengan nama label yang terdapat pada graf dengan berat 1.
 	 * @param src label vertex 1
 	 * @param dst label vertex 2
 	 * */
@@ -42,13 +42,37 @@ public class Graph {
 	}
 
 	/**
-	 * Menambahkan edge/penghubung vertex dengan format index pada adjacency matrix.
+	 * Menambahkan edge/penghubung vertex dengan format index pada adjacency matrix dengan berat 1.
 	 * @param src posisi vertex 1
 	 * @param dst posisi vertex 2
 	 * */
 	public void addEdge(int src, int dst) {
-		adjMatrix[src][dst] = 1;
-		adjMatrix[dst][src] = 1;
+		addEdge(src, dst, 1);
+	}
+
+	/**
+	 * Menambahkan edge/penghubung vertex dengan nama label yang terdapat pada graf.
+	 * @param src label vertex 1
+	 * @param dst label vertex 2
+	 * @param weight bobot dari edge
+	 * */
+	public void addEdge(String src, String dst, int weight) {
+		addEdge(
+			vertexPosition.get(src.toUpperCase()),
+			vertexPosition.get(dst.toUpperCase()),
+			weight
+		);
+	}
+
+	/**
+	 * Menambahkan edge/penghubung vertex dengan format index pada adjacency matrix.
+	 * @param src posisi vertex 1
+	 * @param dst posisi vertex 2
+	 * @param weight bobot dari edge
+	 * */
+	public void addEdge(int src, int dst, int weight) {
+		adjMatrix[src][dst] = weight;
+		adjMatrix[dst][src] = weight;
 	}
 
 	/**
@@ -228,6 +252,34 @@ public class Graph {
 			printListContent(queue);
 		}
 		System.out.println();
+	}
+
+	public void minimumSpanningTree_Prim() {
+		boolean[] visited = new boolean[adjMatrix.length];
+		int edgeCount = 0;
+
+		while (edgeCount < adjMatrix.length - 1) {
+			int min = Integer.MAX_VALUE;
+			int row = 0;
+			int col = 0;
+
+			for (int i = 0; i < adjMatrix.length; i++) {
+				if (visited[i]) {
+					for (int j = 0; j < adjMatrix.length; j++) {
+						if (!visited[j] && adjMatrix[i][j] != 0) {
+							if (min > adjMatrix[i][j]) {
+								min = adjMatrix[i][j];
+								row = i;
+								col = j;
+							}
+						}
+					}
+				}
+			}
+
+			System.out.println("Edge " + edgeCount++ + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
+			visited[col] = true;
+		}
 	}
 
 	/* Metode untuk mencetak isi Queue */
