@@ -254,6 +254,10 @@ public class Graph {
 		System.out.println();
 	}
 
+	/**
+	 * Metode traversal minimum spanning tree dengan algoritma Prim. Metode ini mencetak seluruh edge-vertex yang
+	 * dilewati dan jumlah biayanya.
+	 * */
 	public void minimumSpanningTree_Prim() {
 		boolean[] visited = new boolean[adjMatrix.length];
 		int edgeCount = 0;
