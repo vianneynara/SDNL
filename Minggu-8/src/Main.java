@@ -33,8 +33,8 @@ public class Main {
 		graph.addEdge("H", "I", 4);
 		graph.addEdge("H", "J", 6);
 		graph.addEdge("I", "J", 7);
-//		System.out.println("Adjacency Matrix:");
-//		graph.displayMatrix();
+		System.out.println("Adjacency Matrix:");
+		graph.displayMatrix();
 //
 //		System.out.println("Depth First Search:");
 //		graph.depthFirstSearch();
@@ -42,7 +42,12 @@ public class Main {
 //		System.out.println("Breadth First Search:");
 //		graph.breadthFirstSearch();
 
-		System.out.println("Minimum Spanning Tree:");
+		System.out.println("Minimum Spanning Tree (PRIM):");
 		graph.minimumSpanningTree_Prim();
+
+		System.out.println();
+
+		System.out.println("Minimum Spanning Tree (KRUSKAL):");
+		graph.minimumSpanningTree_Kruskal();
 	}
 }
