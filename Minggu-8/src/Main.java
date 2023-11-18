@@ -36,18 +36,16 @@ public class Main {
 		System.out.println("Adjacency Matrix:");
 		graph.displayMatrix();
 //
-//		System.out.println("Depth First Search:");
+//		System.out.println("\nDepth First Search:");
 //		graph.depthFirstSearch();
-//
-//		System.out.println("Breadth First Search:");
+
+//		System.out.println("\nBreadth First Search:");
 //		graph.breadthFirstSearch();
 
-		System.out.println("Minimum Spanning Tree (PRIM):");
+		System.out.println("\nMinimum Spanning Tree (PRIM):");
 		graph.minimumSpanningTree_Prim();
 
-		System.out.println();
-
-		System.out.println("Minimum Spanning Tree (KRUSKAL):");
-		graph.minimumSpanningTree_Kruskal();
+		System.out.println("\nMinimum Spanning Tree (KRUSKAL):");
+		graph.minimumSpanningTree_KruskalV1();
 	}
 }
