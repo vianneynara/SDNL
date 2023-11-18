@@ -364,7 +364,7 @@ public class Graph {
 			int col = 0;									// Menyimpan posisi iterasi horizontal
 
 			for (int i = 0; i < adjMatrix.length; i++) {	// OUTER, Selama i kurang dari panjang matrix adj, dari 0
-				for (int j = 0; j < adjMatrix.length; j++) {// INNER, Selama i kurang dari panjang matrix adj, dari 0
+				for (int j = 0; j < adjMatrix.length; j++) {// INNER, Selama j kurang dari panjang matrix adj, dari 0
 					/* Mengecek apakah vertex i dan j tidak berada di parent yang sama DAN vertex ij bukanlah dirinya sendiri */
 					if (find(parents, i) != find(parents, j) && adjMatrix[i][j] != 0) {
 						if (min > adjMatrix[i][j]) {		// Jika min masih lebih besar dari bobot vektor ij
