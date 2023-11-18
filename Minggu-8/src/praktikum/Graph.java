@@ -376,14 +376,14 @@ public class Graph {
 				}
 			}
 
-			totalCost += min;									// Menambahkan bobot edge iterasi ini dengan nilai min edge
-			System.out.println(									// Mencetak dengan format Label vertex pada edge dan bobot
+			totalCost += min;								// Menambahkan bobot edge iterasi ini dengan nilai min edge
+			System.out.println(								// Mencetak dengan format Label vertex pada edge dan bobot
 				"Edge " + edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
-			union(parents, row, col);							// Menyatukan (menghubungkan) vertex row dan col untuk edge ini
-			edgeCount++;										// Menambahkan edgeCount dengan 1
+			union(parents, row, col);						// Menyatukan (menghubungkan) vertex row dan col untuk edge ini
+			edgeCount++;									// Menambahkan edgeCount dengan 1
 		}
 
-		System.out.println("Total cost: " + totalCost);			// Mencetak biaya total MST
+		System.out.println("Total cost: " + totalCost);		// Mencetak biaya total MST
 	}
 
 	/**
