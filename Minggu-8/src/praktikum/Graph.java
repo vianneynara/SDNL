@@ -380,6 +380,7 @@ public class Graph {
 			System.out.println(									// Mencetak dengan format Label vertex pada edge dan bobot
 				"Edge " + edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
 			union(parents, row, col);							// Menyatukan (menghubungkan) vertex row dan col untuk edge ini
+			edgeCount++;										// Menambahkan edgeCount dengan 1
 		}
 
 		System.out.println("Total cost: " + totalCost);			// Mencetak biaya total MST
