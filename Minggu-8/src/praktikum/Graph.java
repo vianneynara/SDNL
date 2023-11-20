@@ -3,6 +3,7 @@ package praktikum;
 import java.util.*;
 
 public class Graph {
+
 	private Vertex[] vertices;                                 	// Menyimpan vertex dalam array
 	private int[][] adjMatrix;                                  // Menyimpan adjacency matrix hubungan antar vertex
 	private int backIdx;                                        // Menyimpan posisi vertex terakhir
@@ -277,24 +278,32 @@ public class Graph {
 		boolean[] visited = new boolean[adjMatrix.length];	// Menyimpan posisi node yang sudah dilewati
 		int edgeCount = 0;									// Menghitung jumlah edge
 		int totalCost = 0;									// Menyimpan harga MST
+//		int loopCount = 0;
 
 		while (edgeCount < adjMatrix.length) {				// Selama penghitung edge kurang dari panjang matrix adj
 			int min = Integer.MAX_VALUE;					// Menyimpan bobot edge terendah pada iterasi ini
 			int row = 0;									// Menyimpan posisi iterasi vertikal
 			int col = 0;									// Menyimpan posisi iterasi horizontal
 
+//			loopCount++;
+
 			for (int i = 0; i < adjMatrix.length; i++) {	// OUTER: i kurang dari panjang matrix adj, dimulai dari 0
+//				loopCount++;
 				if (visited[i]) {							// Jika sudah dilewati
+//					System.out.printf("Visiting %s, connects with: ", vertices[i].label);
 					for (int j = 0; j < adjMatrix.length; j++) {// INNER: j kurang dari panjang matrix adj, dimulai dari 0
 						/* Jika vektor di posisi j belum dilewati dan memiliki hubungan dengan vektor di posisi i */
 						if (!visited[j] && adjMatrix[i][j] != 0) {
+//							System.out.printf("%s(%d) ", vertices[j].label, adjMatrix[i][j]);
 							if (min > adjMatrix[i][j]) {	// Jika min masih lebih besar dari bobot vektor ij
 								min = adjMatrix[i][j];		// Isi min dengan bobot vektor ij
 								row = i;					// Isi row dengan nilai i
 								col = j;					// Isi col dengan nilai j
 							}
 						}
+//						loopCount++;
 					}
+//					System.out.println();
 				}
 			}
 			visited[col] = true;								// Memberi tanda sudah dilewati untuk vektor di posisi col
@@ -305,57 +314,59 @@ public class Graph {
 				continue;
 			}
 
+//			System.out.println("min	: " + min);
 			totalCost += min;									// Menambahkan bobot edge iterasi ini dengan nilai min edge
 			System.out.println(									// Mencetak dengan format Label vertex pada edge dan bobot
-				"Edge " + edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
-			edgeCount++;										// Menambah edgeCount dengan 1
+				"Edge " + ++edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
+//			System.out.println("-".repeat(40));
 		}
 
 		System.out.println("Total cost: " + totalCost);			// Mencetak biaya total MST
+//		System.out.println("Total loop: " + loopCount);			// Mencetak biaya total MST
 	}
 
 	/**
 	 * Dalam algoritma Kruskal, metode rekursif ini digunakan untuk mencari tahu apakah nilai posisi indeks pada list
-	 * parents merupakan bernilai sama dengan `i` sendiri.
-	 * @param parents list parents yang ingin dicari kesamaan-nya
+	 * groups merupakan bernilai sama dengan `i` sendiri.
+	 * @param groups list groups yang ingin dicari kesamaan-nya
 	 * @param i posisi index sebuah vertex yang ingin dibandingkan
 	 * */
-	private int find(int[] parents, int i) {
-		if (parents[i] == i)								// Base Case: isi parent pada posisi i sama dengan i
+	private int find(int[] groups, int i) {
+		if (groups[i] == i)								// Base Case: isi parent pada posisi i sama dengan i
 			return i;
-		return find(parents, parents[i]);
+		return find(groups, groups[i]);
 	}
 
 	/**
-	 * Dalam algoritma Kruskal, metode ini digunakan untuk mengganti nilai pada index `a` di parents menjadi nilai `b`.
-	 * @param parents list parents yang ingin dicari kesamaan-nya
+	 * Dalam algoritma Kruskal, metode ini digunakan untuk mengganti nilai pada index `a` di groups menjadi nilai `b`.
+	 * @param groups list groups yang ingin dicari kesamaan-nya
 	 * @param i posisi index vertex i yang ingin dicari tahu apakah sebuah parent
 	 * @param j posisi index vertex j yang ingin dicari tahu apakah sebuah parent dan akan diisikan sebagai nilai b
 	 * */
-	private void union(int[] parents, int i, int j) {
-		int a = find(parents, i);							// Isi a dengan hasil pemanggilan metode find arg: parents, i
-		int b = find(parents, j);							// Isi b dengan hasil pemanggilan metode find arg: parents, j
-		parents[a] = b;										// Isi nilai parent pada indeks a dengan nilai b
+	private void union(int[] groups, int i, int j) {
+		int a = find(groups, i);							// Isi a dengan hasil pemanggilan metode find arg: groups, i
+		int b = find(groups, j);							// Isi b dengan hasil pemanggilan metode find arg: groups, j
+		groups[a] = b;										// Isi nilai parent pada indeks a dengan nilai b
 	}
 
 	/**
 	 * Metode traversal minimum spanning tree dengan algoritma Kruskal. Perbedaan dengan algoritma Prim adalah pencarian
-	 * ini tidak continuous/berkelanjutan/bisa tidak menyambung dari sebelumnya. Metode ini mencetak seluruh edge-vertex
-	 * yang dilewati dan jumlah biayanya.
+	 * ini tidak mest continuous/berkelanjutan/bisa tidak menyambung dari sebelumnya. Metode ini mencetak seluruh
+	 * edge-vertex yang dilewati dan jumlah biayanya.
 	 * <br> <b>note: VERSION 1</b>
 	 */
 	public void minimumSpanningTree_KruskalV1() {
-		// BAGAIMANA variabel parents ini bekerja?
+		// BAGAIMANA variabel groups ini bekerja?
 		// - Setiap index pada variabel ini, index-nya merepresentasikan index tiap vertex pada matrix adj
-		// - Setiap index pada variabel ini menyimpan index parent-nya
-		// e.g.: parents[3] = 1 artinya vertex posisi 3 memiliki parents yang berposisi 1
-		int[] parents = new int[adjMatrix.length];
+		// - Setiap index pada variabel ini menyimpan index group-nya
+		// e.g.: groups[3] = 1 artinya vertex 3 berada di group posisi 1
+		int[] groups = new int[adjMatrix.length];
 		int edgeCount = 0;									// Menghitung jumlah edge
 		int totalCost = 0;									// Menyimpan harga MST
 
-		/* Mengisi index parents sesuai dengan index - posisi vertex */
+		/* Mengisi index groups sesuai dengan index - posisi vertex */
 		for (int i = 0; i < adjMatrix.length; i++) {
-			parents[i] = i;
+			groups[i] = i;
 		}
 
 		while (edgeCount < adjMatrix.length - 1) {			// Selama edgeCount kurang dari (panjang matrix adj - 1)
@@ -365,8 +376,9 @@ public class Graph {
 
 			for (int i = 0; i < adjMatrix.length; i++) {	// OUTER, Selama i kurang dari panjang matrix adj, dari 0
 				for (int j = 0; j < adjMatrix.length; j++) {// INNER, Selama j kurang dari panjang matrix adj, dari 0
-					/* Mengecek apakah vertex i dan j tidak berada di parent yang sama DAN vertex ij bukanlah dirinya sendiri */
-					if (find(parents, i) != find(parents, j) && adjMatrix[i][j] != 0) {
+					/* Mengecek apakah vertex i dan j tidak berada di himpunan group yang sama DAN vertex ij bukanlah
+					 dirinya sendiri */
+					if (find(groups, i) != find(groups, j) && adjMatrix[i][j] != 0) {
 						if (min > adjMatrix[i][j]) {		// Jika min masih lebih besar dari bobot vektor ij
 							min = adjMatrix[i][j];			// Isi min dengan bobot vektor ij
 							row = i;						// Isi row dengan nilai i
@@ -378,9 +390,8 @@ public class Graph {
 
 			totalCost += min;								// Menambahkan bobot edge iterasi ini dengan nilai min edge
 			System.out.println(								// Mencetak dengan format Label vertex pada edge dan bobot
-				"Edge " + edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
-			union(parents, row, col);						// Menyatukan (menghubungkan) vertex row dan col untuk edge ini
-			edgeCount++;									// Menambahkan edgeCount dengan 1
+				"Edge " + ++edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
+			union(groups, row, col);						// Menyatukan (menghubungkan) vertex row dan col untuk edge ini
 		}
 
 		System.out.println("Total cost: " + totalCost);		// Mencetak biaya total MST
