@@ -90,7 +90,23 @@ public class Graph {
 	public void addDirectedEdge(String src, String dst) {
 		addDirectedEdge(
 			vertexPosition.get(src.toUpperCase()),
-			vertexPosition.get(dst.toUpperCase())
+			vertexPosition.get(dst.toUpperCase()),
+			1
+		);
+	}
+
+	/**
+	 * Menambahkan edge/penghubung searah dari vertex dengan nama label yang terdapat pada graf dengan bobot tertentu.
+	 *
+	 * @param src    label vertex 1
+	 * @param dst    label vertex 2
+	 * @param weight bobot dari edge
+	 */
+	public void addDirectedEdge(String src, String dst, int weight) {
+		addDirectedEdge(
+			vertexPosition.get(src.toUpperCase()),
+			vertexPosition.get(dst.toUpperCase()),
+			weight
 		);
 	}
 
@@ -99,9 +115,9 @@ public class Graph {
 	 *
 	 * @param src posisi vertex 1
 	 * @param dst posisi vertex 2
-	 * */
-	public void addDirectedEdge(int src, int dst) {
-		adjMatrix[src][dst] = 1;
+	 */
+	public void addDirectedEdge(int src, int dst, int weight) {
+		adjMatrix[src][dst] = weight;
 	}
 
 	/**
@@ -218,11 +234,11 @@ public class Graph {
 
 		while (!stack.isEmpty()) {                              // Selama stack tidak kosong
 			int curr = stack.pop();                             // Ambil isi paling belakang stack dalam curr
-			System.out.print("Popped: " + vertices[curr].label + " (" + curr + ") ");
+//			System.out.print("Popped: " + vertices[curr].label + " (" + curr + ") ");
 			if (!visited[curr]) {                               // Jika visited pada posisi curr masih false
-				printListContent(visited);
+//				printListContent(visited);
 				visited[curr] = true;                            // Tambahkan nilai curr pada HashSet visited
-//				System.out.print(vertices[curr].label + " ");		// Cetak label pada vertex di index curr di vertices
+				System.out.print(vertices[curr].label + " ");    // Cetak label pada vertex di index curr di vertices
 
 				/* Melakukan looping dari belakang (karena stack menggunakan sistem First In Last Out) */
 				for (int vPos = adjMatrix[curr].length - 1; vPos >= 0; vPos--) {
@@ -231,7 +247,7 @@ public class Graph {
 						stack.push(vPos);                        // Masukkan vPos pada stack
 					}
 				}
-				printListContent(stack);
+//				printListContent(stack);
 			}
 //			System.out.println();
 		}
@@ -272,13 +288,13 @@ public class Graph {
 		Queue<Integer> queue = new LinkedList<>();              // Sistem queue untuk proses BFS
 		visited[start] = true;                                  // Mengatur index awal menjadi dilewati
 		queue.add(start);                                       // Memasukkan posisi awal ke queue
-		printListContent(queue);
+//		printListContent(queue);
 
 		int curr;                                               // Iterator untuk loop, berisi posisi index vertex
 		while (!queue.isEmpty()) {                              // Selama queue masih memiliki isi
 			curr = queue.poll();                                // Ambil nilai paling depan di queue
 			System.out.print(vertices[curr].label + " ");       // Cetak label pada vertices di posisi curr
-			System.out.print("Polled: " + vertices[curr].label + " (" + curr + ") ");
+//			System.out.print("Polled: " + vertices[curr].label + " (" + curr + ") ");
 
 			for (int i = 0; i < adjMatrix.length; i++) {        // Loop dari 0, selama iterator kurang dari panjang matrix
 				/* Jika terdapat koneksi antar vertex curr dan i DAN i belum true di visited */
@@ -287,7 +303,7 @@ public class Graph {
 					visited[i] = true;                          // Atur visited pada i menjadi true
 				}
 			}
-			printListContent(queue);
+//			printListContent(queue);
 		}
 		System.out.println();
 	}
@@ -303,7 +319,7 @@ public class Graph {
 		int totalCost = 0;                                    // Menyimpan harga MST
 
 		while (edgeCount < adjMatrix.length) {                // Selama penghitung edge kurang dari panjang matrix adj
-			int min = Integer.MAX_VALUE;                    // Menyimpan bobot edge terendah pada iterasi ini
+			int u = Integer.MAX_VALUE;                    // Menyimpan bobot edge terendah pada iterasi ini
 			int row = 0;                                    // Menyimpan posisi iterasi vertikal
 			int col = 0;                                    // Menyimpan posisi iterasi horizontal
 
@@ -312,8 +328,8 @@ public class Graph {
 					for (int j = 0; j < adjMatrix.length; j++) {// INNER: j kurang dari panjang matrix adj, dimulai dari 0
 						/* Jika vektor di posisi j belum dilewati dan memiliki hubungan dengan vektor di posisi i */
 						if (!visited[j] && adjMatrix[i][j] != 0) {
-							if (min > adjMatrix[i][j]) {    // Jika min masih lebih besar dari bobot vektor ij
-								min = adjMatrix[i][j];        // Isi min dengan bobot vektor ij
+							if (u > adjMatrix[i][j]) {    // Jika u masih lebih besar dari bobot vektor ij
+								u = adjMatrix[i][j];        // Isi u dengan bobot vektor ij
 								row = i;                    // Isi row dengan nilai i
 								col = j;                    // Isi col dengan nilai j
 							}
@@ -329,9 +345,9 @@ public class Graph {
 				continue;
 			}
 
-			totalCost += min;                                    // Menambahkan bobot edge iterasi ini dengan nilai min edge
+			totalCost += u;                                    // Menambahkan bobot edge iterasi ini dengan nilai u edge
 			System.out.println(                                    // Mencetak dengan format Label vertex pada edge dan bobot
-				"Edge " + ++edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
+				"Edge " + ++edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + u);
 		}
 
 		System.out.println("Total cost: " + totalCost);            // Mencetak biaya total MST
@@ -384,7 +400,7 @@ public class Graph {
 		}
 
 		while (edgeCount < adjMatrix.length - 1) {            // Selama edgeCount kurang dari (panjang matrix adj - 1)
-			int min = Integer.MAX_VALUE;                    // Menyimpan bobot edge terendah pada iterasi ini
+			int u = Integer.MAX_VALUE;                    // Menyimpan bobot edge terendah pada iterasi ini
 			int row = 0;                                    // Menyimpan posisi iterasi vertikal
 			int col = 0;                                    // Menyimpan posisi iterasi horizontal
 
@@ -393,8 +409,8 @@ public class Graph {
 					/* Mengecek apakah vertex i dan j tidak berada di himpunan group yang sama DAN vertex ij bukanlah
 					 dirinya sendiri */
 					if (find(groups, i) != find(groups, j) && adjMatrix[i][j] != 0) {
-						if (min > adjMatrix[i][j]) {        // Jika min masih lebih besar dari bobot vektor ij
-							min = adjMatrix[i][j];            // Isi min dengan bobot vektor ij
+						if (u > adjMatrix[i][j]) {        // Jika u masih lebih besar dari bobot vektor ij
+							u = adjMatrix[i][j];            // Isi u dengan bobot vektor ij
 							row = i;                        // Isi row dengan nilai i
 							col = j;                        // Isi col dengan nilai j
 						}
@@ -402,9 +418,9 @@ public class Graph {
 				}
 			}
 
-			totalCost += min;                                // Menambahkan bobot edge iterasi ini dengan nilai min edge
+			totalCost += u;                                // Menambahkan bobot edge iterasi ini dengan nilai u edge
 			System.out.println(                                // Mencetak dengan format Label vertex pada edge dan bobot
-				"Edge " + ++edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + min);
+				"Edge " + ++edgeCount + ": (" + vertices[row].label + ", " + vertices[col].label + ") cost: " + u);
 			union(groups, row, col);                        // Menyatukan (menghubungkan) vertex row dan col untuk edge ini
 		}
 
@@ -415,35 +431,37 @@ public class Graph {
 	 * Metode untuk melakukan visit tiap vertex yang terhubung dengan vertex v. Metode ini digunakan untuk membantu
 	 * melakukan topological sort.
 	 *
-	 * @param pos posisi vertex yang ingin di-visit
+	 * @param pos     posisi vertex yang ingin di-visit
 	 * @param visited list boolean untuk menyimpan vertex yang sudah di-visit
-	 * @param stack stack untuk menyimpan vertex yang sudah di-visit
-	 * */
+	 * @param stack   stack untuk menyimpan vertex yang sudah di-visit
+	 */
 	private void visit(int pos, boolean[] visited, Stack<Integer> stack) {
-		visited[pos] = true;									// Menandai bahwa vertex `pos` sudah dilewati
+		visited[pos] = true;                                    // Menandai bahwa vertex `pos` sudah dilewati
+		System.out.println("at " + vertices[pos].label + " (" + pos + ")");
 
-		for (int i = 0; i < adjMatrix.length; i++) {			// Loop dari 0, selama iterator kurang dari panjang matrix
+		for (int i = 0; i < adjMatrix.length; i++) {            // Loop dari 0, selama iterator kurang dari panjang matrix
 			// Jika terdapat koneksi antar vertex pos dan i DAN i belum true di visited
 			if (adjMatrix[pos][i] >= 1 && !visited[i]) {
-				visit(i, visited, stack);						// Memanggil rekursi metode ini sendiri
+				visit(i, visited, stack);                        // Memanggil rekursi metode ini sendiri
 			}
 		}
 
-		stack.push(pos);										// Memasukkan pos ke dalam stack
+		stack.push(pos);                                        // Memasukkan pos ke dalam stack
+		System.out.println(stack);
 	}
 
 	/**
 	 * Mencetak pengurutan vertex dengan menggunakan topological sort algoritma Kahn's. Menggunakan stack untuk
 	 * menyimpan vertex yang sudah dilewati.
-	 * */
+	 */
 	public void topologicalSort() {
-		int V = adjMatrix.length;								// Menyimpan panjang matrix
-		Stack<Integer> stack = new Stack<>();					// Deklarasi stack
-		boolean[] visited = new boolean[V];						// Deklarasi penyimpan vertex yang sudah dilewati
+		int V = adjMatrix.length;                                // Menyimpan panjang matrix
+		Stack<Integer> stack = new Stack<>();                    // Deklarasi stack
+		boolean[] visited = new boolean[V];                        // Deklarasi penyimpan vertex yang sudah dilewati
 
-		for (int i = 0; i < V; i++) {							// Loop dari 0, selama iterator kurang dari panjang matrix
-			if (!visited[i]) {									// Jika vertex belum dilewati
-				visit(i, visited, stack);						// Memanggil metode visit pada vertex i
+		for (int i = 0; i < V; i++) {                            // Loop dari 0, selama iterator kurang dari panjang matrix
+			if (!visited[i]) {                                    // Jika vertex belum dilewati
+				visit(i, visited, stack);                        // Memanggil metode visit pada vertex i
 			}
 		}
 
@@ -451,6 +469,140 @@ public class Graph {
 		while (!stack.isEmpty()) {
 			System.out.print(vertices[stack.pop()].label + " ");
 		}
+	}
+
+	/**
+	 * Metode untuk mencari jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra dari sebuah vertex.
+	 *
+	 * @param src asal
+	 */
+	@Deprecated
+	public void dijkstra(String src) {
+		dijkstra(vertexPosition.get(src.toUpperCase()));
+	}
+
+	/**
+	 * Metode untuk mencari jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra.
+	 * matrix adjacency untuk semua vertex dimulai dari src.
+	 */
+	@Deprecated
+	private void dijkstra(int src) {
+		int V = adjMatrix.length;                         	// Menyimpan panjang matrix
+		int[] distance = new int[V];                       	// Menyimpan jarak terpendek dari src ke vertex lain
+		boolean[] visited = new boolean[V];                 // Menyimpan vertex yang sudah dilewati
+
+		for (int i = 0; i < V; i++) {                       // Loop dari 0, selama iterator kurang dari panjang matrix
+			distance[i] = Integer.MAX_VALUE;                // Isi distance dengan nilai maksimum
+		}
+		distance[src] = 0;                               	// Isi distance pada src dengan 0 (karena awal, jarak 0)
+
+		/*
+		 * Loop dari 0, selama iterator kurang dari panjang matrix - 1. Menggunakan V - 1 karena vertex terakhir
+		 * tidak perlu dihitung lagi.
+		 * */
+		for (int i = 0; i < V - 1; i++) {
+			int u = findMinDist(distance, visited);   	// Isi u dengan hasil pemanggilan metode findMinDist
+			visited[u] = true;                            // Isi visited pada u dengan true
+
+			for (int j = 0; j < V; j++) {                   // Loop dari 0, selama iterator kurang dari panjang matrix
+				/*
+				 * Jika terdapat koneksi antar vertex u dan j DAN j belum true di visited DAN distance pada u
+				 * ditambah bobot vektor u j lebih kecil dari distance pada j.
+				 * */
+				if ((adjMatrix[u][j] >= 1 && !visited[j]) && (distance[u] + adjMatrix[u][j] < distance[j])) {
+					// Isi distance pada j dengan distance u + bobot
+					distance[j] = distance[u] + adjMatrix[u][j];
+				}
+			}
+		}
+
+		/* Mencetak hasil */
+		for (int i = 0; i < V; i++) {
+			System.out.println("Vertex: " + vertices[i].label + " Distance: " + distance[i]);
+		}
+	}
+
+	/**
+	 * Metode untuk mencari jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra. Menggunakan
+	 * matrix adjacency.
+	 *
+	 * @param src asal
+	 * @param dst tujuan
+	 */
+	public void dijkstra(String src, String dst) {
+		dijkstra(vertexPosition.get(src.toUpperCase()), vertexPosition.get(dst.toUpperCase()));
+	}
+
+	private void dijkstra(int src, int dst) {
+		int[] distance = new int[vertices.length];			// Menyimpan jarak terpendek dari src ke vertex lain
+		int[] predecessor = new int[vertices.length];		// Menyimpan predecessor dari vertex
+		boolean[] visited = new boolean[vertices.length];	// Menyimpan status vertex yang sudah dilewati
+
+		/* Mengisi distance untuk tiap hubungan vertex ke dengan value tertinggi integer */
+		for (int i = 0; i < vertices.length; i++) {
+			distance[i] = Integer.MAX_VALUE;
+		}
+
+		distance[src] = 0;									// Isi distance pada src dengan 0 (karena awal, jarak 0)
+		predecessor[src] = -1; 								// The predecessor of the source is itself
+
+		for (int i = 0; i < vertices.length - 1; i++) {		// Loop dari 0, selama iterator kurang dari panjang matrix
+			// u adalah vertex dengan jarak terpendek yang belum dilewati
+			int u = findMinDist(distance, visited);			// Isi u dengan hasil pemanggilan metode findMinDist
+			visited[u] = true;								// Isi status visited pada u dengan true
+
+			for (int v = 0; v < vertices.length; v++)		// Loop dari 0, selama iterator kurang dari panjang matrix
+				/* 
+				 * Jika terdapat koneksi antar vertex u dan v DAN v belum true di visited DAN distance pada u
+				 * ditambah bobot vektor u v lebih kecil dari distance pada v. 
+				 * */
+				if ((!visited[v] && adjMatrix[u][v] != 0) 
+					&& (distance[u] != Integer.MAX_VALUE && distance[u] + adjMatrix[u][v] < distance[v])) {
+					distance[v] = distance[u] + adjMatrix[u][v];// Isi distance pada v dengan distance u + bobot
+					predecessor[v] = u;							// Isi predecessor pada v dengan u
+				}
+		}
+
+		/* Cetak harga dan urutan */
+		System.out.println("Shortest distance from " 
+			+ vertices[src].label + " to " + vertices[dst].label + " costs " + distance[dst]);
+		printPath(predecessor, dst);
+	}
+
+	/**
+	 * Mencetak alur path dari vertex awal ke vertex akhir dengan algoritma Dijkstra secara rekursif.
+	 *
+	 * @param predecessor list predecessor dari vertex
+	 * @param currentVertex index vertex yang ingin dicetak pada predecessor
+	 * */
+	private void printPath(int[] predecessor, int currentVertex) {
+		/* Base case: index vertex sudah outbound */
+		if (currentVertex == -1) {
+			return;
+		}
+
+		// Secara rekurisf mencetak predecessor dari vertex sebelumnya
+		printPath(predecessor, predecessor[currentVertex]);
+
+		// Cetak label vertex
+		System.out.print(vertices[currentVertex].label + " ");
+	}
+
+	/**
+	 * Mendapatkan vertex dengan jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra.
+	 */
+	private int findMinDist(int[] distance, boolean[] visited) {
+		int min = Integer.MAX_VALUE;               		// Menyimpan jarak terpendek diawali dengan nilai maksimum
+		int minimumIndex = -1;
+
+		for (int i = 0; i < distance.length; i++) {    	// Loop dari 0, selama iterator kurang dari panjang matrix
+			if (!visited[i] && distance[i] <= min) {  	// Jika vertex belum dilewati lebih kecil dari jarak terpendek
+				min = distance[i];                    	// Isi u dengan jarak terpendek
+				minimumIndex = i;                      	// Isi minimumIndex dengan nilai i
+			}
+		}
+
+		return minimumIndex;                         	// Mengembalikan nilai minimumIndex
 	}
 
 	/* Metode untuk mencetak isi Queue */
