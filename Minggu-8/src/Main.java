@@ -2,7 +2,7 @@ import praktikum.*;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void regularMSTs() {
 		Graph graph = new Graph(10);
 		graph.addVertex("A"); // 0
 		graph.addVertex("B"); // 1
@@ -27,6 +27,7 @@ public class Main {
 		graph.addEdge("E", "G", 10);
 		graph.addEdge("E", "H", 8);
 		graph.addEdge("E", "I", 9);
+		graph.addEdge("F", "E", 10);
 		graph.addEdge("F", "G", 3);
 		graph.addEdge("G", "H", 6);
 		graph.addEdge("G", "J", 7);
@@ -42,10 +43,39 @@ public class Main {
 //		System.out.println("\nBreadth First Search:");
 //		graph.breadthFirstSearch();
 
-		System.out.println("\nMinimum Spanning Tree (PRIM):");
-		graph.minimumSpanningTree_Prim();
+//		System.out.println("\nMinimum Spanning Tree (PRIM):");
+//		graph.minimumSpanningTree_Prim();
 
-		System.out.println("\nMinimum Spanning Tree (KRUSKAL):");
-		graph.minimumSpanningTree_KruskalV1();
+//		System.out.println("\nMinimum Spanning Tree (KRUSKAL):");
+//		graph.minimumSpanningTree_KruskalV1();
+	}
+
+	public static void topologicalSortTest() {
+		Graph graph = new Graph(7);
+		graph.addVertex("J1"); // 0
+		graph.addVertex("J2"); // 1
+		graph.addVertex("J3"); // 2
+		graph.addVertex("J4"); // 3
+		graph.addVertex("J5"); // 4
+		graph.addVertex("J6"); // 5
+		graph.addVertex("J7"); // 6
+
+		graph.addDirectedEdge("J1", "J2");
+		graph.addDirectedEdge("J1", "J3");
+		graph.addDirectedEdge("J2", "J4");
+		graph.addDirectedEdge("J2", "J5");
+		graph.addDirectedEdge("J2", "J6");
+		graph.addDirectedEdge("J3", "J4");
+		graph.addDirectedEdge("J4", "J5");
+		graph.addDirectedEdge("J5", "J7");
+
+		graph.displayMatrix();
+
+		System.out.println("Topological Sort v1	:");
+		graph.topologicalSort();
+	}
+
+	public static void main(String[] args) {
+		topologicalSortTest();
 	}
 }
