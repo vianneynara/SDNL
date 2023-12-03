@@ -598,7 +598,9 @@ public class Graph {
 	}
 
 	/**
-	 * Mendapatkan vertex dengan jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra.
+	 * Mendapatkan posisi vertex dengan jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra.
+	 *
+	 * @return posisi vertex dengan jarak terpendek
 	 */
 	private int findMinDist(int[] distance, boolean[] visited) {
 		int min = Integer.MAX_VALUE;               		// Menyimpan jarak terpendek diawali dengan nilai maksimum
