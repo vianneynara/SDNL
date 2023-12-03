@@ -535,7 +535,7 @@ public class Graph {
 
 	private void dijkstra(int src, int dst) {
 		int[] distance = new int[vertices.length];			// Menyimpan jarak terpendek dari src ke vertex lain
-		int[] predecessor = new int[vertices.length];		// Menyimpan predecessor dari vertex
+		int[] previous = new int[vertices.length];			// Menyimpan previous dari vertex
 		boolean[] visited = new boolean[vertices.length];	// Menyimpan status vertex yang sudah dilewati
 
 		/* Mengisi distance untuk tiap hubungan vertex ke dengan value tertinggi integer */
@@ -544,7 +544,7 @@ public class Graph {
 		}
 
 		distance[src] = 0;									// Isi distance pada src dengan 0 (karena awal, jarak 0)
-		predecessor[src] = -1; 								// The predecessor of the source is itself
+		previous[src] = -1; 								// The previous of the source is itself
 
 		for (int i = 0; i < vertices.length - 1; i++) {		// Loop dari 0, selama iterator kurang dari panjang matrix
 			// u adalah vertex dengan jarak terpendek yang belum dilewati
@@ -559,30 +559,30 @@ public class Graph {
 				if ((!visited[v] && adjMatrix[u][v] != 0) 
 					&& (distance[u] != Integer.MAX_VALUE && distance[u] + adjMatrix[u][v] < distance[v])) {
 					distance[v] = distance[u] + adjMatrix[u][v];// Isi distance pada v dengan distance u + bobot
-					predecessor[v] = u;							// Isi predecessor pada v dengan u
+					previous[v] = u;							// Isi previous pada v dengan u
 				}
 		}
 
 		/* Cetak harga dan urutan */
 		System.out.println("Shortest distance from " 
 			+ vertices[src].label + " to " + vertices[dst].label + " costs " + distance[dst]);
-		printPath(predecessor, dst);
+		printPath(previous, dst);
 	}
 
 	/**
 	 * Mencetak alur path dari vertex awal ke vertex akhir dengan algoritma Dijkstra secara rekursif.
 	 *
-	 * @param predecessor list predecessor dari vertex
-	 * @param currentVertex index vertex yang ingin dicetak pada predecessor
+	 * @param previous list previous dari vertex
+	 * @param currentVertex index vertex yang ingin dicetak pada previous
 	 * */
-	private void printPath(int[] predecessor, int currentVertex) {
+	private void printPath(int[] previous, int currentVertex) {
 		/* Base case: index vertex sudah outbound */
 		if (currentVertex == -1) {
 			return;
 		}
 
-		// Secara rekurisf mencetak predecessor dari vertex sebelumnya
-		printPath(predecessor, predecessor[currentVertex]);
+		// Secara rekurisf mencetak previous dari vertex sebelumnya
+		printPath(previous, previous[currentVertex]);
 
 		// Cetak label vertex
 		System.out.print(vertices[currentVertex].label + " ");
