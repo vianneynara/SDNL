@@ -526,13 +526,22 @@ public class Graph {
 	 * Metode untuk mencari jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra. Menggunakan
 	 * matrix adjacency.
 	 *
-	 * @param src asal
-	 * @param dst tujuan
+	 * @param src label asal
+	 * @param dst tujuan tujuan
 	 */
 	public void dijkstra(String src, String dst) {
-		dijkstra(vertexPosition.get(src.toUpperCase()), vertexPosition.get(dst.toUpperCase()));
+		dijkstra(
+			vertexPosition.get(src.toUpperCase()),
+			vertexPosition.get(dst.toUpperCase())
+		);
 	}
 
+	/**
+	 * Inner method untuk melakukan pencarian shortest path dari vertex src ke vertex dst dengan algoritma Dijkstra.
+	 *
+	 * @param src posisi vertex awal
+	 * @param dst posisi vertex akhir
+	 * */
 	private void dijkstra(int src, int dst) {
 		int[] distance = new int[vertices.length];			// Menyimpan jarak terpendek dari src ke vertex lain
 		int[] previous = new int[vertices.length];			// Menyimpan previous dari vertex
