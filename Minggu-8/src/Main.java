@@ -112,7 +112,7 @@ public class Main {
 
 		var src = "A";
 		var dst = "D";
-		System.out.printf("\nDjikstra from %s to %s: %n", src, dst);
+		System.out.printf("\nDijkstra from %s to %s: %n", src, dst);
 		graph.dijkstra(src, dst);
 	}
 

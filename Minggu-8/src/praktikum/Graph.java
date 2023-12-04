@@ -472,11 +472,17 @@ public class Graph {
 	}
 
 	/**
+	 * Metode untuk mencari jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra dari vertex awal.
+	 */
+	public void dijkstra() {
+		dijkstra(0);
+	}
+
+	/**
 	 * Metode untuk mencari jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra dari sebuah vertex.
 	 *
 	 * @param src asal
 	 */
-	@Deprecated
 	public void dijkstra(String src) {
 		dijkstra(vertexPosition.get(src.toUpperCase()));
 	}
@@ -485,16 +491,13 @@ public class Graph {
 	 * Metode untuk mencari jarak terpendek dari vertex src ke vertex dst dengan algoritma Dijkstra.
 	 * matrix adjacency untuk semua vertex dimulai dari src.
 	 */
-	@Deprecated
-	private void dijkstra(int src) {
+	public void dijkstra(int src) {
 		int V = adjMatrix.length;                         	// Menyimpan panjang matrix
 		int[] distance = new int[V];                       	// Menyimpan jarak terpendek dari src ke vertex lain
 		boolean[] visited = new boolean[V];                 // Menyimpan vertex yang sudah dilewati
 
-		for (int i = 0; i < V; i++) {                       // Loop dari 0, selama iterator kurang dari panjang matrix
-			distance[i] = Integer.MAX_VALUE;                // Isi distance dengan nilai maksimum
-		}
-		distance[src] = 0;                               	// Isi distance pada src dengan 0 (karena awal, jarak 0)
+		Arrays.fill(distance, Integer.MAX_VALUE);			// Isi distance dengan nilai maksimum integer
+		distance[0] = 0;                               		// Isi distance pada src dengan 0 (karena awal, jarak 0)
 
 		/*
 		 * Loop dari 0, selama iterator kurang dari panjang matrix - 1. Menggunakan V - 1 karena vertex terakhir
@@ -518,7 +521,7 @@ public class Graph {
 
 		/* Mencetak hasil */
 		for (int i = 0; i < V; i++) {
-			System.out.println("Vertex: " + vertices[i].label + " Distance: " + distance[i]);
+			System.out.println("Vertex: " + vertices[i].label + " Distance: " + (distance[i] == Integer.MAX_VALUE ? "INF" : distance[i]));
 		}
 	}
 
@@ -547,11 +550,7 @@ public class Graph {
 		int[] previous = new int[vertices.length];			// Menyimpan previous dari vertex
 		boolean[] visited = new boolean[vertices.length];	// Menyimpan status vertex yang sudah dilewati
 
-		/* Mengisi distance untuk tiap hubungan vertex ke dengan value tertinggi integer */
-		for (int i = 0; i < vertices.length; i++) {
-			distance[i] = Integer.MAX_VALUE;
-		}
-
+		Arrays.fill(distance, Integer.MAX_VALUE);			// Isi seluruh distance dengan nilai maksimum integer
 		distance[src] = 0;									// Isi distance pada src dengan 0 (karena awal, jarak 0)
 		previous[src] = -1; 								// The previous of the source is itself
 
