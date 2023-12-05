@@ -114,6 +114,9 @@ public class Main {
 		var dst = "D";
 		System.out.printf("\nDijkstra from %s to %s: %n", src, dst);
 		graph.dijkstra(src, dst);
+
+		System.out.println("\n\nGeneral Dijkstra (from A):");
+		graph.dijkstra();
 	}
 
 	public static void topologicalSortTest() {
