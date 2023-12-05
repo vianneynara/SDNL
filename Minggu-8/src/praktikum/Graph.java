@@ -521,7 +521,7 @@ public class Graph {
 
 		/* Mencetak hasil */
 		for (int i = 0; i < V; i++) {
-			System.out.println("Vertex: " + vertices[i].label + " Distance: " + (distance[i] == Integer.MAX_VALUE ? "INF" : distance[i]));
+			System.out.println("Vertex: " + vertices[i].label + " -> dist: " + (distance[i] == Integer.MAX_VALUE ? "INF" : distance[i]));
 		}
 	}
 
